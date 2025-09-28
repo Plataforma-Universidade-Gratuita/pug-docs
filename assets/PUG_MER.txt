@@ -1,0 +1,155 @@
+Enum user_roles {
+  ADMIN
+  FORMER_STUDENT
+  PARTNER
+}
+
+Enum project_status {
+  PLANNED
+  ON_GOING
+  DONE
+  CANCELED
+}
+
+Enum project_enrollment_status {
+  PENDING
+  ACCEPTED
+  DENIED
+  CONCLUDED
+  EXITED
+  REMOVED
+}
+
+Enum attendance_status {
+  PENDING
+  VALIDATED
+  REJECTED
+}
+
+Table users {
+  id uuid [pk]
+  cpf varchar(14) [not null, unique]
+  name varchar(150) [not null]
+  created_at timestamp [not null]
+  updated_at timestamp
+}
+
+
+
+Table users_roles {
+  id uuid [pk]
+  user_id uuid [ref: > users.id, not null]
+  role user_roles [not null]
+  email varchar(254) [not null, unique]
+  active bool [default: true]
+  created_at timestamp [not null]
+  updated_at timestamp
+}
+
+Table students {
+  id uuid [pk]
+  user_role_id uuid [ref: > users_roles.id, not null, unique]
+  academic_registration varchar(15) [not null, unique]
+  course_id uuid [ref: > courses.id, not null]
+}
+
+
+
+Table students_counterparts_hours {
+  id uuid [pk]
+  student_id uuid [ref: > students.id, not null]
+  required_hours numeric(6,2) [not null]
+  start_date date [not null]
+  due_date date [not null]
+}
+
+Table courses {
+  id uuid [pk]
+  name varchar(120) [not null]
+  field_id uuid [ref: > fields_of_study.id, not null]
+  created_at timestamp [not null]
+  updated_at timestamp
+}
+
+Table fields_of_study {
+  id uuid [pk]
+  name varchar(100) [not null]
+}
+
+Table staff {
+  id uuid [pk]
+  user_role_id uuid [ref: > users_roles.id, not null, unique]
+  entity_id uuid [ref: > entities.id, not null]
+}
+
+Table cities {
+  id uuid [pk]
+  name varchar(100) [not null, unique]
+  ibge_code varchar(10) [not null, unique]
+}
+
+Table entities {
+  id uuid [pk]
+  cnpj varchar(18) [not null, unique]
+  name varchar(150) [not null]
+  city_id uuid [ref: > cities.id, not null]
+  address varchar(254)
+  active bool [default: true]
+  created_at timestamp [not null]
+  updated_at timestamp
+}
+
+
+Table projects_locations {
+  id uuid [pk]
+  project_allocation_id uuid [ref: > projects_allocations.id, not null]
+  address varchar(254)
+  latitude decimal(9,6)
+  longitude decimal(9,6)
+}
+
+Table projects {
+  id uuid [pk]
+  name varchar(150) [not null]
+  description text
+  entity_id uuid [ref: > entities.id, not null]
+  field_id uuid [ref: > fields_of_study.id, not null]
+  status project_status [not null]
+  max_participants int
+  created_by uuid [ref: > staff.id, not null]
+  created_at timestamp [not null]
+  updated_at timestamp
+}
+
+Table projects_enrollments {
+  id uuid [pk]
+  project_id uuid [ref: > projects.id, not null]
+  student_id uuid [ref: > students.id, not null]
+  status project_enrollment_status [not null, default: 'PENDING']
+  request_at timestamp [not null]
+  accepted_at timestamp
+  closing_status_at timestamp
+}
+
+Table projects_attendances {
+  id uuid [pk]
+  enrollment_id uuid [ref: > projects_enrollments.id, not null]
+  project_location_id uuid [ref: > projects_locations.id, not null]
+  duration numeric(4,2) [not null]
+  latitude decimal(9,6)
+  longitude decimal(9,6)
+  status attendance_status [default: 'PENDING']
+  qr_validation_hash varchar(512) [unique]
+  validated_by uuid [ref: > staff.id]
+  validated_at timestamp
+  created_at timestamp [not null]
+  updated_at timestamp
+}
+
+Table projects_allocations {
+  id uuid [pk]
+  project_id uuid [ref: > projects.id, not null]
+  offered_hours numeric(6,2) [not null]
+  start_date date [not null]
+  end_date date [not null]
+}
