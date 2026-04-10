@@ -17,6 +17,8 @@
 - 🔍 **Full-text Search** — Elasticsearch-powered fuzzy, autocomplete, accent-insensitive search
 - 🌍 **Internationalization** — Full i18n support (pt_BR, en_US)
 - 📊 **CQRS Architecture** — Separated read (Query) and write (Command) paths
+- 📝 **Audit Trail** — Async domain event-driven audit logging persisted to MongoDB
+- 📈 **Observability** — Health checks, metrics (Micrometer), and OpenAPI/Swagger documentation
 
 ## 🛠️ Tech Stack
 
@@ -33,8 +35,9 @@ mindmap
     ORM
       Hibernate ORM
       Panache
-    Database
+    Databases
       PostgreSQL 16
+      MongoDB 7 Audit Logs
     Search Engine
       Elasticsearch 9.x
       Hibernate Search
@@ -46,12 +49,18 @@ mindmap
     Validation
       Jakarta Bean Validation
       Hibernate Validator
+    Observability
+      SmallRye OpenAPI / Swagger
+      SmallRye Health
+      Micrometer Metrics
     Build
       Maven
+      Lombok
     Code Quality
       SpotBugs
       Checkstyle
       Spotless
+      JaCoCo Coverage
     UUID Strategy
       UUIDv7 time-ordered
 ```
@@ -75,7 +84,7 @@ graph TB
             PROJECT["📋 Project<br/><i>Projects / Enrollments<br/>Attendances</i>"]
         end
 
-        SHARED["🧩 Shared Module<br/><i>DomainError · Exceptions · i18n<br/>API Envelope · Search · Utils</i>"]
+        SHARED["🧩 Shared Module<br/><i>DomainError · Exceptions · i18n<br/>API Envelope · Search · Audit · Utils</i>"]
 
         GEO --> SHARED
         IDENTITY --> SHARED
@@ -87,6 +96,7 @@ graph TB
     subgraph Infra["Infrastructure Layer"]
         direction LR
         PG[("PostgreSQL 16")]
+        MONGO[("MongoDB 7<br/>Audit Logs")]
         ES[("Elasticsearch 9")]
         FW["Flyway Migrations"]
     end
@@ -102,7 +112,9 @@ Each bounded context follows this consistent internal structure:
 module/
 ├── domain/          ← Pure business logic (entities, value objects, repository interfaces)
 ├── service/         ← Application services (CQRS: commands + queries)
+│   └── utils/       ← Processor helpers and exception translators
 ├── infra/           ← Infrastructure (JPA entities, mappers, repository implementations)
+│   ├── audit/       ← Audit trail (MongoDB-backed event sourcing)
 │   ├── persistence/ ← Hibernate/JPA entities
 │   └── read/        ← CQRS Query implementations (JPQL + Elasticsearch)
 └── presenter/       ← REST controllers, DTOs, request/response mapping
@@ -119,7 +131,7 @@ graph LR
     ACADEMIC["🎓 <b>Academic</b><br/>com.pug.academic<br/><i>Schools, courses, students,<br/>counterpart hours</i>"]
     PARTNER["🏢 <b>Partner</b><br/>com.pug.partner<br/><i>Partner organizations CNPJ,<br/>staff management</i>"]
     PROJECT["📋 <b>Project</b><br/>com.pug.project<br/><i>Community service projects,<br/>enrollments, QR attendance</i>"]
-    SHARED["🧩 <b>Shared</b><br/>com.pug.shared<br/><i>Cross-cutting concerns:<br/>exceptions, i18n, search, API envelope</i>"]
+    SHARED["🧩 <b>Shared</b><br/>com.pug.shared<br/><i>Cross-cutting concerns:<br/>exceptions, i18n, search, audit, API envelope</i>"]
 ```
 
 ## 🗃️ Full Entity-Relationship Model (ERM)
@@ -315,7 +327,7 @@ timeline
 ### Prerequisites
 
 - Java 21+
-- Docker (for PostgreSQL and Elasticsearch dev services)
+- Docker (for PostgreSQL, MongoDB, and Elasticsearch dev services)
 - Maven 3.9+
 
 ### Running in Development Mode
