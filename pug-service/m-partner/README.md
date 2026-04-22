@@ -72,18 +72,21 @@ graph LR
     end
 ```
 
-### Staff Members — `/partner/staff`
+### Staff Members — `/partners/staff`
 
 ```mermaid
 graph LR
-    subgraph Staff["👥 /partner/staff"]
+    subgraph Staff["👥 /partners/staff"]
         direction TB
         GET_LIST["GET / — List/search ?q= ?entityId= ?cpf=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by account ID<br/>🔒 Authenticated"]
         GET_EMAIL["GET /by-email/{email}<br/>🔒 Authenticated"]
+        GET_CPF["GET /by-cpf/{cpf}<br/>🔒 Authenticated"]
+        GET_ENTITY["GET /by-entity/{entityId}<br/>🔒 Authenticated"]
         GET_ME["GET /me — Current staff profile<br/>🔒 Authenticated"]
         POST["POST / — Assign staff to entity<br/>🔒 ADMIN"]
         PUT["PUT /{id} — Update staff<br/>🔒 ADMIN"]
+        PATCH["PATCH /{id}/deactivate — Soft-deactivate<br/>🔒 ADMIN"]
         DELETE["DELETE /{id} — Revoke staff<br/>🔒 ADMIN"]
     end
 ```

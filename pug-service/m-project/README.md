@@ -113,14 +113,14 @@ classDiagram
 ```
 presenter/                        ← REST controllers
   ProjectResource                 ← CRUD + lifecycle for projects
-  ProjectBySchoolResource         ← Project-School associations
+  ProjectSchoolResource           ← Project-School associations
   EnrollmentResource              ← CRUD + status transitions for enrollments
   AttendanceResource              ← CRUD + QR validation for attendances
   dtos/                           ← Request/Response DTOs
   mappers/                        ← Presenter layer transformers
 domain/                           ← Pure domain model
   Project, Enrollment, Attendance ← Aggregate roots
-  ProjectBySchool                 ← Association aggregate
+  ProjectSchool                   ← Association aggregate
   vos/                            ← Value Objects
   enums/                          ← Status enums
   *Repository                     ← Repository interfaces
@@ -137,34 +137,38 @@ infra/                            ← Infrastructure layer
 
 ## Endpoints
 
-### Projects — `/projects/projects`
+### Projects — `/projects`
 
 ```mermaid
 graph LR
-    subgraph Projects["📋 /projects/projects"]
+    subgraph Projects["📋 /projects"]
         direction TB
-        GET_LIST["GET / — List/search ?q= ?entityId= ?createdBy=<br/>🔒 Authenticated"]
+        GET_LIST["GET / — List/search ?q= ?entityId=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 Authenticated"]
-        POST["POST / — Create project<br/>🔒 Authenticated"]
-        PUT["PUT /{id} — Update project<br/>🔒 Authenticated"]
-        PATCH_START["PATCH /{id}/start — To IN_PROGRESS<br/>🔒 Authenticated"]
-        PATCH_COMPLETE["PATCH /{id}/complete — To COMPLETED<br/>🔒 Authenticated"]
-        PATCH_CANCEL["PATCH /{id}/cancel — To CANCELED<br/>🔒 Authenticated"]
-        PATCH_HOLD["PATCH /{id}/hold — To ON_HOLD<br/>🔒 Authenticated"]
-        PATCH_RETAKE["PATCH /{id}/retake — Resume from ON_HOLD<br/>🔒 Authenticated"]
-        DELETE["DELETE /{id} — Delete project<br/>🔒 Authenticated"]
+        GET_CREATED["GET /created-by/{accountId} — By creator<br/>🔒 ADMIN, STAFF"]
+        POST["POST / — Create project<br/>🔒 ADMIN, STAFF"]
+        PUT["PUT /{id} — Update project<br/>🔒 ADMIN, STAFF"]
+        PATCH_START["PATCH /{id}/start — To IN_PROGRESS<br/>🔒 ADMIN, STAFF"]
+        PATCH_COMPLETE["PATCH /{id}/complete — To COMPLETED<br/>🔒 ADMIN, STAFF"]
+        PATCH_CANCEL["PATCH /{id}/cancel — To CANCELED<br/>🔒 ADMIN, STAFF"]
+        PATCH_HOLD["PATCH /{id}/hold — To ON_HOLD<br/>🔒 ADMIN, STAFF"]
+        PATCH_RETAKE["PATCH /{id}/retake — Resume from ON_HOLD<br/>🔒 ADMIN, STAFF"]
+        DELETE["DELETE /{id} — Delete project<br/>🔒 ADMIN, STAFF"]
     end
 ```
 
-### Project ↔ School Associations — `/projects/projects-by-schools`
+### Project ↔ School Associations — `/projects/by-school`
 
 ```mermaid
 graph LR
-    subgraph PBS["🏫 /projects/projects-by-schools"]
+    subgraph PBS["🏫 /projects/by-school"]
         direction TB
-        GET_LIST["GET / — List by ?projectId= or ?schoolId=<br/>🔒 Authenticated"]
-        POST["POST / — Create association<br/>🔒 Authenticated"]
-        DELETE["DELETE / — Remove association<br/>🔒 Authenticated"]
+        GET_SCHOOLS["GET /projects/{projectId}/schools — Schools for project<br/>🔒 Authenticated"]
+        GET_PROJECTS["GET /schools/{schoolId}/projects — Projects for school<br/>🔒 Authenticated"]
+        POST["POST / — Create associations<br/>🔒 ADMIN, STAFF"]
+        DELETE_ONE["DELETE /projects/{projectId}/schools/{schoolId} — Remove one<br/>🔒 ADMIN, STAFF"]
+        DELETE_PROJ["DELETE /projects/{projectId} — Remove all by project<br/>🔒 ADMIN, STAFF"]
+        DELETE_SCHOOL["DELETE /schools/{schoolId} — Remove all by school<br/>🔒 ADMIN, STAFF"]
     end
 ```
 
@@ -174,11 +178,18 @@ graph LR
 graph LR
     subgraph Enrollments["📝 /projects/enrollments"]
         direction TB
-        GET_LIST["GET / — List ?projectId= ?studentId=<br/>🔒 Authenticated"]
-        GET_ID["GET /{projectId}/{studentId} — Get specific<br/>🔒 Authenticated"]
-        POST["POST / — Enroll student<br/>🔒 Authenticated"]
-        PATCH["PATCH /{projectId}/{studentId}/status — Change status<br/>🔒 Authenticated"]
-        DELETE["DELETE /{projectId}/{studentId} — Delete<br/>🔒 Authenticated"]
+        GET_LIST["GET / — List ?projectId= ?studentId=<br/>🔒 ADMIN, STAFF"]
+        GET_ID["GET /{projectId}/{studentId} — Get specific<br/>🔒 ADMIN, STAFF"]
+        GET_ME_PROJ["GET /{projectId}/me — My enrollment for project<br/>🔒 STUDENT"]
+        GET_ME["GET /me — My enrollments<br/>🔒 STUDENT"]
+        POST["POST / — Enroll (self)<br/>🔒 Authenticated"]
+        PATCH_ACCEPT["PATCH /{projectId}/{studentId}/accept<br/>🔒 ADMIN, STAFF"]
+        PATCH_REJECT["PATCH /{projectId}/{studentId}/reject<br/>🔒 ADMIN, STAFF"]
+        PATCH_COMPLETE["PATCH /{projectId}/{studentId}/complete<br/>🔒 ADMIN, STAFF"]
+        PATCH_CANCEL["PATCH /{projectId}/{studentId}/cancel<br/>🔒 ADMIN, STAFF"]
+        PATCH_REMOVE["PATCH /{projectId}/{studentId}/remove<br/>🔒 ADMIN, STAFF"]
+        PATCH_EXIT["PATCH /{projectId}/exit — Student exits<br/>🔒 STUDENT"]
+        DELETE["DELETE /{projectId}/{studentId} — Delete<br/>🔒 ADMIN"]
     end
 ```
 
@@ -190,7 +201,7 @@ graph LR
         direction TB
         GET_LIST["GET / — List ?projectId= ?studentId=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 Authenticated"]
-        POST["POST / — Record attendance via QR<br/>🔒 Authenticated"]
+        POST["POST / — Record attendance<br/>🔒 Authenticated"]
         PATCH["PATCH /{id}/validate — Staff validates<br/>🔒 Authenticated"]
         DELETE["DELETE /{id} — Delete record<br/>🔒 Authenticated"]
     end

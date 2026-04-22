@@ -18,7 +18,8 @@
 - 🌍 **Internationalization** — Full i18n support (pt_BR, en_US)
 - 📊 **CQRS Architecture** — Separated read (Query) and write (Command) paths
 - 📝 **Audit Trail** — Async domain event-driven audit logging persisted to MongoDB
-- 📈 **Observability** — Health checks, metrics (Micrometer), and OpenAPI/Swagger documentation
+- 📖 **API Documentation** — OpenAPI/Swagger auto-generated documentation
+- 📈 **Observability** — Health checks and metrics (Micrometer)
 
 ## 🛠️ Tech Stack
 
@@ -126,12 +127,12 @@ module/
 
 ```mermaid
 graph LR
-    GEO["🌍 <b>Geo</b><br/>com.pug.geo<br/><i>Geographic reference data<br/>Brazilian cities + IBGE codes</i>"]
-    IDENTITY["🔐 <b>Identity</b><br/>com.pug.identity<br/><i>Authentication, users,<br/>accounts, admins, JWT</i>"]
-    ACADEMIC["🎓 <b>Academic</b><br/>com.pug.academic<br/><i>Schools, courses, students,<br/>counterpart hours</i>"]
-    PARTNER["🏢 <b>Partner</b><br/>com.pug.partner<br/><i>Partner organizations CNPJ,<br/>staff management</i>"]
-    PROJECT["📋 <b>Project</b><br/>com.pug.project<br/><i>Community service projects,<br/>enrollments, QR attendance</i>"]
-    SHARED["🧩 <b>Shared</b><br/>com.pug.shared<br/><i>Cross-cutting concerns:<br/>exceptions, i18n, search, audit, API envelope</i>"]
+    GEO["🌍 <b>Geo</b><br/>br.org.catolicasc.pug.geo<br/><i>Geographic reference data<br/>Brazilian cities + IBGE codes</i>"]
+    IDENTITY["🔐 <b>Identity</b><br/>br.org.catolicasc.pug.identity<br/><i>Authentication, users,<br/>accounts, admins, JWT</i>"]
+    ACADEMIC["🎓 <b>Academic</b><br/>br.org.catolicasc.pug.academic<br/><i>Schools, courses, students,<br/>counterpart hours</i>"]
+    PARTNER["🏢 <b>Partner</b><br/>br.org.catolicasc.pug.partner<br/><i>Partner organizations CNPJ,<br/>staff management</i>"]
+    PROJECT["📋 <b>Project</b><br/>br.org.catolicasc.pug.project<br/><i>Community service projects,<br/>enrollments, QR attendance</i>"]
+    SHARED["🧩 <b>Shared</b><br/>br.org.catolicasc.pug.shared<br/><i>Cross-cutting concerns:<br/>exceptions, i18n, search, audit, API envelope</i>"]
 ```
 
 ## 🗃️ Full Entity-Relationship Model (ERM)
