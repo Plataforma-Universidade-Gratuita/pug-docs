@@ -1,12 +1,12 @@
 # 🧪 PUG Service — Test Suite
 
-> Comprehensive test documentation for the PUG Service backend, covering **156 test classes** organized by bounded context, following the same modular architecture as the production code.
+> Comprehensive test documentation for the PUG Service backend, covering **157 test classes** organized by bounded context, following the same modular architecture as the production code.
 
 ## 📊 Test Overview
 
 | Metric                  | Value        |
 |-------------------------|--------------|
-| **Total Test Classes**  | 156          |
+| **Total Test Classes**  | 157          |
 | **Avg. Execution Time** | ~20 seconds  |
 | **Framework**           | JUnit 5      |
 | **Assertion Library**   | AssertJ      |
@@ -20,12 +20,12 @@ The test suite mirrors the production module structure, ensuring each bounded co
 
 ```mermaid
 graph TB
-    subgraph TestSuite["🧪 Test Suite — 156 Test Classes"]
+    subgraph TestSuite["🧪 Test Suite — 157 Test Classes"]
         direction TB
         subgraph Modules["Tests per Bounded Context"]
             direction LR
             ACADEMIC_T["🎓 Academic<br/><b>28 classes</b>"]
-            IDENTITY_T["🔐 Identity<br/><b>28 classes</b>"]
+            IDENTITY_T["🔐 Identity<br/><b>29 classes</b>"]
             PROJECT_T["📋 Project<br/><b>30 classes</b>"]
             PARTNER_T["🏢 Partner<br/><b>20 classes</b>"]
             GEO_T["🌍 Geo<br/><b>11 classes</b>"]
@@ -44,8 +44,8 @@ graph TB
 ```mermaid
 pie title Test Classes per Bounded Context
     "Project (30)" : 30
+    "Identity (29)" : 29
     "Academic (28)" : 28
-    "Identity (28)" : 28
     "Partner (20)" : 20
     "Shared (19)" : 19
     "Geo (11)" : 11
@@ -57,13 +57,13 @@ pie title Test Classes per Bounded Context
 | Module       | Domain | Service | Infra | Presenter | Total |
 |--------------|--------|---------|-------|-----------|-------|
 | 🎓 Academic  | 7      | 9       | 6     | 6         | **28**|
-| 🔐 Identity  | 6      | 9       | 6     | 7         | **28**|
+| 🔐 Identity  | 6      | 9       | 7     | 7         | **29**|
 | 📋 Project   | 10     | 12      | 6     | 8         | **30**|*
 | 🏢 Partner   | 4      | 6       | 4     | 4         | **20**|*
 | 🌍 Geo       | 3      | 1       | 3     | 2         | **11**|*
 | 🧩 Shared    | 2      | —       | 2     | 9         | **19**|*
 | 🔧 Helpers   | —      | —       | —     | —         | **10**|
-| **Total**    | **32** | **37**  | **27**| **36**    |**146+10**|
+| **Total**    | **32** | **37**  | **28**| **36**    |**147+10**|
 
 > \* Some modules include enum bundle key tests and value object tests counted under domain.
 
@@ -120,6 +120,7 @@ Service tests verify **application logic** with mocked repository and infrastruc
 - Separate test classes for `*ServiceImplTest` (commands) and `*ReadServiceImplTest` (queries)
 - `*ProcessorTest` for validation/exception translation utilities
 - All dependencies are `@Mock`-injected
+- `AuthServiceImplTest` covers login, token refresh, logout, and logout-all flows
 
 ### 3. Infrastructure Tests — Mapper & Repository Tests
 
@@ -269,7 +270,7 @@ gantt
     Service tests (~37 classes)   :a3, after a2, 2s
 
     section Infra Tests
-    Mapper tests (~27 classes)    :a4, after a3, 2s
+    Mapper tests (~28 classes)    :a4, after a3, 2s
 
     section Integration Tests
     Resource tests (~36 classes)  :a5, after a4, 6s
@@ -280,9 +281,9 @@ gantt
 | Quarkus Bootstrap     | —       | ~8s           | CDI container, DevServices (DB, ES, Mongo)    |
 | Domain (Unit)         | 32      | ~2s           | Pure Java, no DI — fastest                    |
 | Service (Unit)        | 37      | ~2s           | Mockito mocks, no I/O                         |
-| Infra (Unit/Integ.)   | 27      | ~2s           | Mapper + repository tests                     |
+| Infra (Unit/Integ.)   | 28      | ~2s           | Mapper + repository tests                     |
 | Presenter (Integ.)    | 36      | ~6s           | Full HTTP round-trips with REST-assured       |
-| **Total**             | **156** | **~20s**      | Single `./mvnw test` run                      |
+| **Total**             | **157** | **~20s**      | Single `./mvnw test` run                      |
 
 > ⚡ The majority of wall-clock time is spent on Quarkus bootstrap (Dev Services). The actual test execution is highly optimized thanks to pure unit tests dominating the count.
 
@@ -313,6 +314,12 @@ src/test/
 │   │   └── presenter/        ← Resource + presenter mapper tests
 │   ├── geo/                  ← (same layer structure)
 │   ├── identity/             ← (same layer structure)
+│   │   ├── domain/           ← Entity + VO + enum tests
+│   │   ├── service/impl/     ← Auth (login, refresh, logout), account, admin, user tests
+│   │   ├── infra/            ← Mapper tests
+│   │   ├── infra/persistence/← Repository tests (incl. RefreshTokenRepositoryImplTest)
+│   │   ├── infra/read/       ← Query implementation tests
+│   │   └── presenter/        ← Resource + presenter mapper tests
 │   ├── partner/              ← (same layer structure)
 │   ├── project/              ← (same layer structure)
 │   ├── shared/               ← Cross-cutting concern tests

@@ -2,16 +2,16 @@
 
 | Métrica | Cobertas | Perdidas | Total | % Cobertura |
 | :--- | :---: | :---: | :---: | :---: |
-| Instruction | 16694 | 2632 | 19326 | 86.38% |
-| Line | 3953 | 706 | 4659 | 84.85% |
-| Complexity | 1261 | 618 | 1879 | 67.11% |
-| Method | 970 | 62 | 1032 | 93.99% |
-| Class | 255 | 3 | 258 | 98.84% |
+| Instruction | 17148 | 2676 | 19824 | 86.50% |
+| Line | 4060 | 717 | 4777 | 84.99% |
+| Complexity | 1307 | 627 | 1934 | 67.58% |
+| Method | 999 | 66 | 1065 | 93.80% |
+| Class | 259 | 4 | 263 | 98.48% |
 
 ## Visualização Mermaid
 
 ```mermaid
 pie title Cobertura Geral (Linhas)
-    "Cobertas" : 3953
-    "Perdidas" : 706
+    "Cobertas" : 4060
+    "Perdidas" : 717
 ```

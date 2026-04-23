@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **Identity** module is the core authentication and authorization bounded context. It manages **Users** (personal identity — CPF and name), **Accounts** (authentication credentials — email, password, account type), and **Admins** (elevated administrative privileges tied to a campus). It provides JWT-based authentication and role-based access control (RBAC) for the entire platform.
+The **Identity** module is the core authentication and authorization bounded context. It manages **Users** (personal identity — CPF and name), **Accounts** (authentication credentials — email, password, account type), and **Admins** (elevated administrative privileges tied to a campus). It provides JWT-based authentication with short-lived access tokens, long-lived refresh tokens for session management, and role-based access control (RBAC) for the entire platform.
 
 ## Domain Model
 
@@ -66,7 +66,7 @@ classDiagram
 
 ```
 presenter/                     ← REST controllers
-  AuthResource                 ← POST /auth/login (public)
+  AuthResource                 ← POST /auth/login, /refresh, /logout, /logout-all
   AdminResource                ← CRUD for admins (ADMIN role)
   AccountReadOnlyResource      ← Read-only account queries (ADMIN role)
   UserReadOnlyResource         ← Read-only user queries (ADMIN role)
@@ -77,14 +77,15 @@ domain/                        ← Pure domain model
   vos/Cpf, Email               ← Value Objects
   *Repository                  ← Repository interfaces
 service/                       ← Application services (CQRS)
-  AuthService                  ← Login + JWT generation
+  AuthService                  ← Login, refresh, logout + JWT generation
   PasswordService              ← Bcrypt hashing with pepper
   AccountService               ← Account CRUD commands
   AdminService                 ← Admin CRUD commands
   *ReadService                 ← Query-side services
 infra/                         ← Infrastructure layer
-  persistence/                 ← JPA entities (UserEntity, AccountEntity, AdminEntity)
+  persistence/                 ← JPA entities (UserEntity, AccountEntity, AdminEntity, RefreshTokenEntity)
   read/                        ← CQRS query implementations
+  ExpiredTokenCleanupJob       ← Scheduled daily cleanup of expired refresh tokens
   *Mapper                      ← Domain ↔ JPA anti-corruption layers
 ```
 
@@ -96,7 +97,10 @@ infra/                         ← Infrastructure layer
 graph LR
     subgraph Auth["🔑 /auth"]
         direction TB
-        POST_LOGIN["POST /login — Authenticate and receive JWT<br/>🔓 Public"]
+        POST_LOGIN["POST /login — Authenticate and receive access + refresh tokens<br/>🔓 Public"]
+        POST_REFRESH["POST /refresh — Exchange refresh token for new access token<br/>🔓 Public"]
+        POST_LOGOUT["POST /logout — Revoke a refresh token<br/>🔓 Public"]
+        POST_LOGOUT_ALL["POST /logout-all — Revoke all sessions<br/>🔒 Authenticated"]
     end
 ```
 
@@ -156,7 +160,10 @@ graph TB
     end
 
     subgraph IdentityModule["🔐 Identity Module"]
-        UC1["Login — email + password → JWT"]
+        UC1["Login — email + password → access + refresh tokens"]
+        UC1B["Refresh — exchange refresh token for new access token"]
+        UC1C["Logout — revoke a refresh token"]
+        UC1D["Logout All — revoke all sessions"]
         UC2["View own User profile /me"]
         UC3["View own Account details /me"]
         UC4["CRUD Admins"]
@@ -166,6 +173,9 @@ graph TB
     end
 
     PUBLIC --> UC1
+    PUBLIC --> UC1B
+    PUBLIC --> UC1C
+    AUTH --> UC1D
     AUTH --> UC2
     AUTH --> UC3
     ADMIN --> UC4
@@ -197,6 +207,15 @@ erDiagram
         TIMESTAMPTZ updated_at
     }
 
+    refresh_tokens {
+        UUID id PK
+        UUID account_id FK
+        VARCHAR token_hash UK
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
     admins {
         UUID account_id PK
         VARCHAR campus
@@ -204,11 +223,16 @@ erDiagram
     }
 
     users ||--o{ accounts : "has"
+    accounts ||--o{ refresh_tokens : "has"
     accounts ||--o| admins : "may be"
 ```
 
 ## Security Model
 
 - **Password hashing**: Bcrypt with application-level pepper.
-- **JWT tokens**: SmallRye JWT with HS256 signing. Claims include `accountId`, `userId`, `accountType`, and role groups.
+- **Access tokens**: Short-lived (15 min) SmallRye JWT with HS256 signing. Claims include `accountId`, `userId`, `accountType`, and role groups.
+- **Refresh tokens**: Long-lived (7 days) opaque tokens stored as SHA-256 hashes in PostgreSQL. Used to obtain new access tokens without re-authentication.
+- **Logout**: Deletes the refresh token from the database. Existing access tokens expire naturally within minutes.
+- **Logout All**: Revokes all refresh tokens for the account, ending all sessions across devices.
+- **Expired token cleanup**: A scheduled job (`ExpiredTokenCleanupJob`) runs daily at 03:00 to purge stale refresh tokens.
 - **Role-based access**: Enforced via `@RolesAllowed("ADMIN")`, `@Authenticated`, and `@PermitAll`.

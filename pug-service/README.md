@@ -8,7 +8,7 @@
 
 ### Key Features
 
-- 🔐 **JWT Authentication** with role-based access control (ADMIN, PARTNER, STUDENT)
+- 🔐 **JWT Authentication** with refresh tokens and role-based access control (ADMIN, PARTNER, STUDENT)
 - 🏢 **Partner Management** — Organizations identified by CNPJ with staff assignments
 - 🎓 **Academic Structure** — Schools → Courses → Students with counterpart hour tracking
 - 📋 **Project Lifecycle** — Full state machine (Planned → In Progress → Completed/Canceled)
@@ -164,6 +164,15 @@ erDiagram
         TIMESTAMPTZ updated_at
     }
 
+    refresh_tokens {
+        UUID id PK
+        UUID account_id FK
+        VARCHAR token_hash UK
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
     admins {
         UUID account_id PK
         VARCHAR campus
@@ -258,6 +267,7 @@ erDiagram
     }
 
     users ||--o{ accounts : "has"
+    accounts ||--o{ refresh_tokens : "has"
     accounts ||--o| admins : "may be"
     accounts ||--o| students : "may be"
     accounts ||--o| staff : "may be"
@@ -320,7 +330,11 @@ timeline
     V011 : Projects by Schools M-N table
     V012 : Enrollments table
     V013 : Attendances table
-    V014 : System user seed data
+    V014 : Refresh tokens table
+    V015 : System user seed data
+    V016 : Cities seed data
+    V017 : Schools seed data (TBD)
+    V018 : Courses seed data (TBD)
 ```
 
 ## 🚀 Getting Started
