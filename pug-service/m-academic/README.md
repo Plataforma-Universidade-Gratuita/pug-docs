@@ -122,9 +122,9 @@ graph LR
         direction TB
         GET_LIST["GET / — List/search ?q= ?courseId=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by account ID<br/>🔒 Authenticated"]
-        GET_CPF["GET /by-cpf/{cpf}<br/>🔒 ADMIN"]
-        GET_EMAIL["GET /by-email/{email}<br/>🔒 ADMIN"]
-        GET_REG["GET /by-registration/{reg}<br/>🔒 ADMIN"]
+        GET_CPF["GET /?cpf={cpf}<br/>🔒 ADMIN"]
+        GET_EMAIL["GET /?email={email}<br/>🔒 ADMIN"]
+        GET_REG["GET /?registration={reg}<br/>🔒 ADMIN"]
         GET_ME["GET /me — Current student profile<br/>🔒 Authenticated"]
         POST["POST / — Enroll student<br/>🔒 ADMIN"]
         POST_BULK["POST /bulk — Bulk enroll<br/>🔒 ADMIN"]

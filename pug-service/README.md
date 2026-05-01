@@ -342,8 +342,11 @@ timeline
 ### Prerequisites
 
 - Java 21+
-- Docker (for PostgreSQL, MongoDB, and Elasticsearch dev services)
 - Maven 3.9+
+- Local development services running on the configured ports:
+  - PostgreSQL: `localhost:5433`
+  - MongoDB: `localhost:27018`
+  - Elasticsearch: `localhost:9201`
 
 ### Running in Development Mode
 
@@ -351,9 +354,29 @@ timeline
 ./mvnw quarkus:dev
 ```
 
-Quarkus Dev Services will automatically provision PostgreSQL and Elasticsearch containers.
+This repository uses explicit local infrastructure in the checked-in development profile rather than relying on Quarkus Dev Services.
 
 > **_NOTE:_** Quarkus ships with a Dev UI, available in dev mode at <http://localhost:8080/q/dev/>.
+
+## Testing
+
+The automated test profile also expects local infrastructure and does not start Dev Services automatically.
+
+Test ports:
+
+- PostgreSQL: `localhost:5434`
+- MongoDB: `localhost:27019`
+- Elasticsearch: `localhost:9202`
+
+Typical commands:
+
+```bash
+./mvnw test
+./mvnw verify
+./mvnw verify -DskipITs
+```
+
+More detailed test-suite documentation lives in [src/test/README.md](src/test/README.md).
 
 ### Packaging and Running
 

@@ -112,7 +112,7 @@ graph LR
         direction TB
         GET_LIST["GET / — List all or search ?q=<br/>🔒 ADMIN"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 ADMIN"]
-        GET_CPF["GET /by-cpf/{cpf} — Get by CPF<br/>🔒 ADMIN"]
+        GET_CPF["GET /?cpf={cpf} — Get by CPF<br/>🔒 ADMIN"]
         GET_ME["GET /me — Current user profile<br/>🔒 Authenticated"]
     end
 ```
@@ -125,8 +125,8 @@ graph LR
         direction TB
         GET_LIST["GET / — List all or search ?q=<br/>🔒 ADMIN"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 ADMIN"]
-        GET_EMAIL["GET /by-email/{email} — Get by email<br/>🔒 ADMIN"]
-        GET_CPF["GET /by-cpf/{cpf} — List by CPF<br/>🔒 ADMIN"]
+        GET_EMAIL["GET /?email={email} — Get by email<br/>🔒 ADMIN"]
+        GET_CPF["GET /?cpf={cpf} — List by CPF<br/>🔒 ADMIN"]
         GET_ME["GET /me — Current account<br/>🔒 Authenticated"]
     end
 ```
@@ -139,12 +139,12 @@ graph LR
         direction TB
         GET_LIST["GET / — List all or search ?q=<br/>🔒 ADMIN"]
         GET_ID["GET /{id} — Get by account ID<br/>🔒 ADMIN"]
-        GET_EMAIL["GET /by-email/{email}<br/>🔒 ADMIN"]
-        GET_CPF["GET /by-cpf/{cpf}<br/>🔒 ADMIN"]
+        GET_EMAIL["GET /?email={email}<br/>🔒 ADMIN"]
+        GET_CPF["GET /?cpf={cpf}<br/>🔒 ADMIN"]
         GET_ME["GET /me — Current admin profile<br/>🔒 ADMIN"]
         POST["POST / — Create admin<br/>🔒 ADMIN"]
         PUT["PUT /{id} — Update admin<br/>🔒 ADMIN"]
-        PATCH["PATCH /{id}/deactivate — Soft-deactivate<br/>🔒 ADMIN"]
+        PATCH["PATCH /{id} — Partial update / active toggle<br/>🔒 ADMIN"]
         DELETE["DELETE /{id} — Revoke admin<br/>🔒 ADMIN"]
     end
 ```

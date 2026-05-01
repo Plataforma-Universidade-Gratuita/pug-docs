@@ -64,7 +64,7 @@ graph LR
         direction TB
         GET_LIST["GET / — List/search ?q= ?cityId=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 Authenticated"]
-        GET_CNPJ["GET /by-cnpj/{cnpj} — Get by CNPJ<br/>🔒 Authenticated"]
+        GET_CNPJ["GET /?cnpj={cnpj} — Get by CNPJ<br/>🔒 Authenticated"]
         GET_CITIES["GET /cities — List city IDs used<br/>🔒 Authenticated"]
         POST["POST / — Create entity<br/>🔒 ADMIN"]
         PUT["PUT /{id} — Update entity<br/>🔒 ADMIN"]
@@ -80,13 +80,13 @@ graph LR
         direction TB
         GET_LIST["GET / — List/search ?q= ?entityId= ?cpf=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by account ID<br/>🔒 Authenticated"]
-        GET_EMAIL["GET /by-email/{email}<br/>🔒 Authenticated"]
-        GET_CPF["GET /by-cpf/{cpf}<br/>🔒 Authenticated"]
-        GET_ENTITY["GET /by-entity/{entityId}<br/>🔒 Authenticated"]
+        GET_EMAIL["GET /?email={email}<br/>🔒 Authenticated"]
+        GET_CPF["GET /?cpf={cpf}<br/>🔒 Authenticated"]
+        GET_ENTITY["GET /?entityId={entityId}<br/>🔒 Authenticated"]
         GET_ME["GET /me — Current staff profile<br/>🔒 Authenticated"]
         POST["POST / — Assign staff to entity<br/>🔒 ADMIN"]
         PUT["PUT /{id} — Update staff<br/>🔒 ADMIN"]
-        PATCH["PATCH /{id}/deactivate — Soft-deactivate<br/>🔒 ADMIN"]
+        PATCH["PATCH /{id} — Partial update / active toggle<br/>🔒 ADMIN"]
         DELETE["DELETE /{id} — Revoke staff<br/>🔒 ADMIN"]
     end
 ```
