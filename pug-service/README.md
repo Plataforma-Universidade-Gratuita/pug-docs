@@ -376,7 +376,7 @@ Typical commands:
 ./mvnw verify -DskipITs
 ```
 
-More detailed test-suite documentation lives in [src/test/README.md](src/test/README.md).
+More detailed test-suite documentation lives in [tests/README.md](tests/README.md).
 
 ### Packaging and Running
 

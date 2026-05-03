@@ -86,11 +86,11 @@ infra/                          ← Infrastructure layer
 
 ## Endpoints
 
-### Schools — `/academic/schools`
+### Schools — `/v1/academic/schools`
 
 ```mermaid
 graph LR
-    subgraph Schools["🏫 /academic/schools"]
+    subgraph Schools["🏫 /v1/academic/schools"]
         direction TB
         GET_LIST["GET / — List all or search ?q=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 Authenticated"]
@@ -100,11 +100,11 @@ graph LR
     end
 ```
 
-### Courses — `/academic/courses`
+### Courses — `/v1/academic/courses`
 
 ```mermaid
 graph LR
-    subgraph Courses["📚 /academic/courses"]
+    subgraph Courses["📚 /v1/academic/courses"]
         direction TB
         GET_LIST["GET / — List/search ?q= ?schoolId=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 Authenticated"]
@@ -114,11 +114,11 @@ graph LR
     end
 ```
 
-### Students — `/academic/students`
+### Students — `/v1/academic/students`
 
 ```mermaid
 graph LR
-    subgraph Students["🎓 /academic/students"]
+    subgraph Students["🎓 /v1/academic/students"]
         direction TB
         GET_LIST["GET / — List/search ?q= ?courseId=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by account ID<br/>🔒 Authenticated"]
@@ -213,3 +213,4 @@ erDiagram
 - A student cannot be deleted while they have project enrollments.
 - Academic registration must be unique across all students.
 - Student creation automatically provisions a User + Account (with STUDENT type) in the Identity module.
+

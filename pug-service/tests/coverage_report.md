@@ -2,8 +2,8 @@
 
 ## Resumo Executivo
 
-- Cobertura de linhas: **85.17%** (4077 cobertas, 710 perdidas).
-- Cobertura de instrucoes: **86.56%** (17172 cobertas, 2667 perdidas).
+- Cobertura de linhas: **85.13%** (4076 cobertas, 712 perdidas).
+- Cobertura de instrucoes: **86.51%** (17125 cobertas, 2671 perdidas).
 - Cobertura de metodos: **94.09%**. Cobertura de classes: **98.49%**.
 - Classes analisadas no CSV do JaCoCo: **265**.
 - Pacotes com linhas rastreadas: **80**.
@@ -12,9 +12,9 @@
 
 | Metrica | Cobertas | Perdidas | Total | % Cobertura |
 | :--- | ---: | ---: | ---: | ---: |
-| Instruction | 17172 | 2667 | 19839 | 86.56% |
-| Line | 4077 | 710 | 4787 | 85.17% |
-| Complexity | 1317 | 631 | 1948 | 67.61% |
+| Instruction | 17125 | 2671 | 19796 | 86.51% |
+| Line | 4076 | 712 | 4788 | 85.13% |
+| Complexity | 1315 | 633 | 1948 | 67.51% |
 | Method | 987 | 62 | 1049 | 94.09% |
 | Class | 261 | 4 | 265 | 98.49% |
 
@@ -37,7 +37,7 @@
 
 | Classe | % Linhas | Linhas Perdidas | Linhas Cobertas | Instrucoes Perdidas | Metodos Perdidos |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| `academic.domain.Student` | 56.96% | 34 | 45 | 131 | 4 |
+| `academic.domain.Student` | 55.70% | 35 | 44 | 133 | 4 |
 | `project.domain.enums.ProjectsFieldErrorCodes` | 0.00% | 32 | 0 | 230 | 2 |
 | `geo.domain.City` | 16.13% | 26 | 5 | 76 | 4 |
 | `identity.domain.Account` | 62.90% | 23 | 39 | 92 | 2 |
@@ -57,18 +57,18 @@
 | `academic.service.impl` | 267 | 89.14% | 6 |
 | `project.domain` | 188 | 78.19% | 4 |
 | `partner.service.impl` | 175 | 92.00% | 4 |
+| `project.presenter` | 169 | 90.53% | 5 |
 | `project.infra` | 164 | 76.22% | 4 |
-| `project.presenter` | 163 | 90.18% | 5 |
 | `project.infra.persistence.impl` | 142 | 84.51% | 4 |
-| `academic.domain` | 139 | 70.50% | 3 |
+| `academic.domain` | 139 | 69.78% | 3 |
 | `project.domain.vos` | 136 | 72.79% | 5 |
 
 ## Visualizacao Mermaid
 
 ```mermaid
 pie title Cobertura Geral (Linhas)
-    "Cobertas" : 4077
-    "Perdidas" : 710
+    "Cobertas" : 4076
+    "Perdidas" : 712
 ```
 
 ## Leitura Rapida

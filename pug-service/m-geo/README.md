@@ -48,7 +48,7 @@ infra/                  ← Infrastructure layer
 
 ```mermaid
 graph LR
-    subgraph Cities["🌍 /geo/cities"]
+    subgraph Cities["🌍 /v1/geo/cities"]
         direction TB
         GET_LIST["GET / — List all or search by name ?q=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get city by UUID<br/>🔒 Authenticated"]
@@ -97,3 +97,4 @@ erDiagram
 - **Read-only**: City data is seeded via Flyway migrations, not through REST endpoints.
 - **Full-text search**: City names are indexed in Elasticsearch via Hibernate Search with accent-insensitive, fuzzy, and autocomplete analyzers.
 - **Cross-module dependency**: Partner entities reference `city_id` as a foreign key.
+

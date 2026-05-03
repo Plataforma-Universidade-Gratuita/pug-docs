@@ -139,11 +139,11 @@ infra/                            ← Infrastructure layer
 
 ## Endpoints
 
-### Projects — `/projects`
+### Projects — `/v1/projects`
 
 ```mermaid
 graph LR
-    subgraph Projects["📋 /projects"]
+    subgraph Projects["📋 /v1/projects"]
         direction TB
         GET_LIST["GET / — List/search ?q= ?entityId= ?createdBy=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 Authenticated"]
@@ -158,7 +158,7 @@ graph LR
 
 ```mermaid
 graph LR
-    subgraph ProjectSide["🏫 /projects/{projectId}/schools"]
+    subgraph ProjectSide["🏫 /v1/projects/{projectId}/schools"]
         direction TB
         GET_SCHOOLS["GET / — List schools for project<br/>🔒 Authenticated"]
         POST_SCHOOLS["POST / — Create associations<br/>🔒 ADMIN, STAFF"]
@@ -166,7 +166,7 @@ graph LR
         DELETE_ALL_PROJECT["DELETE / — Remove all by project<br/>🔒 ADMIN, STAFF"]
     end
 
-    subgraph SchoolSide["🎓 /academic/schools/{schoolId}/projects"]
+    subgraph SchoolSide["🎓 /v1/academic/schools/{schoolId}/projects"]
         direction TB
         GET_PROJECTS["GET / — List projects for school<br/>🔒 Authenticated"]
         DELETE_ALL_SCHOOL["DELETE / — Remove all by school<br/>🔒 ADMIN, STAFF"]
@@ -177,13 +177,13 @@ graph LR
 
 ```mermaid
 graph LR
-    subgraph EnrollmentCollection["📝 /projects/enrollments"]
+    subgraph EnrollmentCollection["📝 /v1/projects/enrollments"]
         direction TB
         GET_LIST["GET / — List ?projectId= ?studentId=<br/>🔒 ADMIN, STAFF"]
         GET_ME_LIST["GET /me — My enrollments<br/>🔒 STUDENT"]
     end
 
-    subgraph EnrollmentProject["📝 /projects/{projectId}/enrollments"]
+    subgraph EnrollmentProject["📝 /v1/projects/{projectId}/enrollments"]
         direction TB
         GET_ONE["GET /{studentId} — Specific enrollment<br/>🔒 ADMIN, STAFF"]
         GET_ME_ONE["GET /me — My enrollment in project<br/>🔒 STUDENT"]
@@ -194,11 +194,11 @@ graph LR
     end
 ```
 
-### Attendances — `/projects/attendances`
+### Attendances — `/v1/projects/attendances`
 
 ```mermaid
 graph LR
-    subgraph Attendances["📱 /projects/attendances"]
+    subgraph Attendances["📱 /v1/projects/attendances"]
         direction TB
         GET_LIST["GET / — List ?projectId= ?studentId=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 Authenticated"]
@@ -348,3 +348,5 @@ erDiagram
 - Enrollment creation uses the project identifier from the route, not from a request body.
 - Attendance QR hashes must be globally unique to prevent duplicate submissions.
 - Attendance validation records who validated and when.
+
+

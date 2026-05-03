@@ -66,7 +66,7 @@ classDiagram
 
 ```
 presenter/                     ← REST controllers
-  AuthResource                 ← POST /auth/login, /refresh, /logout, /logout-all
+  AuthResource                 ← POST /v1/auth/login, /refresh, /logout, /logout-all
   AdminResource                ← CRUD for admins (ADMIN role)
   AccountReadOnlyResource      ← Read-only account queries (ADMIN role)
   UserReadOnlyResource         ← Read-only user queries (ADMIN role)
@@ -91,11 +91,11 @@ infra/                         ← Infrastructure layer
 
 ## Endpoints
 
-### Authentication — `/auth`
+### Authentication — `/v1/auth`
 
 ```mermaid
 graph LR
-    subgraph Auth["🔑 /auth"]
+    subgraph Auth["🔑 /v1/auth"]
         direction TB
         POST_LOGIN["POST /login — Authenticate and receive access + refresh tokens<br/>🔓 Public"]
         POST_REFRESH["POST /refresh — Exchange refresh token for new access token<br/>🔓 Public"]
@@ -104,11 +104,11 @@ graph LR
     end
 ```
 
-### Users — `/identity/users`
+### Users — `/v1/identity/users`
 
 ```mermaid
 graph LR
-    subgraph Users["👤 /identity/users"]
+    subgraph Users["👤 /v1/identity/users"]
         direction TB
         GET_LIST["GET / — List all or search ?q=<br/>🔒 ADMIN"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 ADMIN"]
@@ -117,11 +117,11 @@ graph LR
     end
 ```
 
-### Accounts — `/identity/accounts`
+### Accounts — `/v1/identity/accounts`
 
 ```mermaid
 graph LR
-    subgraph Accounts["📧 /identity/accounts"]
+    subgraph Accounts["📧 /v1/identity/accounts"]
         direction TB
         GET_LIST["GET / — List all or search ?q=<br/>🔒 ADMIN"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 ADMIN"]
@@ -131,11 +131,11 @@ graph LR
     end
 ```
 
-### Admins — `/identity/admins`
+### Admins — `/v1/identity/admins`
 
 ```mermaid
 graph LR
-    subgraph Admins["🛡️ /identity/admins"]
+    subgraph Admins["🛡️ /v1/identity/admins"]
         direction TB
         GET_LIST["GET / — List all or search ?q=<br/>🔒 ADMIN"]
         GET_ID["GET /{id} — Get by account ID<br/>🔒 ADMIN"]
@@ -236,3 +236,4 @@ erDiagram
 - **Logout All**: Revokes all refresh tokens for the account, ending all sessions across devices.
 - **Expired token cleanup**: A scheduled job (`ExpiredTokenCleanupJob`) runs daily at 03:00 to purge stale refresh tokens.
 - **Role-based access**: Enforced via `@RolesAllowed("ADMIN")`, `@Authenticated`, and `@PermitAll`.
+

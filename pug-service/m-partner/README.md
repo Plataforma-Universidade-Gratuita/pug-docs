@@ -56,27 +56,27 @@ infra/                        ← Infrastructure layer
 
 ## Endpoints
 
-### Partner Entities — `/partner/entities`
+### Partner Entities — `/v1/partners/entities`
 
 ```mermaid
 graph LR
-    subgraph Entities["🏢 /partner/entities"]
+    subgraph Entities["🏢 /v1/partners/entities"]
         direction TB
         GET_LIST["GET / — List/search ?q= ?cityId=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by UUID<br/>🔒 Authenticated"]
         GET_CNPJ["GET /?cnpj={cnpj} — Get by CNPJ<br/>🔒 Authenticated"]
-        GET_CITIES["GET /cities — List city IDs used<br/>🔒 Authenticated"]
-        POST["POST / — Create entity<br/>🔒 ADMIN"]
-        PUT["PUT /{id} — Update entity<br/>🔒 ADMIN"]
+        GET_CITIES["GET /cities — List cities in use<br/>🔒 ADMIN, STAFF"]
+        POST["POST / — Create entity<br/>🔒 ADMIN, STAFF"]
+        PUT["PUT /{id} — Update entity<br/>🔒 ADMIN, STAFF"]
         DELETE["DELETE /{id} — Delete entity<br/>🔒 ADMIN"]
     end
 ```
 
-### Staff Members — `/partners/staff`
+### Staff Members — `/v1/partners/staff`
 
 ```mermaid
 graph LR
-    subgraph Staff["👥 /partners/staff"]
+    subgraph Staff["👥 /v1/partners/staff"]
         direction TB
         GET_LIST["GET / — List/search ?q= ?entityId= ?cpf=<br/>🔒 Authenticated"]
         GET_ID["GET /{id} — Get by account ID<br/>🔒 Authenticated"]
@@ -84,9 +84,9 @@ graph LR
         GET_CPF["GET /?cpf={cpf}<br/>🔒 Authenticated"]
         GET_ENTITY["GET /?entityId={entityId}<br/>🔒 Authenticated"]
         GET_ME["GET /me — Current staff profile<br/>🔒 Authenticated"]
-        POST["POST / — Assign staff to entity<br/>🔒 ADMIN"]
-        PUT["PUT /{id} — Update staff<br/>🔒 ADMIN"]
-        PATCH["PATCH /{id} — Partial update / active toggle<br/>🔒 ADMIN"]
+        POST["POST / — Assign staff to entity<br/>🔒 ADMIN, STAFF"]
+        PUT["PUT /{id} — Update staff<br/>🔒 ADMIN, STAFF"]
+        PATCH["PATCH /{id} — Partial update / active toggle<br/>🔒 ADMIN, STAFF"]
         DELETE["DELETE /{id} — Revoke staff<br/>🔒 ADMIN"]
     end
 ```
@@ -148,4 +148,6 @@ erDiagram
 - An account can only be assigned as staff to **one** partner entity at a time.
 - A partner entity cannot be deleted if it has associated projects.
 - A staff member cannot be deleted if they have validated attendances or created projects.
+
+
 
