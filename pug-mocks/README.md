@@ -234,7 +234,9 @@ The main relationships are:
 - academic owns schools, courses, and student-specific profiles
 - partner owns entities and staff profiles and depends on geo and identity data
 - project owns project records plus school associations, enrollments, and attendances
+- the default seeded identity dataset keeps at least 20% of accounts inactive so client apps can exercise inactive-account flows immediately
 - seeded `auditInfo` values are generated with distinct random `createdAt` and `updatedAt` timestamps between January 1, 2024 and the current runtime moment
+- admin, staff, and student responses flatten shared identity fields (`accountId`, `accountEmail`, `userId`, `userName`) instead of nesting an account object, and staff responses also expose `entityName`
 
 ## High-Level Folder Layout
 
