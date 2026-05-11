@@ -234,6 +234,7 @@ The main relationships are:
 - academic owns schools, courses, and student-specific profiles
 - partner owns entities and staff profiles and depends on geo and identity data
 - project owns project records plus school associations, enrollments, and attendances
+- seeded `auditInfo` values are generated with distinct random `createdAt` and `updatedAt` timestamps between January 1, 2024 and the current runtime moment
 
 ## High-Level Folder Layout
 
