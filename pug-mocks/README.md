@@ -262,7 +262,7 @@ The current mock backend already covers the main contracts consumed by the activ
 - auth login, refresh, logout, and logout-all
 - identity account, admin, and user lookups
 - geo city lookup and search
-- academic school, course, and student CRUD-style flows
+- academic school, course, and student CRUD-style flows, including student account activation toggles on `PATCH /v1/academic/students/:id`
 - partner entity and staff CRUD-style flows
 - project lifecycle, project-school associations, enrollments, and attendances
 
