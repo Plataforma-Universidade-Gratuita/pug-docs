@@ -2,21 +2,21 @@
 
 ## Resumo Executivo
 
-- Cobertura de linhas: **85.13%** (4076 cobertas, 712 perdidas).
-- Cobertura de instrucoes: **86.51%** (17125 cobertas, 2671 perdidas).
-- Cobertura de metodos: **94.09%**. Cobertura de classes: **98.49%**.
-- Classes analisadas no CSV do JaCoCo: **265**.
-- Pacotes com linhas rastreadas: **80**.
+- Cobertura de linhas: **86.49%** (4744 cobertas, 741 perdidas).
+- Cobertura de instrucoes: **87.94%** (20840 cobertas, 2858 perdidas).
+- Cobertura de metodos: **94.33%**. Cobertura de classes: **98.16%**.
+- Classes analisadas no CSV do JaCoCo: **326**.
+- Pacotes com linhas rastreadas: **97**.
 
 ## Totais Gerais
 
 | Metrica | Cobertas | Perdidas | Total | % Cobertura |
 | :--- | ---: | ---: | ---: | ---: |
-| Instruction | 17125 | 2671 | 19796 | 86.51% |
-| Line | 4076 | 712 | 4788 | 85.13% |
-| Complexity | 1315 | 633 | 1948 | 67.51% |
-| Method | 987 | 62 | 1049 | 94.09% |
-| Class | 261 | 4 | 265 | 98.49% |
+| Instruction | 20840 | 2858 | 23698 | 87.94% |
+| Line | 4744 | 741 | 5485 | 86.49% |
+| Complexity | 1561 | 775 | 2336 | 66.82% |
+| Method | 1082 | 65 | 1147 | 94.33% |
+| Class | 320 | 6 | 326 | 98.16% |
 
 ## Pacotes com Menor Cobertura de Linhas
 
@@ -25,50 +25,50 @@
 | `geo.domain` | 16.13% | 26 | 5 | 76 | 1 |
 | `shared.infra` | 28.57% | 10 | 4 | 26 | 1 |
 | `shared.validation` | 37.50% | 5 | 3 | 18 | 2 |
-| `academic.domain.enums` | 40.62% | 19 | 13 | 126 | 2 |
 | `geo.domain.enums` | 41.67% | 7 | 5 | 30 | 2 |
 | `geo.infra` | 47.06% | 9 | 8 | 22 | 1 |
-| `project.domain.enums` | 57.33% | 32 | 43 | 230 | 5 |
-| `shared.domain` | 60.00% | 10 | 15 | 32 | 1 |
+| `project.domain.enums` | 57.89% | 32 | 44 | 230 | 5 |
+| `project.domain` | 62.56% | 73 | 122 | 265 | 4 |
 | `shared.presenter.mappers` | 63.64% | 4 | 7 | 11 | 1 |
-| `partner.domain` | 68.75% | 20 | 44 | 79 | 2 |
+| `academic.presenter.mappers` | 64.80% | 44 | 81 | 160 | 3 |
+| `identity.infra` | 68.27% | 33 | 71 | 88 | 4 |
 
 ## Classes com Mais Linhas Perdidas
 
 | Classe | % Linhas | Linhas Perdidas | Linhas Cobertas | Instrucoes Perdidas | Metodos Perdidos |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| `academic.domain.Student` | 55.70% | 35 | 44 | 133 | 4 |
+| `project.domain.Project` | 50.00% | 52 | 52 | 155 | 4 |
 | `project.domain.enums.ProjectsFieldErrorCodes` | 0.00% | 32 | 0 | 230 | 2 |
+| `academic.presenter.mappers.FormerStudentPresenter` | 63.86% | 30 | 53 | 129 | 3 |
 | `geo.domain.City` | 16.13% | 26 | 5 | 76 | 4 |
-| `identity.domain.Account` | 62.90% | 23 | 39 | 92 | 2 |
-| `project.domain.Project` | 78.85% | 22 | 82 | 79 | 1 |
-| `identity.service.impl.UserServiceImpl` | 73.68% | 20 | 56 | 62 | 2 |
-| `academic.domain.enums.AcademicFieldErrorCodes` | 0.00% | 19 | 0 | 126 | 2 |
+| `identity.domain.Account` | 63.33% | 22 | 38 | 88 | 2 |
+| `identity.service.impl.UsersServiceImpl` | 73.68% | 20 | 56 | 62 | 2 |
+| `project.service.impl.ProjectServiceImpl` | 78.26% | 20 | 72 | 103 | 0 |
 | `project.domain.vos.ProjectInfo` | 64.81% | 19 | 35 | 71 | 2 |
-| `identity.service.impl.AccountServiceImpl` | 83.90% | 19 | 99 | 67 | 3 |
+| `identity.service.impl.AccountsServiceImpl` | 83.90% | 19 | 99 | 67 | 3 |
 | `partner.domain.Entity` | 65.38% | 18 | 34 | 73 | 2 |
 
 ## Pacotes com Maior Volume de Codigo Rastreado
 
 | Pacote | Total de Linhas | % Linhas | Classes |
 | :--- | ---: | ---: | ---: |
-| `identity.service.impl` | 405 | 87.16% | 8 |
-| `project.service.impl` | 329 | 91.79% | 8 |
-| `academic.service.impl` | 267 | 89.14% | 6 |
-| `project.domain` | 188 | 78.19% | 4 |
-| `partner.service.impl` | 175 | 92.00% | 4 |
-| `project.presenter` | 169 | 90.53% | 5 |
+| `identity.service.impl` | 413 | 88.38% | 8 |
+| `project.service.impl` | 355 | 88.45% | 8 |
+| `academic.service.impl` | 264 | 93.56% | 6 |
+| `project.presenter` | 217 | 96.77% | 5 |
+| `project.infra.read.impl` | 214 | 94.39% | 3 |
+| `project.domain` | 195 | 62.56% | 4 |
+| `identity.infra.read.impl` | 175 | 99.43% | 3 |
+| `academic.infra.read.impl` | 173 | 99.42% | 3 |
 | `project.infra` | 164 | 76.22% | 4 |
-| `project.infra.persistence.impl` | 142 | 84.51% | 4 |
-| `academic.domain` | 139 | 69.78% | 3 |
-| `project.domain.vos` | 136 | 72.79% | 5 |
+| `project.infra.persistence.impl` | 150 | 84.00% | 4 |
 
 ## Visualizacao Mermaid
 
 ```mermaid
 pie title Cobertura Geral (Linhas)
-    "Cobertas" : 4076
-    "Perdidas" : 712
+    "Cobertas" : 4744
+    "Perdidas" : 741
 ```
 
 ## Leitura Rapida

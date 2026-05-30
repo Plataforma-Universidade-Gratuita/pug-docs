@@ -1,446 +1,185 @@
 # 🐾 PUG Service
 
-> **P**lataforma **U**niversitária de **G**estão — A comprehensive backend service for managing university community service (counterpart hours) programs.
+> Architecture overview for the `pug-service` backend.
 
-## 📖 Project Overview
+## 📌 Overview
 
-**PUG Service** is a modular, monolithic REST API built with **Quarkus** and **Java 21** that supports the full lifecycle of university community service programs in Brazil. It enables administrators to manage partner organizations, academic structures, student enrollments, community service projects, and QR-based attendance tracking — all through a unified, secure API.
+`pug-service` is a Quarkus 3.14.4 modular monolith built on Java 21. It exposes the versioned API under `/v1` and is organized by bounded contexts instead of by technical framework only.
 
-### Key Features
+The public domain naming currently in force is:
 
-- 🔐 **JWT Authentication** with refresh tokens and role-based access control (ADMIN, PARTNER, STUDENT)
-- 🏢 **Partner Management** — Organizations identified by CNPJ with staff assignments
-- 🎓 **Academic Structure** — Schools → Courses → Students with counterpart hour tracking
-- 📋 **Project Lifecycle** — Full state machine (Planned → In Progress → Completed/Canceled)
-- 📝 **Enrollment Management** — Student-to-project enrollment with lifecycle states
-- 📱 **QR Attendance** — QR-code-based attendance registration and staff validation
-- 🔍 **Full-text Search** — Elasticsearch-powered fuzzy, autocomplete, accent-insensitive search
-- 🌍 **Internationalization** — Full i18n support (pt_BR, en_US)
-- 📊 **CQRS Architecture** — Separated read (Query) and write (Command) paths
-- 📝 **Audit Trail** — Async domain event-driven audit logging persisted to MongoDB
-- 📖 **API Documentation** — OpenAPI/Swagger auto-generated documentation
-- 📈 **Observability** — Health checks and metrics (Micrometer)
+- `geo` -> cities
+- `identity` -> users, accounts, admins, auth
+- `academic` -> areas of expertise, courses, former students
+- `partner` -> entities, staff
+- `project` -> projects, enrollments, attendances, project-area-of-expertise associations
 
-## 🛠️ Tech Stack
+## 🧱 Runtime stack
 
 ```mermaid
 mindmap
   root((PUG Service))
     Runtime
       Java 21
-    Framework
       Quarkus 3.14.4
-    REST
-      RESTEasy Reactive
+    Persistence
+      PostgreSQL
+      MongoDB for audit
+    API
+      JAX-RS
       Jackson
-    ORM
-      Hibernate ORM
-      Panache
-    Databases
-      PostgreSQL 16
-      MongoDB 7 Audit Logs
-    Search Engine
-      Elasticsearch 9.x
-      Hibernate Search
-    Migrations
-      Flyway
+      Bean Validation
     Security
-      SmallRye JWT HS256
-      Bcrypt with pepper
-    Validation
-      Jakarta Bean Validation
-      Hibernate Validator
-    Observability
-      SmallRye OpenAPI / Swagger
-      SmallRye Health
-      Micrometer Metrics
-    Build
+      JWT HS256
+      Refresh tokens
+      Password wiring flow
+    Quality
       Maven
-      Lombok
-    Code Quality
-      SpotBugs
-      Checkstyle
       Spotless
-      JaCoCo Coverage
-    UUID Strategy
-      UUIDv7 time-ordered
+      Checkstyle
+      SpotBugs
+      JaCoCo
+    Delivery
+      GitHub Actions
+      Docker image
+      GHCR-ready
 ```
 
 ## 🏗️ Architecture
 
-The project follows a **modular monolith** pattern using **Domain-Driven Design (DDD)** with clearly separated bounded contexts. Each module follows a clean layered architecture with strict anti-corruption boundaries.
-
-### Architecture Diagram
-
 ```mermaid
 graph TB
-    subgraph PUG["🐾 PUG Service"]
-        direction TB
-        subgraph Modules["Bounded Contexts"]
-            direction LR
-            GEO["🌍 Geo<br/><i>Cities</i>"]
-            IDENTITY["🔐 Identity<br/><i>Auth / JWT / Users<br/>Accounts / Admins</i>"]
-            ACADEMIC["🎓 Academic<br/><i>Schools / Courses<br/>Students</i>"]
-            PARTNER["🏢 Partner<br/><i>Entities / Staff</i>"]
-            PROJECT["📋 Project<br/><i>Projects / Enrollments<br/>Attendances</i>"]
-        end
-
-        SHARED["🧩 Shared Module<br/><i>DomainError · Exceptions · i18n<br/>API Envelope · Search · Audit · Utils</i>"]
-
-        GEO --> SHARED
-        IDENTITY --> SHARED
-        ACADEMIC --> SHARED
-        PARTNER --> SHARED
-        PROJECT --> SHARED
+    subgraph API["/v1 HTTP API"]
+        GEO["🌍 Geo"]
+        ID["🔐 Identity"]
+        AC["🎓 Academic"]
+        PA["🏢 Partner"]
+        PR["📋 Project"]
     end
 
-    subgraph Infra["Infrastructure Layer"]
-        direction LR
-        PG[("PostgreSQL 16")]
-        MONGO[("MongoDB 7<br/>Audit Logs")]
-        ES[("Elasticsearch 9")]
-        FW["Flyway Migrations"]
+    subgraph Shared["🧩 Shared"]
+        ENV["ApiEnvelope / Errors / i18n"]
+        PAG["PageQuery / PageExecution / PageResponse"]
+        AUD["AuditPublisher / Mongo audit log"]
+        SRCH["JpaSearchUtils / shared query helpers"]
     end
 
-    SHARED --> Infra
+    subgraph Data["Infrastructure"]
+        PG[("PostgreSQL")]
+        MG[("MongoDB")]
+        FW["Flyway"]
+    end
+
+    GEO --> Shared
+    ID --> Shared
+    AC --> Shared
+    PA --> Shared
+    PR --> Shared
+
+    Shared --> PG
+    Shared --> MG
+    Shared --> FW
 ```
 
-### Module Layer Pattern
+Each bounded context follows the same internal pattern:
 
-Each bounded context follows this consistent internal structure:
-
-```
+```text
 module/
-├── domain/          ← Pure business logic (entities, value objects, repository interfaces)
-├── service/         ← Application services (CQRS: commands + queries)
-│   └── utils/       ← Processor helpers and exception translators
-├── infra/           ← Infrastructure (JPA entities, mappers, repository implementations)
-│   ├── audit/       ← Audit trail (MongoDB-backed event sourcing)
-│   ├── persistence/ ← Hibernate/JPA entities
-│   └── read/        ← CQRS Query implementations (JPQL + Elasticsearch)
-└── presenter/       ← REST controllers, DTOs, request/response mapping
-    ├── dtos/        ← Request/Response records
-    └── mappers/     ← View → Response transformers
+  domain/
+  service/
+    dtos/
+    impl/
+    utils/
+  infra/
+    persistence/
+    read/
+  presenter/
+    dtos/
+    mappers/
 ```
 
-## 📦 Modules
+## 🔄 Contract patterns
+
+### Complex search
+
+The current read-side search contract is standardized:
+
+- route shape: `POST /<collection>/search`
+- paging input: `page` and `size` query params
+- payload naming: `*ComplexSearchRequest`
+- result shape: `ApiEnvelope<PageResponse<...>>`
+- combination semantics:
+  - optional filters
+  - `AND` across provided fields
+  - `IN` for list filters
+  - shared folded text matching through `JpaSearchUtils`
+
+### Status-only updates
+
+Lifecycle or activation changes use dedicated `PATCH` endpoints instead of mixing them into normal updates.
+
+Examples:
+
+- `PATCH /v1/identity/admins/{id}/status`
+- `PATCH /v1/partners/staff/{id}/status`
+- `PATCH /v1/academic/former-students/{id}/status`
+- `PATCH /v1/projects/{id}/status`
+- enrollment status updates under nested project routes
+
+### Password wiring
+
+Account creation for admins, former students, and staff no longer sets a password immediately.
+
+The first-access flow is:
+
+```mermaid
+sequenceDiagram
+    participant Create as Create Account Flow
+    participant Auth as Auth Module
+    participant User as End User
+
+    Create->>Auth: create account with null password hash
+    User->>Auth: POST /v1/auth/login
+    Auth-->>User: token with passwordWired=false
+    User->>Auth: POST /v1/auth/wire-credentials
+    Auth->>Auth: PasswordService validates and hashes
+    Auth-->>User: credentials wired
+```
+
+## 📦 Module map
+
+- [academic/README.md](./academic/README.md)
+- [geo/README.md](./geo/README.md)
+- [identity/README.md](./identity/README.md)
+- [partner/README.md](./partner/README.md)
+- [project/README.md](./project/README.md)
+- [shared/README.md](./shared/README.md)
+- [tests/README.md](./tests/README.md)
+- [cicd/README.md](./cicd/README.md)
+
+## 🗃️ Public route overview
 
 ```mermaid
 graph LR
-    GEO["🌍 <b>Geo</b><br/>br.org.catolicasc.pug.geo<br/><i>Geographic reference data<br/>Brazilian cities + IBGE codes</i>"]
-    IDENTITY["🔐 <b>Identity</b><br/>br.org.catolicasc.pug.identity<br/><i>Authentication, users,<br/>accounts, admins, JWT</i>"]
-    ACADEMIC["🎓 <b>Academic</b><br/>br.org.catolicasc.pug.academic<br/><i>Schools, courses, students,<br/>counterpart hours</i>"]
-    PARTNER["🏢 <b>Partner</b><br/>br.org.catolicasc.pug.partner<br/><i>Partner organizations CNPJ,<br/>staff management</i>"]
-    PROJECT["📋 <b>Project</b><br/>br.org.catolicasc.pug.project<br/><i>Community service projects,<br/>enrollments, QR attendance</i>"]
-    SHARED["🧩 <b>Shared</b><br/>br.org.catolicasc.pug.shared<br/><i>Cross-cutting concerns:<br/>exceptions, i18n, search, audit, API envelope</i>"]
+    G["/v1/geo/cities"]
+    U["/v1/identity/users"]
+    A["/v1/identity/accounts"]
+    AD["/v1/identity/admins"]
+    AU["/v1/auth"]
+    AOE["/v1/academic/areas-of-expertise"]
+    C["/v1/academic/courses"]
+    FS["/v1/academic/former-students"]
+    E["/v1/partners/entities"]
+    S["/v1/partners/staff"]
+    P["/v1/projects"]
+    EN["/v1/projects/enrollments and nested enrollment routes"]
+    AT["/v1/projects/attendances"]
+    PAOE["/v1/projects/{projectId}/areas-of-expertise"]
+    AOEPR["/v1/academic/areas-of-expertise/{areaOfExpertiseId}/projects"]
 ```
 
-## 🗃️ Full Entity-Relationship Model (ERM)
+## ✅ Notes
 
-```mermaid
-erDiagram
-    cities {
-        UUID id PK
-        VARCHAR name
-        CHAR_7 ibge_code UK
-    }
-
-    users {
-        UUID id PK
-        CHAR_11 cpf UK
-        VARCHAR name
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    accounts {
-        UUID id PK
-        UUID user_id FK
-        VARCHAR email UK
-        VARCHAR password_hash
-        VARCHAR account_type
-        BOOLEAN active
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    refresh_tokens {
-        UUID id PK
-        UUID account_id FK
-        VARCHAR token_hash UK
-        TIMESTAMPTZ expires_at
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    admins {
-        UUID account_id PK
-        VARCHAR campus
-        TIMESTAMPTZ granted_at
-    }
-
-    schools {
-        UUID id PK
-        VARCHAR name UK
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    courses {
-        UUID id PK
-        UUID school_id FK
-        VARCHAR name UK
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    students {
-        UUID account_id PK
-        VARCHAR academic_registration UK
-        VARCHAR campus
-        UUID course_id FK
-        DECIMAL required_hours
-        DECIMAL completed_hours
-        BOOLEAN concluded
-        DATE start_date
-        DATE due_date
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    entities {
-        UUID id PK
-        CHAR_14 cnpj UK
-        VARCHAR name
-        UUID city_id FK
-        VARCHAR address
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    staff {
-        UUID account_id PK
-        UUID entity_id FK
-    }
-
-    projects {
-        UUID id PK
-        VARCHAR name
-        UUID entity_id FK
-        TEXT description
-        UUID created_by FK
-        INT max_participants
-        DECIMAL offered_hours
-        DECIMAL completed_hours
-        VARCHAR status
-        TIMESTAMPTZ closed_at
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    projects_by_schools {
-        UUID project_id PK
-        UUID school_id PK
-    }
-
-    enrollments {
-        UUID project_id PK
-        UUID student_id PK
-        VARCHAR status
-        TIMESTAMPTZ accepted_at
-        TIMESTAMPTZ closing_status_at
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    attendances {
-        UUID id PK
-        UUID project_id FK
-        UUID student_id FK
-        DECIMAL duration
-        VARCHAR qr_validation_hash UK
-        VARCHAR status
-        UUID validated_by FK
-        TIMESTAMPTZ validated_at
-        TIMESTAMPTZ created_at
-        TIMESTAMPTZ updated_at
-    }
-
-    users ||--o{ accounts : "has"
-    accounts ||--o{ refresh_tokens : "has"
-    accounts ||--o| admins : "may be"
-    accounts ||--o| students : "may be"
-    accounts ||--o| staff : "may be"
-    cities ||--o{ entities : "located in"
-    entities ||--o{ staff : "employs"
-    entities ||--o{ projects : "offers"
-    schools ||--o{ courses : "contains"
-    courses ||--o{ students : "enrolled in"
-    staff ||--o{ projects : "created_by"
-    projects ||--o{ projects_by_schools : "associated"
-    schools ||--o{ projects_by_schools : "associated"
-    projects ||--o{ enrollments : "has"
-    students ||--o{ enrollments : "participates"
-    projects ||--o{ attendances : "has"
-    students ||--o{ attendances : "records"
-    staff ||--o{ attendances : "validated_by"
-```
-
-## 🔗 Module Dependencies
-
-```mermaid
-graph BT
-    SHARED["🧩 Shared"]
-
-    GEO["🌍 Geo"] --> SHARED
-    IDENTITY["🔐 Identity"] --> SHARED
-    ACADEMIC["🎓 Academic"] --> SHARED
-
-    PARTNER["🏢 Partner"] --> GEO
-    PARTNER --> IDENTITY
-    PARTNER --> SHARED
-
-    PROJECT["📋 Project"] --> IDENTITY
-    PROJECT --> ACADEMIC
-    PROJECT --> PARTNER
-    PROJECT --> SHARED
-
-    style SHARED fill:#f9f,stroke:#333,stroke-width:2px
-    style PROJECT fill:#bbf,stroke:#333,stroke-width:2px
-```
-
-## 🗄️ Database Migrations
-
-Managed by Flyway in `src/main/resources/db/migration/`:
-
-```mermaid
-timeline
-    title Database Migration History
-    V000 : UUID v7 generation function
-    V001 : Users table
-    V002 : Accounts table
-    V003 : Cities table
-    V004 : Admins table
-    V005 : Entities - Partner table
-    V006 : Staff table
-    V007 : Schools table
-    V008 : Courses table
-    V009 : Students table
-    V010 : Projects table
-    V011 : Projects by Schools M-N table
-    V012 : Enrollments table
-    V013 : Attendances table
-    V014 : Refresh tokens table
-    V015 : System user seed data
-    V016 : Cities seed data
-    V017 : Schools seed data (TBD)
-    V018 : Courses seed data (TBD)
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Java 21+
-- Maven 3.9+
-- Local development services running on the configured ports:
-  - PostgreSQL: `localhost:5433`
-  - MongoDB: `localhost:27018`
-  - Elasticsearch: `localhost:9201`
-
-### Running in Development Mode
-
-```bash
-./mvnw quarkus:dev
-```
-
-This repository uses explicit local infrastructure in the checked-in development profile rather than relying on Quarkus Dev Services.
-
-> **_NOTE:_** Quarkus ships with a Dev UI, available in dev mode at <http://localhost:8080/q/dev/>.
-
-## Testing
-
-The automated test profile also expects local infrastructure and does not start Dev Services automatically.
-
-Test ports:
-
-- PostgreSQL: `localhost:5434`
-- MongoDB: `localhost:27019`
-- Elasticsearch: `localhost:9202`
-
-Typical commands:
-
-```bash
-./mvnw test
-./mvnw verify
-./mvnw verify -DskipITs
-```
-
-More detailed test-suite documentation lives in [tests/README.md](tests/README.md).
-
-### Packaging and Running
-
-```bash
-./mvnw package
-java -jar target/quarkus-app/quarkus-run.jar
-```
-
-### Building an Über-jar
-
-```bash
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-java -jar target/*-runner.jar
-```
-
-### Creating a Native Executable
-
-```bash
-./mvnw package -Dnative
-```
-
-Or using a container build:
-
-```bash
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-## 📄 API Response Format
-
-All API responses follow a standardized envelope:
-
-```json
-{
-  "success": true,
-  "data": { ... },
-  "error": null,
-  "timestamp": "2026-04-10T12:00:00Z",
-  "correlationId": "abc-123"
-}
-```
-
-Error responses:
-
-```json
-{
-  "success": false,
-  "data": null,
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Validation failed.",
-    "details": [
-      {
-        "field": "name",
-        "errors": [
-          { "code": "INVALID_NAME_BLANK", "message": "Name cannot be blank." }
-        ]
-      }
-    ]
-  },
-  "timestamp": "2026-04-10T12:00:00Z",
-  "correlationId": "abc-123"
-}
-```
-
-## 📜 License
-
-This project is part of an academic portfolio.
+- The codebase still contains some internal compatibility scaffolding in persistence and migrations, but the public API and presenter contracts should follow the renamed domains above.
+- Tests now rely on Quarkus Dev Services for PostgreSQL and MongoDB during the `%test` profile.
+- Image creation and CI are documented separately in the CI/CD guide.
