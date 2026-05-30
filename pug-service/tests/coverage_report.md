@@ -2,8 +2,8 @@
 
 ## Resumo Executivo
 
-- Cobertura de linhas: **86.49%** (4744 cobertas, 741 perdidas).
-- Cobertura de instrucoes: **87.94%** (20840 cobertas, 2858 perdidas).
+- Cobertura de linhas: **86.55%** (4747 cobertas, 738 perdidas).
+- Cobertura de instrucoes: **87.99%** (20852 cobertas, 2846 perdidas).
 - Cobertura de metodos: **94.33%**. Cobertura de classes: **98.16%**.
 - Classes analisadas no CSV do JaCoCo: **326**.
 - Pacotes com linhas rastreadas: **97**.
@@ -12,8 +12,8 @@
 
 | Metrica | Cobertas | Perdidas | Total | % Cobertura |
 | :--- | ---: | ---: | ---: | ---: |
-| Instruction | 20840 | 2858 | 23698 | 87.94% |
-| Line | 4744 | 741 | 5485 | 86.49% |
+| Instruction | 20852 | 2846 | 23698 | 87.99% |
+| Line | 4747 | 738 | 5485 | 86.55% |
 | Complexity | 1561 | 775 | 2336 | 66.82% |
 | Method | 1082 | 65 | 1147 | 94.33% |
 | Class | 320 | 6 | 326 | 98.16% |
@@ -67,8 +67,8 @@
 
 ```mermaid
 pie title Cobertura Geral (Linhas)
-    "Cobertas" : 4744
-    "Perdidas" : 741
+    "Cobertas" : 4747
+    "Perdidas" : 738
 ```
 
 ## Leitura Rapida
