@@ -2,46 +2,89 @@
 
 ## 📌 Overview
 
-`pug-service` now has GitHub-based CI and container image creation configured up to the build/push stage. Deployment is intentionally left for a later decision because the deploy target is not defined yet.
+`pug-service` uses GitHub Actions for continuous integration and container image publishing.
+
+The pipeline is split into two independent workflows:
+
+* **CI** (`ci.yml`) for validation and test execution
+* **Release** (`release.yml`) for container image creation and publishing
+
+Deployment is intentionally left for a later decision because the deploy target is not defined yet.
 
 ## 🧱 Current pipeline shape
 
 ```mermaid
 graph LR
-    PR["Pull request / push / manual run"]
-    CI["Validate job<br/>./mvnw clean verify"]
-    IMG["Build image job<br/>Docker Buildx"]
-    REG["GHCR image push<br/>on main, tags, manual"]
+    DEV["Pull request / push"]
+    CI["CI workflow<br/>Validate"]
+    MANUAL["Manual release<br/>or version tag"]
+    REL["Release workflow<br/>Build image"]
+    REG["GHCR image push"]
 
-    PR --> CI --> IMG --> REG
+    DEV --> CI
+    MANUAL --> REL --> REG
 ```
 
 ## 📂 Relevant files
 
 ```text
-.github/workflows/ci-image.yml
+.github/workflows/ci.yml
+.github/workflows/release.yml
 Dockerfile
 .dockerignore
 ```
 
-## ✅ Validate job
+## ✅ CI workflow
 
-Current validation workflow characteristics:
+The CI workflow runs on:
 
-- runs on GitHub Actions
-- uses Java 21
-- runs `./mvnw -B clean verify`
-- uses Maven cache
-- relies on Quarkus Dev Services for test PostgreSQL and MongoDB containers
+* pull requests
+* pushes to any branch
 
-## 🐳 Image build
+Validation characteristics:
+
+* runs on GitHub Actions
+* uses Java 21
+* runs `./mvnw -B clean verify`
+* uses Maven dependency cache
+* provisions PostgreSQL and MongoDB service containers
+* validates build, tests, and Quarkus packaging
+
+```mermaid
+graph LR
+    SRC["Repository changes"]
+    VERIFY["./mvnw clean verify"]
+    RESULT["Validation result"]
+
+    SRC --> VERIFY --> RESULT
+```
+
+## 🐳 Release workflow
+
+The release workflow is responsible only for container image creation and publishing.
+
+It runs on:
+
+* manual workflow dispatch
+* version tags (`v*`)
+
+```mermaid
+graph LR
+    TAG["Version tag / manual run"]
+    BUILD["Docker Buildx"]
+    PUSH["Push image to GHCR"]
+
+    TAG --> BUILD --> PUSH
+```
+
+## 🏗️ Image build
 
 The image build is a multi-stage JVM build:
 
 ```mermaid
 graph TB
     SRC["Repository source"]
-    BUILD["maven:3.9.9-eclipse-temurin-21<br/>package"]
+    BUILD["maven:3.9.x-eclipse-temurin-21<br/>package"]
     APP["target/quarkus-app"]
     RUN["eclipse-temurin:21-jre<br/>non-root runtime"]
 
@@ -50,49 +93,52 @@ graph TB
 
 Current image characteristics:
 
-- Quarkus fast-jar packaging
-- Java 21 runtime
-- non-root runtime user
-- exposes port `8080`
-- ready for registry publishing
+* Quarkus fast-jar packaging
+* Java 21 runtime
+* non-root runtime user
+* exposes port `8080`
+* ready for registry publishing
 
 ## 🏷️ Registry strategy
 
-The workflow currently targets GitHub Container Registry:
+Published images target GitHub Container Registry:
 
-- `ghcr.io/<owner>/<repo>`
+```text
+ghcr.io/<owner>/<repo>
+```
 
 Generated tags include:
 
-- commit SHA
-- branch ref
-- tag ref
-- `latest` on default branch
+* commit SHA
+* Git tag reference
+* `latest`
 
 ## 🔐 Required GitHub permissions
 
-The workflow requires:
+The release workflow requires:
 
-- repository Actions enabled
-- package write permission for `GITHUB_TOKEN`
+* repository Actions enabled
+* package write permission for `GITHUB_TOKEN`
 
-No additional registry secret is needed for GHCR in the current setup.
+No additional registry secret is required for GHCR.
 
 ## ⏭️ What is not covered yet
 
 Not configured yet:
 
-- QA deploy workflow
-- production deploy workflow
-- environment approvals
-- runtime secret injection strategy
-- infrastructure-specific rollout steps
+* QA deployment workflow
+* production deployment workflow
+* environment approvals
+* runtime secret injection strategy
+* infrastructure-specific rollout steps
+* automated rollback strategy
 
 ## 📈 Recommended next step
 
-Once the deploy target is known, add:
+Once the deployment target is known, add:
 
 1. deployment environment definition
 2. environment secrets
 3. deployment workflow
-4. rollback strategy
+4. rollout strategy
+5. rollback strategy
