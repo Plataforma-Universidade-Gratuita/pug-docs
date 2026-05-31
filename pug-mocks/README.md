@@ -1,6 +1,6 @@
 # PUG Mocks
 
-> PUG Mocks is the shared mock backend for the PUG platform. It is the lightweight HTTP server used to preserve the current backend contract for web and mobile clients when they need a shared in-memory API target.
+> 🧪 PUG Mocks is the shared mock backend for the PUG platform. It is the lightweight HTTP server used to preserve the current backend contract for web and mobile clients when they need a shared in-memory API target.
 
 ## Project Overview
 
@@ -19,7 +19,8 @@ The application is organized around:
 - a single HTTP entrypoint in `src/server.mjs`
 - centralized route aggregation in `src/routes.mjs`
 - shared HTTP, routing, and formatting helpers under `src/shared`
-- domain-local `state/data/routes` modules under each mocked domain
+- one canonical in-memory store in `src/mock-data.mjs`
+- thin domain `state/data/routes` modules under each mocked domain
 
 ## Tech Stack
 
@@ -38,9 +39,9 @@ mindmap
       Shared API envelope helpers
       CORS handling in server entrypoint
     Data
-      In-memory Maps
-      In-memory Sets
+      Shared in-memory store
       Seeded datasets
+      Thin domain facades
       Restart resets all state
     Domains
       Identity
@@ -56,33 +57,37 @@ mindmap
 
 ## Application Architecture
 
-The mock server uses a clear split between transport entrypoint, shared helpers, and domain-local state modules.
+The mock server uses a clear split between transport entrypoint, shared helpers, one canonical store, and domain-local route modules.
 
 ```mermaid
 graph TB
-    subgraph APP["PUG Mocks"]
+    subgraph APP["🧪 PUG Mocks"]
         direction TB
 
-        subgraph ENTRY["Entrypoint"]
+        subgraph ENTRY["🚪 Entrypoint"]
             SERVER["src/server.mjs<br/>HTTP server, CORS, response writing"]
             ROUTES["src/routes.mjs<br/>top-level route registry"]
         end
 
-        subgraph SHARED["Shared Core"]
+        subgraph SHARED["🧩 Shared Core"]
             HTTP["src/shared/http.mjs<br/>JSON parsing and envelope helpers"]
             ROUTER["src/shared/router.mjs<br/>route matching and guard wrappers"]
-            MODEL["src/shared/model.mjs<br/>ids, formatting, audit helpers"]
+            MODEL["src/shared/model.mjs<br/>ids and formatting helpers"]
         end
 
-        subgraph DOMAINS["Mocked Domains"]
-            IDENTITY["identity/<br/>state data routes"]
+        subgraph STORE["🗃️ Canonical Store"]
+            MOCKDATA["src/mock-data.mjs<br/>seeded state, CRUD behavior,<br/>response-shape mapping"]
+        end
+
+        subgraph DOMAINS["📦 Mocked Domains"]
+            IDENTITY["identity/<br/>data state routes session"]
             GEO["geo/<br/>data routes"]
-            ACADEMIC["academic/<br/>state data routes"]
-            PARTNER["partner/<br/>state data routes"]
-            PROJECT["project/<br/>state data routes"]
+            ACADEMIC["academic/<br/>data state routes"]
+            PARTNER["partner/<br/>data state routes"]
+            PROJECT["project/<br/>data state routes"]
         end
 
-        subgraph CONSUMERS["Consumers"]
+        subgraph CONSUMERS["🧑‍💻 Consumers"]
             WEB["pug-web-admin"]
             MOBILE["mobile apps"]
             MANUAL["manual API clients"]
@@ -97,17 +102,13 @@ graph TB
     ROUTES --> ACADEMIC
     ROUTES --> PARTNER
     ROUTES --> PROJECT
+    IDENTITY --> MOCKDATA
     IDENTITY --> MODEL
-    GEO --> MODEL
-    ACADEMIC --> MODEL
-    ACADEMIC --> IDENTITY
-    PARTNER --> MODEL
-    PARTNER --> GEO
-    PARTNER --> IDENTITY
-    PROJECT --> MODEL
-    PROJECT --> ACADEMIC
-    PROJECT --> PARTNER
-    PROJECT --> IDENTITY
+    IDENTITY --> HTTP
+    GEO --> MOCKDATA
+    ACADEMIC --> MOCKDATA
+    PARTNER --> MOCKDATA
+    PROJECT --> MOCKDATA
     WEB --> SERVER
     MOBILE --> SERVER
     MANUAL --> SERVER
@@ -117,24 +118,25 @@ graph TB
 
 ```mermaid
 graph LR
-    HEALTH["/health"]
+    HEALTH["GET /health"]
     AUTH["/v1/auth/*"]
     IDENTITY["/v1/identity/*"]
     GEO["/v1/geo/*"]
     ACADEMIC["/v1/academic/*"]
     PARTNER["/v1/partners/*"]
     PROJECT["/v1/projects/*"]
-    SCHOOL_PROJECTS["/v1/academic/schools/:schoolId/projects"]
+    AREA_LINKS["/v1/academic/areas-of-expertise/:id/projects"]
+    PROJECT_LINKS["/v1/projects/:projectId/areas-of-expertise"]
 
     HEALTH --> AUTH
     AUTH --> IDENTITY
-    AUTH --> ACADEMIC
-    AUTH --> PARTNER
-    AUTH --> PROJECT
     IDENTITY --> GEO
-    GEO --> PARTNER
-    ACADEMIC --> SCHOOL_PROJECTS
-    PROJECT --> SCHOOL_PROJECTS
+    GEO --> ACADEMIC
+    ACADEMIC --> PARTNER
+    PARTNER --> PROJECT
+    ACADEMIC --> AREA_LINKS
+    PROJECT --> PROJECT_LINKS
+    PROJECT_LINKS --> AREA_LINKS
 ```
 
 Current high-level route groups include:
@@ -143,23 +145,23 @@ Current high-level route groups include:
 - auth routes under `/v1/auth`
 - identity account, admin, and user routes under `/v1/identity`
 - geo city lookup routes under `/v1/geo`
-- academic school, course, and student routes under `/v1/academic`
+- academic area-of-expertise, course, and former-student routes under `/v1/academic`
 - partner entity and staff routes under `/v1/partners`
-- project, project-school, enrollment, and attendance routes under `/v1/projects`
+- project, project-area association, enrollment, and attendance routes under `/v1/projects`
 
 ## Request Flow
 
 ```mermaid
 flowchart LR
-    REQUEST["Request arrives"]
+    REQUEST["📥 Request arrives"]
     SERVER["src/server.mjs"]
     OPTIONS["OPTIONS short-circuit"]
     MATCH["findRoute(...)"]
     GUARD["auth or account-type guard"]
     DOMAIN["domain route handler"]
-    STATE["in-memory state"]
+    STORE["src/mock-data.mjs"]
     ENVELOPE["shared API envelope"]
-    RESPONSE["HTTP response"]
+    RESPONSE["📤 HTTP response"]
     MISS["MOCK_ROUTE_NOT_FOUND"]
     ERROR["MOCK_INTERNAL_ERROR"]
 
@@ -170,8 +172,8 @@ flowchart LR
     MATCH -->|found| GUARD
     MATCH -->|missing| MISS
     GUARD --> DOMAIN
-    DOMAIN --> STATE
-    STATE --> ENVELOPE
+    DOMAIN --> STORE
+    STORE --> ENVELOPE
     ENVELOPE --> RESPONSE
     DOMAIN --> ERROR
     MISS --> RESPONSE
@@ -180,24 +182,28 @@ flowchart LR
 
 ## Auth and Session Flow
 
-Auth is mock-oriented but still contract-shaped. Login issues an unsigned JWT-shaped bearer token plus a refresh token stored in memory.
+Auth is mock-oriented but still contract-shaped. Login issues an unsigned JWT-shaped bearer token plus a refresh token stored in memory. The current contract also supports credential wiring for password-setup flows.
 
 ```mermaid
 flowchart LR
     LOGIN["POST /v1/auth/login"]
-    EMAIL["find active account by email"]
+    ACCOUNT["find active account by email"]
+    PASSWORD["validate password"]
     TOKENS["issue mock token + refresh token"]
     SESSION["refreshSessions Map"]
     CALL["authenticated request"]
     BEARER["requireAuth / requireAdmin / requireAccountType"]
     REFRESH["POST /v1/auth/refresh"]
+    WIRE["POST /v1/auth/wire-credentials"]
     LOGOUT["logout or logout-all"]
 
-    LOGIN --> EMAIL
-    EMAIL --> TOKENS
+    LOGIN --> ACCOUNT
+    ACCOUNT --> PASSWORD
+    PASSWORD --> TOKENS
     TOKENS --> SESSION
     CALL --> BEARER
     REFRESH --> SESSION
+    WIRE --> ACCOUNT
     LOGOUT --> SESSION
 ```
 
@@ -206,20 +212,28 @@ Important behavior:
 - the access token is not cryptographically signed
 - refresh sessions are stored in process memory only
 - restarting the server clears sessions and all mocked state
+- `logout-all` clears sessions for the current authenticated account
+- `wire-credentials` is available for password wiring flows
 - admin and account-type checks are enforced in the route layer
 
 ## State Model
 
-The project uses separate in-memory state modules with explicit cross-domain links.
+The project now uses one shared in-memory store with explicit cross-domain links instead of separate domain-owned state graphs.
 
 ```mermaid
 graph TD
-    ID["identity/state.mjs<br/>users accounts admins"]
-    GEO["geo/data.mjs<br/>seeded cities"]
-    AC["academic/state.mjs<br/>schools courses students"]
-    PA["partner/state.mjs<br/>entities staff"]
-    PR["project/state.mjs<br/>projects associations enrollments attendances"]
+    ID["👤 identity<br/>users accounts admins"]
+    GEO["📍 geo<br/>cities"]
+    AC["🎓 academic<br/>areas courses former students"]
+    PA["🤝 partner<br/>entities staff"]
+    PR["📁 project<br/>projects associations enrollments attendances"]
+    STORE["src/mock-data.mjs"]
 
+    STORE --> ID
+    STORE --> GEO
+    STORE --> AC
+    STORE --> PA
+    STORE --> PR
     ID --> AC
     ID --> PA
     ID --> PR
@@ -230,13 +244,13 @@ graph TD
 
 The main relationships are:
 
-- identity is the shared base for users, accounts, admins, students, and partner staff
-- academic owns schools, courses, and student-specific profiles
+- identity is the shared base for users, accounts, and admins
+- academic owns areas of expertise, courses, and former-student-specific profiles
 - partner owns entities and staff profiles and depends on geo and identity data
-- project owns project records plus school associations, enrollments, and attendances
-- the default seeded identity dataset keeps at least 20% of accounts inactive so client apps can exercise inactive-account flows immediately
-- seeded `auditInfo` values are generated with distinct random `createdAt` and `updatedAt` timestamps between January 1, 2024 and the current runtime moment
-- admin, staff, and student responses flatten shared identity fields (`accountId`, `accountEmail`, `userId`, `userName`) instead of nesting an account object, and staff responses also expose `entityName`
+- project owns project records plus area-of-expertise associations, enrollments, and attendances
+- the seeded dataset stays intentionally light, but coherent enough to exercise cross-domain flows
+- seeded values use realistic names, emails, CPF values, CNPJ values, and city data
+- the seeded account set includes password-configured flows and at least one password-wiring flow
 
 ## High-Level Folder Layout
 
@@ -245,10 +259,11 @@ pug-mocks/
 |-- src/
 |   |-- server.mjs          HTTP entrypoint and CORS handling
 |   |-- routes.mjs          top-level route aggregation
+|   |-- mock-data.mjs       canonical seeded store and response mapping
 |   |-- shared/             envelope helpers, route matcher, ids, formatters
-|   |-- identity/           auth/session plus account admin user state
-|   |-- geo/                seeded city dataset and routes
-|   |-- academic/           schools courses students
+|   |-- identity/           auth/session plus account admin user facades/routes
+|   |-- geo/                city facades and routes
+|   |-- academic/           areas of expertise, courses, former students
 |   |-- partner/            entities and staff
 |   `-- project/            projects, associations, enrollments, attendances
 |-- package.json            scripts and runtime metadata
@@ -259,12 +274,12 @@ pug-mocks/
 
 The current mock backend already covers the main contracts consumed by the active clients:
 
-- auth login, refresh, logout, and logout-all
+- auth login, refresh, logout, logout-all, and wire-credentials
 - identity account, admin, and user lookups
 - geo city lookup and search
-- academic school, course, and student CRUD-style flows, including student account activation toggles on `PATCH /v1/academic/students/:id`
+- academic area-of-expertise, course, and former-student CRUD-style flows
 - partner entity and staff CRUD-style flows
-- project lifecycle, project-school associations, enrollments, and attendances
+- project lifecycle, project-area associations, enrollments, and attendances
 
 This makes `pug-mocks` the shared contract surface for:
 
@@ -286,7 +301,7 @@ The project currently has no third-party runtime dependencies, so a fresh instal
 ### Start the server
 
 ```bash
-npm run dev
+npm run mock:dev
 ```
 
 The default address is:
@@ -301,9 +316,9 @@ http://0.0.0.0:8090
 
 ```mermaid
 flowchart LR
-    MOCKS["pug-mocks<br/>npm run dev"]
-    WEB["pug-web-admin<br/>npm run dev:mock"]
-    MOBILE["mobile apps"]
+    MOCKS["🧪 pug-mocks<br/>npm run mock:dev"]
+    WEB["🖥️ pug-web-admin"]
+    MOBILE["📱 mobile apps"]
     BASE["API base URL switch"]
 
     MOCKS --> BASE
@@ -321,7 +336,7 @@ Important behavior:
 
 | Script | Purpose |
 |---|---|
-| `npm run dev` | Start the mock server |
+| `npm run mock:dev` | Start the mock server |
 | `npm run start` | Start the mock server |
 | `npm run check` | Syntax-check every source module with `node --check` |
 
@@ -342,7 +357,8 @@ There is not yet a dedicated automated behavior test suite in this repo.
 ## Current Working Conventions
 
 - keep route aggregation centralized in `src/routes.mjs`
-- keep domain behavior in `state.mjs` and expose it through `data.mjs`
+- keep the canonical seeded store in `src/mock-data.mjs`
+- keep `state.mjs` and `data.mjs` as thin facades over that store
 - keep route-level auth checks in the route layer
 - preserve the shared API envelope for both success and error responses
 - keep consumers contract-driven and switch targets through configuration only
