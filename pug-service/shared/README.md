@@ -1,147 +1,108 @@
-# 🧩 Shared Module
+﻿# Shared Module
 
-## 📌 Overview
+The `shared` package is the cross-cutting foundation of `pug-service`. It centralizes response formatting, validation primitives, audit plumbing, locale handling, pagination helpers, and persistence base classes reused by the domain packages.
 
-The shared module contains the cross-cutting contracts and infrastructure used by every bounded context.
+## Module purpose
 
-It is not a business module. It provides the platform rules that keep the other modules consistent.
+- `shared` is a package-level module under `src/main/java/br/org/catolicasc/pug/shared`, not a standalone Maven submodule.
+- It provides reusable infrastructure for `geo`, `identity`, `partner`, `academic`, and `project`.
+- It owns the only MongoDB document persisted directly from this package: audit logs.
 
-Main responsibilities:
+## Main responsibilities
 
-- standard API envelope and error payloads
-- shared exceptions and exception mappers
-- i18n
-- UUID v7 validation
-- pagination support
-- JPQL search helpers
-- audit event publication and MongoDB audit persistence
-- small utility helpers used across modules
+- 🧾 Standardize API responses with `ApiEnvelope`, `ApiError`, `Details`, and `FieldErrorsResponse`.
+- 🌐 Resolve localized messages through `I18n` plus `messages_*.properties` and `ValidationMessages_*.properties`.
+- 🔎 Carry request correlation through `CorrelationFilter` and the `X-Correlation-Id` header.
+- 🧠 Accumulate domain validation errors with `DomainError` and translate them through global exception mappers.
+- 🗂 Provide shared paging and search helpers with `PageQuery`, `PageExecution`, `PageResult`, and `JpaSearchUtils`.
+- 🧬 Standardize persistence base classes with UUIDv7 identifiers and audit timestamps.
+- 🧾 Persist asynchronous audit trails to MongoDB through `AuditPublisher` and `AuditListener`.
+- 🔐 Re-hash the seeded `admin@pug.com` account password on startup through `AdminPasswordSeeder`.
 
-## 🧱 Main building blocks
+## Public API, services, and jobs
 
-```mermaid
-graph TB
-    ENV["ApiEnvelope / ApiError"]
-    EX["Exceptions / Exception mappers"]
-    I18N["I18n bundles"]
-    PAG["PageQuery / PageExecution / PageResult / PageResponse"]
-    AUD["AuditPublisher / AuditListener / AuditLog"]
-    JPA["JpaSearchUtils"]
-    UTL["StringUtils / CollectionUtils / PresenterUtils / DiffUtils"]
-    VAL["UuidV7 validators"]
-```
+- Request correlation:
+  - [`CorrelationFilter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/http/CorrelationFilter.java) reuses or generates `X-Correlation-Id`, stores it in MDC, and writes it back to the response.
+- REST error contract:
+  - [`ApiEnvelope`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/ApiEnvelope.java) and the mappers under [`presenter/rest/mappers`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers) define the API-wide success and error shape.
+- Audit service:
+  - [`AuditPublisher`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) is called by write services after create, update, and delete mutations.
+  - [`AuditListener`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditListener.java) consumes CDI async events and writes to MongoDB collection `audit_logs`.
+- Startup job:
+  - [`AdminPasswordSeeder`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java) runs on non-test startup and updates the seeded admin password hash with the active pepper.
+- Validation contract:
+  - [`UuidV7`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java) validates both `String` and `UUID` inputs against UUID version 7.
 
-## 🌐 API response model
+## Important classes and files
 
-```mermaid
-classDiagram
-    class ApiEnvelope~T~ {
-      +boolean success
-      +T data
-      +ApiError error
-      +Instant timestamp
-      +String correlationId
-    }
+- Domain and error primitives:
+  - [`DomainError`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/domain/DomainError.java)
+  - [`SharedErrorCodes`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/domain/enums/SharedErrorCodes.java)
+  - [`SharedFieldErrorCodes`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/domain/enums/SharedFieldErrorCodes.java)
+  - [`AppValidationException`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/exceptions/AppValidationException.java)
+- REST contract:
+  - [`ApiEnvelope`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/ApiEnvelope.java)
+  - [`FieldErrorsResponse`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/FieldErrorsResponse.java)
+  - [`ConstraintViolationExceptionMapper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/ConstraintViolationExceptionMapper.java)
+  - [`PersistenceExceptionMapper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/PersistenceExceptionMapper.java)
+- Audit and infrastructure:
+  - [`AuditPublisher`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java)
+  - [`AuditListener`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditListener.java)
+  - [`AuditLog`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditLog.java)
+  - [`AdminPasswordSeeder`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java)
+- Persistence and search:
+  - [`BaseUuidV7Entity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseUuidV7Entity.java)
+  - [`BaseAuditedEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseAuditedEntity.java)
+  - [`JpaSearchUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/JpaSearchUtils.java)
+- Localization and presentation:
+  - [`I18n`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/i18n/I18n.java)
+  - [`SharedDataPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/mappers/SharedDataPresenter.java)
+  - [`PresenterUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/utils/PresenterUtils.java)
+- Validation and utilities:
+  - [`UuidV7`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java)
+  - [`DiffUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/utils/DiffUtils.java)
+  - [`StringUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/utils/StringUtils.java)
 
-    class ApiError {
-      +String code
-      +String message
-      +Object details
-    }
+## Dependencies on other modules
 
-    ApiEnvelope --> ApiError
-```
+- Inbound:
+  - All feature modules depend on `shared` for response envelopes, exception types, pagination DTOs, base entities, utilities, and validation annotations.
+- Outbound:
+  - `shared` has a narrow dependency on [`AuthService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java) inside `AuditPublisher` to resolve the acting account.
+  - `shared` also depends on [`PasswordService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/PasswordService.java) inside `AdminPasswordSeeder` to hash the seeded administrator password.
+- Infrastructure boundaries:
+  - `AuditListener` writes to MongoDB.
+  - `BaseUuidV7Entity`, `BaseAuditedEntity`, and `JpaSearchUtils` support the PostgreSQL/JPA side used by the domain modules.
 
-Every content-returning endpoint uses `ApiEnvelope`.
-
-Common response patterns:
-
-- `ApiEnvelope.ok(data)`
-- `ApiEnvelope.created(data)`
-- `204 No Content` for void contracts
-
-## ❗ Exception mapping
-
-```mermaid
-graph LR
-    EX["Domain / validation / infra exceptions"]
-    MAP["REST exception mappers"]
-    HTTP["Standard HTTP error envelope"]
-
-    EX --> MAP --> HTTP
-```
-
-Important mapped families:
-
-- validation errors
-- business rule errors
-- unauthorized errors
-- duplicate resource errors
-- not found errors
-- persistence conflicts
-- uncaught internal errors
-
-## 🔍 Shared pagination and search
+## Module relationships
 
 ```mermaid
-classDiagram
-    class PageQuery {
-      +int page
-      +int size
-      +isFetchAll()
-    }
+flowchart LR
+    geo[geo] --> shared[shared]
+    identity[identity] --> shared
+    partner[partner] --> shared
+    academic[academic] --> shared
+    project[project] --> shared
 
-    class PageExecution {
-      +from(PageQuery, totalElements)
-      +apply(query)
-    }
-
-    class JpaSearchUtils {
-      +folded(field)
-      +containsClause(field, parameter)
-      +containsPattern(raw)
-      +bindContains(query, parameter, raw)
-    }
+    shared -->|AuthService + PasswordService| identity
+    shared --> mongo[(MongoDB\naudit_logs)]
+    shared --> postgres[(PostgreSQL / JPA\nbase conventions)]
 ```
 
-Important convention:
+## How to test the module
 
-- `PageQuery.size == 1` is the shared fetch-all sentinel
+- Shared tests live under `src/test/java/br/org/catolicasc/pug/shared` and cover domain primitives, utilities, exception mappers, audit persistence, correlation IDs, i18n, and UUIDv7 validation.
+- Useful examples from the repository:
+  - [`AuditSystemTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/infra/audit/AuditSystemTest.java)
+  - [`CorrelationFilterTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/http/CorrelationFilterTest.java)
+  - [`I18nTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/i18n/I18nTest.java)
+  - [`UuidV7Test`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/validation/UuidV7Test.java)
+  - [`SystemExceptionMappersTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/SystemExceptionMappersTest.java)
+- Commands:
+  - Full suite: `./mvnw test`
+  - Focused examples: `./mvnw -Dtest=AuditSystemTest,CorrelationFilterTest,I18nTest,UuidV7Test test`
 
-## 🧾 Audit architecture
+## Links
 
-```mermaid
-sequenceDiagram
-    participant Service as Write Service
-    participant Publisher as AuditPublisher
-    participant EventBus as CDI async event
-    participant Listener as AuditListener
-    participant Mongo as MongoDB
-
-    Service->>Publisher: fireCreate / fireUpdate / fireDelete
-    Publisher->>EventBus: DomainAuditEvent
-    EventBus->>Listener: async delivery
-    Listener->>Mongo: persist AuditLog
-```
-
-Notes:
-
-- audit publication is asynchronous
-- `DiffUtils` is used to compute field changes on updates
-- the current account id and correlation id are attached to events
-
-## 🌍 i18n
-
-Shared i18n is the contract behind localized messages and enum formatting.
-
-Current bundle layout includes:
-
-- `messages_en_US.properties`
-- `messages_pt_BR.properties`
-- `ValidationMessages_en_US.properties`
-- `ValidationMessages_pt_BR.properties`
-
-## ✅ Notes
-
-- search is JPQL-based with shared folded matching helpers, not Elasticsearch-based anymore
-- this module is where cross-cutting behavior should be added before duplicating small infrastructure patterns across bounded contexts
+- [Shared architecture](./ARCHITECTURE.md)
+- [Back to pug-service docs](../README.md)
