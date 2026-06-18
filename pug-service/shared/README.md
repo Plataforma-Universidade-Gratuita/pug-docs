@@ -1,4 +1,4 @@
-﻿# Shared Module
+# Shared Module
 
 The `shared` package is the cross-cutting foundation of `pug-service`. It centralizes response formatting, validation primitives, audit plumbing, locale handling, pagination helpers, and persistence base classes reused by the domain packages.
 
@@ -22,54 +22,54 @@ The `shared` package is the cross-cutting foundation of `pug-service`. It centra
 ## Public API, services, and jobs
 
 - Request correlation:
-  - [`CorrelationFilter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/http/CorrelationFilter.java) reuses or generates `X-Correlation-Id`, stores it in MDC, and writes it back to the response.
+  - [`CorrelationFilter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/http/CorrelationFilter.java) reuses or generates `X-Correlation-Id`, stores it in MDC, and writes it back to the response.
 - REST error contract:
-  - [`ApiEnvelope`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/ApiEnvelope.java) and the mappers under [`presenter/rest/mappers`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers) define the API-wide success and error shape.
+  - [`ApiEnvelope`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/ApiEnvelope.java) and the mappers under [`presenter/rest/mappers`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers) define the API-wide success and error shape.
 - Audit service:
-  - [`AuditPublisher`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) is called by write services after create, update, and delete mutations.
-  - [`AuditListener`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditListener.java) consumes CDI async events and writes to MongoDB collection `audit_logs`.
+  - [`AuditPublisher`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) is called by write services after create, update, and delete mutations.
+  - [`AuditListener`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditListener.java) consumes CDI async events and writes to MongoDB collection `audit_logs`.
 - Startup job:
-  - [`AdminPasswordSeeder`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java) runs on non-test startup and updates the seeded admin password hash with the active pepper.
+  - [`AdminPasswordSeeder`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java) runs on non-test startup and updates the seeded admin password hash with the active pepper.
 - Validation contract:
-  - [`UuidV7`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java) validates both `String` and `UUID` inputs against UUID version 7.
+  - [`UuidV7`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java) validates both `String` and `UUID` inputs against UUID version 7.
 
 ## Important classes and files
 
 - Domain and error primitives:
-  - [`DomainError`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/domain/DomainError.java)
-  - [`SharedErrorCodes`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/domain/enums/SharedErrorCodes.java)
-  - [`SharedFieldErrorCodes`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/domain/enums/SharedFieldErrorCodes.java)
-  - [`AppValidationException`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/exceptions/AppValidationException.java)
+  - [`DomainError`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/domain/DomainError.java)
+  - [`SharedErrorCodes`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/domain/enums/SharedErrorCodes.java)
+  - [`SharedFieldErrorCodes`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/domain/enums/SharedFieldErrorCodes.java)
+  - [`AppValidationException`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/exceptions/AppValidationException.java)
 - REST contract:
-  - [`ApiEnvelope`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/ApiEnvelope.java)
-  - [`FieldErrorsResponse`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/FieldErrorsResponse.java)
-  - [`ConstraintViolationExceptionMapper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/ConstraintViolationExceptionMapper.java)
-  - [`PersistenceExceptionMapper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/PersistenceExceptionMapper.java)
+  - [`ApiEnvelope`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/ApiEnvelope.java)
+  - [`FieldErrorsResponse`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/FieldErrorsResponse.java)
+  - [`ConstraintViolationExceptionMapper`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/ConstraintViolationExceptionMapper.java)
+  - [`PersistenceExceptionMapper`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/PersistenceExceptionMapper.java)
 - Audit and infrastructure:
-  - [`AuditPublisher`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java)
-  - [`AuditListener`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditListener.java)
-  - [`AuditLog`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditLog.java)
-  - [`AdminPasswordSeeder`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java)
+  - [`AuditPublisher`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java)
+  - [`AuditListener`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditListener.java)
+  - [`AuditLog`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditLog.java)
+  - [`AdminPasswordSeeder`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java)
 - Persistence and search:
-  - [`BaseUuidV7Entity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseUuidV7Entity.java)
-  - [`BaseAuditedEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseAuditedEntity.java)
-  - [`JpaSearchUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/JpaSearchUtils.java)
+  - [`BaseUuidV7Entity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseUuidV7Entity.java)
+  - [`BaseAuditedEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseAuditedEntity.java)
+  - [`JpaSearchUtils`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/JpaSearchUtils.java)
 - Localization and presentation:
-  - [`I18n`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/i18n/I18n.java)
-  - [`SharedDataPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/mappers/SharedDataPresenter.java)
-  - [`PresenterUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/utils/PresenterUtils.java)
+  - [`I18n`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/i18n/I18n.java)
+  - [`SharedDataPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/mappers/SharedDataPresenter.java)
+  - [`PresenterUtils`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/utils/PresenterUtils.java)
 - Validation and utilities:
-  - [`UuidV7`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java)
-  - [`DiffUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/utils/DiffUtils.java)
-  - [`StringUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/utils/StringUtils.java)
+  - [`UuidV7`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java)
+  - [`DiffUtils`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/utils/DiffUtils.java)
+  - [`StringUtils`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/utils/StringUtils.java)
 
 ## Dependencies on other modules
 
 - Inbound:
   - All feature modules depend on `shared` for response envelopes, exception types, pagination DTOs, base entities, utilities, and validation annotations.
 - Outbound:
-  - `shared` has a narrow dependency on [`AuthService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java) inside `AuditPublisher` to resolve the acting account.
-  - `shared` also depends on [`PasswordService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/PasswordService.java) inside `AdminPasswordSeeder` to hash the seeded administrator password.
+  - `shared` has a narrow dependency on [`AuthService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java) inside `AuditPublisher` to resolve the acting account.
+  - `shared` also depends on [`PasswordService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/PasswordService.java) inside `AdminPasswordSeeder` to hash the seeded administrator password.
 - Infrastructure boundaries:
   - `AuditListener` writes to MongoDB.
   - `BaseUuidV7Entity`, `BaseAuditedEntity`, and `JpaSearchUtils` support the PostgreSQL/JPA side used by the domain modules.
@@ -93,11 +93,11 @@ flowchart LR
 
 - Shared tests live under `src/test/java/br/org/catolicasc/pug/shared` and cover domain primitives, utilities, exception mappers, audit persistence, correlation IDs, i18n, and UUIDv7 validation.
 - Useful examples from the repository:
-  - [`AuditSystemTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/infra/audit/AuditSystemTest.java)
-  - [`CorrelationFilterTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/http/CorrelationFilterTest.java)
-  - [`I18nTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/i18n/I18nTest.java)
-  - [`UuidV7Test`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/validation/UuidV7Test.java)
-  - [`SystemExceptionMappersTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/SystemExceptionMappersTest.java)
+  - [`AuditSystemTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/shared/infra/audit/AuditSystemTest.java)
+  - [`CorrelationFilterTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/shared/http/CorrelationFilterTest.java)
+  - [`I18nTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/shared/i18n/I18nTest.java)
+  - [`UuidV7Test`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/shared/validation/UuidV7Test.java)
+  - [`SystemExceptionMappersTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/SystemExceptionMappersTest.java)
 - Commands:
   - Full suite: `./mvnw test`
   - Focused examples: `./mvnw -Dtest=AuditSystemTest,CorrelationFilterTest,I18nTest,UuidV7Test test`

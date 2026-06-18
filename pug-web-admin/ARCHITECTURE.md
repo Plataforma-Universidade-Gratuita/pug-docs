@@ -6,16 +6,16 @@ Back to [README.md](./README.md).
 
 `pug-web-admin` is a layered Next.js App Router application. It is not just a UI shell on top of raw backend calls. The browser talks to local Next route handlers under `/api/v1/*`, and those handlers talk to the backend service configured by `NEXT_PUBLIC_API_URL`.
 
-Page access is also guarded before rendering by [proxy.ts](../../pug-web-admin/proxy.ts), which validates the access token and attempts refresh using the refresh token cookie.
+Page access is also guarded before rendering by [proxy.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/proxy.ts), which validates the access token and attempts refresh using the refresh token cookie.
 
 Core files:
 
-- [app/layout.tsx](../../pug-web-admin/app/layout.tsx)
-- [app/providers.tsx](../../pug-web-admin/app/providers.tsx)
-- [proxy.ts](../../pug-web-admin/proxy.ts)
-- [app/api/utils.ts](../../pug-web-admin/app/api/utils.ts)
-- [api/services/utils.ts](../../pug-web-admin/api/services/utils.ts)
-- [api/web/utils.ts](../../pug-web-admin/api/web/utils.ts)
+- [app/layout.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/layout.tsx)
+- [app/providers.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/providers.tsx)
+- [proxy.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/proxy.ts)
+- [app/api/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/api/utils.ts)
+- [api/services/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/services/utils.ts)
+- [api/web/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/web/utils.ts)
 
 ```mermaid
 flowchart LR
@@ -43,16 +43,16 @@ flowchart LR
 
 ### 1. Route protection and session boundary
 
-- [proxy.ts](../../pug-web-admin/proxy.ts) allows `/login` as the only public route
+- [proxy.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/proxy.ts) allows `/login` as the only public route
 - protected routes require a valid access token or a successful refresh
-- [auth/session.ts](../../pug-web-admin/auth/session.ts) calls the backend refresh endpoint and re-validates the returned token
-- [auth/cookies.ts](../../pug-web-admin/auth/cookies.ts) applies and clears `accessToken`, `refreshToken`, and `passwordWired`
+- [auth/session.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/auth/session.ts) calls the backend refresh endpoint and re-validates the returned token
+- [auth/cookies.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/auth/cookies.ts) applies and clears `accessToken`, `refreshToken`, and `passwordWired`
 
 ### 2. Root layout and global providers
 
-- [app/layout.tsx](../../pug-web-admin/app/layout.tsx) reads theme and locale cookies on the server
-- [app/providers.tsx](../../pug-web-admin/app/providers.tsx) composes i18n, theme, locale, React Query, toast, and React Query Devtools in development
-- [app/constants.ts](../../pug-web-admin/app/constants.ts) defines the shared React Query defaults
+- [app/layout.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/layout.tsx) reads theme and locale cookies on the server
+- [app/providers.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/providers.tsx) composes i18n, theme, locale, React Query, toast, and React Query Devtools in development
+- [app/constants.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/constants.ts) defines the shared React Query defaults
 
 ### 3. Protected application shell
 
@@ -62,34 +62,34 @@ flowchart LR
 
 ### 4. Feature and page layer
 
-- feature pages live under [features/](../../pug-web-admin/features)
-- route wrappers under [app/](../../pug-web-admin/app) stay thin and usually delegate immediately to feature pages
-- navigation structure is centralized in [features/app-shell/constants.ts](../../pug-web-admin/features/app-shell/constants.ts)
-- the home dashboard composes data from multiple modules in [features/home/HomeCommandCenterPage.tsx](../../pug-web-admin/features/home/HomeCommandCenterPage.tsx)
+- feature pages live under [features/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/features)
+- route wrappers under [app/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/app) stay thin and usually delegate immediately to feature pages
+- navigation structure is centralized in [features/app-shell/constants.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/features/app-shell/constants.ts)
+- the home dashboard composes data from multiple modules in [features/home/HomeCommandCenterPage.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/features/home/HomeCommandCenterPage.tsx)
 
 ### 5. Browser-facing API layer
 
-- Next route handlers live under [app/api/v1/](../../pug-web-admin/app/api/v1)
+- Next route handlers live under [app/api/v1/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/app/api/v1)
 - these handlers parse request bodies, proxy to backend wrappers, and normalize retry/error behavior
-- [app/api/utils.ts](../../pug-web-admin/app/api/utils.ts) provides `routeWithAuthRetry`, `routeVoidWithAuthRetry`, `routeData`, and `routeError`
+- [app/api/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/api/utils.ts) provides `routeWithAuthRetry`, `routeVoidWithAuthRetry`, `routeData`, and `routeError`
 
 ### 6. Backend service layer
 
-- [api/services/](../../pug-web-admin/api/services) wraps the actual PUG backend
-- [api/services/constants.ts](../../pug-web-admin/api/services/constants.ts) maps the backend `v1` route bases
-- [api/services/utils.ts](../../pug-web-admin/api/services/utils.ts) adds auth and locale headers and parses backend error envelopes
+- [api/services/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/api/services) wraps the actual PUG backend
+- [api/services/constants.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/services/constants.ts) maps the backend `v1` route bases
+- [api/services/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/services/utils.ts) adds auth and locale headers and parses backend error envelopes
 
 ### 7. Client data layer
 
-- [api/web/](../../pug-web-admin/api/web) provides client fetchers and React Query hooks
-- [api/web/constants.ts](../../pug-web-admin/api/web/constants.ts) maps the local `/api/v1/*` route bases
-- [api/web/utils.ts](../../pug-web-admin/api/web/utils.ts) always sends browser credentials and handles expired-session redirects
+- [api/web/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/api/web) provides client fetchers and React Query hooks
+- [api/web/constants.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/web/constants.ts) maps the local `/api/v1/*` route bases
+- [api/web/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/web/utils.ts) always sends browser credentials and handles expired-session redirects
 
 ### 8. Validation and type boundary
 
-- [schemas/api/](../../pug-web-admin/schemas/api) contains Zod schemas for backend and local API payloads
-- [schemas/client/](../../pug-web-admin/schemas/client) contains client-specific schemas
-- [types/api/](../../pug-web-admin/types/api) and [types/client/](../../pug-web-admin/types/client) mirror the same domain split
+- [schemas/api/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/schemas/api) contains Zod schemas for backend and local API payloads
+- [schemas/client/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/schemas/client) contains client-specific schemas
+- [types/api/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/types/api) and [types/client/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/types/client) mirror the same domain split
 
 ## 🔗 Module relationships
 
@@ -128,7 +128,7 @@ Concrete examples from code:
 
 - the home command center imports hooks from `academic`, `identity`, and `project`
 - the sidebar groups expose academic, partner, project, identity, and geo navigation
-- the project client layer also includes project-area-of-expertise support under [api/services/project/project-areas-of-expertise/](../../pug-web-admin/api/services/project/project-areas-of-expertise)
+- the project client layer also includes project-area-of-expertise support under [api/services/project/project-areas-of-expertise/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/api/services/project/project-areas-of-expertise)
 
 ## 🔄 Request and data flow
 
@@ -180,17 +180,17 @@ sequenceDiagram
 
 ### Route-handler retry flow
 
-If a backend call made by a local route handler returns `401`, [app/api/utils.ts](../../pug-web-admin/app/api/utils.ts) retries once after refresh and applies the new cookies to the response when refresh succeeds.
+If a backend call made by a local route handler returns `401`, [app/api/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/api/utils.ts) retries once after refresh and applies the new cookies to the response when refresh succeeds.
 
 ## 🌐 External dependencies
 
 - **PUG backend API** through `NEXT_PUBLIC_API_URL`
 - **Browser cookies** for auth, theme, and locale state
-- **Translation bundles** in [public/locales/](../../pug-web-admin/public/locales)
+- **Translation bundles** in [public/locales/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/public/locales)
 - **GitHub Actions** for CI
 - **GHCR** for image publishing
 
-The current codebase does not show direct integrations with a database, queue, or message broker.
+The repository does not include direct integrations with a database, queue, or message broker.
 
 ## 💾 Persistence and integration boundaries
 
@@ -201,7 +201,7 @@ What it does store or manage:
 - `accessToken`, `refreshToken`, and `passwordWired` cookies
 - theme and language cookies
 - React Query in-memory cache
-- persisted app-shell collapsed state in [stores/app-shell.ts](../../pug-web-admin/stores/app-shell.ts)
+- persisted app-shell collapsed state in [stores/app-shell.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/stores/app-shell.ts)
 
 What stays outside this repo:
 
@@ -231,10 +231,10 @@ Zod is used across the stack, not just at the form boundary. Data is parsed:
 
 ### Module pages and detail pages are split
 
-Overview pages often act as module landing pages, while operational tables and detail views live deeper in the tree. For example, [features/project/ProjectOverviewPage.tsx](../../pug-web-admin/features/project/ProjectOverviewPage.tsx) points users toward `projects`, `enrollments`, and `attendances`.
+Overview pages often act as module landing pages, while operational tables and detail views live deeper in the tree. For example, [features/project/ProjectOverviewPage.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/features/project/ProjectOverviewPage.tsx) points users toward `projects`, `enrollments`, and `attendances`.
 
 ## 🧪 Observed boundaries and gaps
 
-- A `project-school-associations` API directory exists under `app/api/v1`, but a route handler file was **not found in the current codebase**. I checked `app/api/v1/project-school-associations/[[...slug]]`.
-- A route-group directory `app/(app)/docs` exists, but route files were **not found in the current codebase** under that tree.
-- Direct database access was **not found in the current codebase**.
+- A `project-school-associations` API directory exists under `app/api/v1`, but no route handler file is present under `app/api/v1/project-school-associations/[[...slug]]`.
+- A route-group directory `app/(app)/docs` exists, but no route files are present under that tree.
+- Direct database access is not part of this repository.

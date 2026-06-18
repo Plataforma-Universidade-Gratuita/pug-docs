@@ -1,4 +1,4 @@
-﻿# Geo Module Architecture
+# Geo Module Architecture
 
 [Back to module README](./README.md)
 
@@ -98,50 +98,50 @@ sequenceDiagram
 
 ### Domain model
 
-- [`City`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/domain/City.java)
+- [`City`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/domain/City.java)
   - immutable aggregate with `id`, `name`, and `IbgeCode`
   - validates ID and name through shared `DomainError`
   - exposes `rename(...)` and `changeIbgeCode(...)`, but no command service or REST write endpoint uses them
-- [`IbgeCode`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/domain/vos/IbgeCode.java)
+- [`IbgeCode`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/domain/vos/IbgeCode.java)
   - accepts only 7 numeric digits
   - reports `INVALID_IBGE_CODE_BLANK` or `INVALID_IBGE_CODE_FORMAT`
 
 ### Persistence model
 
-- [`CityEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/infra/persistence/CityEntity.java)
+- [`CityEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/infra/persistence/CityEntity.java)
   - maps to table `cities`
   - extends shared `BaseUuidV7Entity`
   - enforces unique `ibge_code`
-- [`CityRepositoryImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/infra/persistence/impl/CityRepositoryImpl.java)
+- [`CityRepositoryImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/infra/persistence/impl/CityRepositoryImpl.java)
   - only supports `findOptionalById(UUID)`
   - reconstitutes pure domain `City` through `CityMapper`
 
 ### Query/read model
 
-- [`CitiesQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/infra/read/impl/CitiesQueriesImpl.java)
+- [`CitiesQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/infra/read/impl/CitiesQueriesImpl.java)
   - handles `findOptionalById`, `listAllByIds`, `listAllCities`, and paginated `search`
-  - returns lightweight [`CityView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/infra/read/dtos/CityView.java) projections instead of domain aggregates
+  - returns lightweight [`CityView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/infra/read/dtos/CityView.java) projections instead of domain aggregates
   - orders results by `city.name asc`
   - uses shared `JpaSearchUtils` for accent-insensitive search and `PageExecution` for pagination
-- [`CitiesReadServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/service/impl/CitiesReadServiceImpl.java)
+- [`CitiesReadServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/service/impl/CitiesReadServiceImpl.java)
   - delegates to `CitiesQueries`
-  - translates missing cities to `ResourceNotFoundException(CITY_NOT_FOUND)` through [`ExceptionHelper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/service/utils/ExceptionHelper.java)
+  - translates missing cities to `ResourceNotFoundException(CITY_NOT_FOUND)` through [`ExceptionHelper`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/service/utils/ExceptionHelper.java)
 
 ### Presenter layer
 
-- [`CitiesReadOnlyResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/presenter/CitiesReadOnlyResource.java)
+- [`CitiesReadOnlyResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/presenter/CitiesReadOnlyResource.java)
   - annotated with `@Authenticated`
   - no explicit role restriction is present in the resource class
   - exposes only read/list/search operations
-- [`CityPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo/presenter/mappers/CityPresenter.java)
+- [`CityPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/geo/presenter/mappers/CityPresenter.java)
   - direct `CityView -> CityResponse` mapping with no extra formatting logic
 
 ## Seeded data and boundaries
 
 The module depends on Flyway-created reference data.
 
-- [`V003__create_cities_table.sql`](../../../pug-service/src/main/resources/db/migration/V003__create_cities_table.sql) creates the `cities` table with unique `ibge_code`.
-- [`V016__seed_cities.sql`](../../../pug-service/src/main/resources/db/migration/V016__seed_cities.sql) inserts **295 cities from Santa Catarina**.
+- [`V003__create_cities_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V003__create_cities_table.sql) creates the `cities` table with unique `ibge_code`.
+- [`V016__seed_cities.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V016__seed_cities.sql) inserts **295 cities from Santa Catarina**.
 - Geo tests rely on that seeded dataset; for example, `CitiesReadOnlyResourceTest` and `CitiesQueriesImplTest` assert the list size is greater than 200.
 
 That means this module behaves more like a reference-data catalog than a mutable CRUD boundary.
@@ -162,7 +162,7 @@ That means this module behaves more like a reference-data catalog than a mutable
 ### Inbound dependencies
 
 - `partner`
-  - [`EntitiesServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/EntitiesServiceImpl.java) validates `cityId` by calling `CitiesReadService.getViewById(...)` during create and update flows.
+  - [`EntitiesServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/EntitiesServiceImpl.java) validates `cityId` by calling `CitiesReadService.getViewById(...)` during create and update flows.
 
 ```mermaid
 flowchart LR
@@ -212,14 +212,14 @@ flowchart LR
 The tests map cleanly to the module layers.
 
 - Domain:
-  - [`CityTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/geo/domain/CityTest.java)
-  - [`IbgeCodeTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/geo/domain/vos/IbgeCodeTest.java)
+  - [`CityTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/geo/domain/CityTest.java)
+  - [`IbgeCodeTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/geo/domain/vos/IbgeCodeTest.java)
 - Mapping:
-  - [`CityMapperTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/geo/infra/CityMapperTest.java)
-  - [`CityPresenterTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/geo/presenter/mappers/CityPresenterTest.java)
+  - [`CityMapperTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/geo/infra/CityMapperTest.java)
+  - [`CityPresenterTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/geo/presenter/mappers/CityPresenterTest.java)
 - Persistence and query:
-  - [`CityRepositoryImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/geo/infra/persistence/impl/CityRepositoryImplTest.java)
-  - [`CitiesQueriesImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/geo/infra/read/impl/CitiesQueriesImplTest.java)
+  - [`CityRepositoryImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/geo/infra/persistence/impl/CityRepositoryImplTest.java)
+  - [`CitiesQueriesImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/geo/infra/read/impl/CitiesQueriesImplTest.java)
 - API/service:
-  - [`CitiesReadServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/geo/service/impl/CitiesReadServiceImplTest.java)
-  - [`CitiesReadOnlyResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/geo/presenter/CitiesReadOnlyResourceTest.java)
+  - [`CitiesReadServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/geo/service/impl/CitiesReadServiceImplTest.java)
+  - [`CitiesReadOnlyResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/geo/presenter/CitiesReadOnlyResourceTest.java)

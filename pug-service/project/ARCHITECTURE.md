@@ -69,16 +69,16 @@ flowchart LR
 
 | Package area | Role | Main files |
 | --- | --- | --- |
-| [`presenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/presenter) | REST resources, request DTOs, response DTOs, presenter mappers | `ProjectsResource`, `EnrollmentsResource`, `AttendancesResource`, `ProjectsAreasOfExpertiseResource`, `AreasOfExpertiseProjectsResource` |
-| [`service/impl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/impl) | Write-side orchestration plus read-service wrappers | `ProjectServiceImpl`, `EnrollmentsServiceImpl`, `AttendancesServiceImpl`, `ProjectAreaOfExpertiseServiceImpl` |
-| [`service/utils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/utils) | Aggregate construction helpers | `AttendanceProcessor`, `ProjectAreaOfExpertiseProcessor` |
-| [`domain`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/domain) | Aggregates, repositories, enums, value objects | `Project`, `Enrollment`, `Attendance`, `ProjectAreaOfExpertise`, `EnrollmentIdentifier` |
-| [`infra/persistence`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/infra/persistence) | JPA entities and repository implementations | `ProjectEntity`, `EnrollmentEntity`, `AttendanceEntity`, `ProjectAreaOfExpertiseEntity` |
-| [`infra/read`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/infra/read) | Read-side contracts, projections, JPQL implementations | `ProjectQueries`, `EnrollmentsQueries`, `AttendancesQueries`, `ProjectView`, `EnrollmentView`, `AttendanceView` |
+| [`presenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project/presenter) | REST resources, request DTOs, response DTOs, presenter mappers | `ProjectsResource`, `EnrollmentsResource`, `AttendancesResource`, `ProjectsAreasOfExpertiseResource`, `AreasOfExpertiseProjectsResource` |
+| [`service/impl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project/service/impl) | Write-side orchestration plus read-service wrappers | `ProjectServiceImpl`, `EnrollmentsServiceImpl`, `AttendancesServiceImpl`, `ProjectAreaOfExpertiseServiceImpl` |
+| [`service/utils`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project/service/utils) | Aggregate construction helpers | `AttendanceProcessor`, `ProjectAreaOfExpertiseProcessor` |
+| [`domain`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project/domain) | Aggregates, repositories, enums, value objects | `Project`, `Enrollment`, `Attendance`, `ProjectAreaOfExpertise`, `EnrollmentIdentifier` |
+| [`infra/persistence`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project/infra/persistence) | JPA entities and repository implementations | `ProjectEntity`, `EnrollmentEntity`, `AttendanceEntity`, `ProjectAreaOfExpertiseEntity` |
+| [`infra/read`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project/infra/read) | Read-side contracts, projections, JPQL implementations | `ProjectQueries`, `EnrollmentsQueries`, `AttendancesQueries`, `ProjectView`, `EnrollmentView`, `AttendanceView` |
 
 ## Persistence model
 
-The module persists four tables introduced by Flyway migrations [`V010`](../../../pug-service/src/main/resources/db/migration/V010__create_projects_table.sql) through [`V013`](../../../pug-service/src/main/resources/db/migration/V013__create_attendances_table.sql).
+The module persists four tables introduced by Flyway migrations [`V010`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V010__create_projects_table.sql) through [`V013`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V013__create_attendances_table.sql).
 
 | Table | Key | What it stores | Important constraints |
 | --- | --- | --- | --- |
@@ -134,7 +134,7 @@ erDiagram
     }
 ```
 
-Concrete seeded examples for this model live in [`V018__seed_test_data.sql`](../../../pug-service/src/main/resources/db/migration/V018__seed_test_data.sql). The seed includes multiple project states, multiple enrollment states, and `WAITING`/`PRESENT`/`ABSENT` attendance examples.
+Concrete seeded examples for this model live in [`V018__seed_test_data.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V018__seed_test_data.sql). The seed includes multiple project states, multiple enrollment states, and `WAITING`/`PRESENT`/`ABSENT` attendance examples.
 
 ## Main flows
 
@@ -196,7 +196,7 @@ Enrollment-specific design points:
 
 - The target former student comes from the query parameter only for admin callers. Otherwise the authenticated former-student account is used.
 - Area compatibility is enforced before persistence through the project-area association table.
-- The aggregate key is modeled as [`EnrollmentIdentifier`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/domain/vos/EnrollmentIdentifier.java), not a surrogate UUID.
+- The aggregate key is modeled as [`EnrollmentIdentifier`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/domain/vos/EnrollmentIdentifier.java), not a surrogate UUID.
 - Bulk project-driven transitions deliberately skip invalid lifecycle moves instead of failing the whole operation.
 - Closing statuses (`CANCELED`, `COMPLETED`, `EXITED`, `REMOVED`) trigger deletion of waiting attendances for that enrollment.
 
@@ -255,9 +255,9 @@ flowchart LR
 
 The query layer does more than simple table reads:
 
-- [`ProjectQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/infra/read/impl/ProjectQueriesImpl.java) joins partner entities and creator account/user data.
-- [`EnrollmentsQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/infra/read/impl/EnrollmentsQueriesImpl.java) joins project, former-student, account, and user data.
-- [`AttendancesQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/infra/read/impl/AttendancesQueriesImpl.java) joins project, former-student, and optional validator account/user data.
+- [`ProjectQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/infra/read/impl/ProjectQueriesImpl.java) joins partner entities and creator account/user data.
+- [`EnrollmentsQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/infra/read/impl/EnrollmentsQueriesImpl.java) joins project, former-student, account, and user data.
+- [`AttendancesQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/infra/read/impl/AttendancesQueriesImpl.java) joins project, former-student, and optional validator account/user data.
 - Search filters are concrete and module-specific:
   - projects: name, entity IDs, description, creator IDs, timestamp range, statuses, offered-hour bounds
   - enrollments: project IDs, former-student IDs, statuses, lifecycle timestamp range, counterpart period range
@@ -271,17 +271,17 @@ The query layer does more than simple table reads:
 - **Composite identifiers where the domain is naturally relational:** enrollments are keyed by `(projectId, formerStudentId)` and project-area links are keyed by `(projectId, areaOfExpertiseId)`.
 - **Attendance validation is the source of truth for completed hours:** neither project hours nor former-student completed hours are edited directly through REST endpoints in this module.
 - **Academic eligibility is enforced inside project flows:** enrollment creation depends on the area-of-expertise mapping instead of trusting caller input.
-- **Hard deletes plus shared audit trail:** delete operations remove rows and rely on [`AuditPublisher`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) for traceability.
+- **Hard deletes plus shared audit trail:** delete operations remove rows and rely on [`AuditPublisher`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) for traceability.
 - **No internal background processing:** scheduled jobs and message consumers were not found in `src/main/java/br/org/catolicasc/pug/project` after checking for `@Scheduled`, `@Incoming`, `@Outgoing`, and `@ConsumeEvent`.
 
 ## Dependencies and boundaries
 
 | Dependency or boundary | How the project module uses it |
 | --- | --- |
-| [`shared`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared) | API envelopes, pagination, UUIDv7 validation, locale formatting, audit publishing, common exceptions |
-| [`partner`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner) | validate partner entity existence on project create; expose entity names in project read models |
-| [`academic`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic) | resolve former-student records, area-of-expertise compatibility, completed-hour updates, academic-side project association reads |
-| [`identity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity) | determine the current account and expose creator/student/validator identity data in read models |
+| [`shared`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/shared) | API envelopes, pagination, UUIDv7 validation, locale formatting, audit publishing, common exceptions |
+| [`partner`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/partner) | validate partner entity existence on project create; expose entity names in project read models |
+| [`academic`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/academic) | resolve former-student records, area-of-expertise compatibility, completed-hour updates, academic-side project association reads |
+| [`identity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/identity) | determine the current account and expose creator/student/validator identity data in read models |
 | PostgreSQL + Flyway | persist `projects`, `project_areas_of_expertise`, `enrollments`, and `attendances` |
 | Shared audit pipeline | write operations publish audit events; persistence of audit logs happens in the `shared` module |
 

@@ -1,4 +1,4 @@
-﻿# Shared Module Architecture
+# Shared Module Architecture
 
 [Back to module README](./README.md)
 
@@ -87,12 +87,12 @@ sequenceDiagram
 
 ### What the code actually does
 
-- [`CorrelationFilter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/http/CorrelationFilter.java) stores `X-Correlation-Id` in MDC and mirrors it back to the response.
-- [`ApiEnvelope`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/ApiEnvelope.java) adds a UTC timestamp plus the correlation ID to both success and error responses.
-- [`ConstraintViolationExceptionMapper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/ConstraintViolationExceptionMapper.java) maps Bean Validation failures to HTTP `422`.
-- [`AppValidationExceptionMapper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/AppValidationExceptionMapper.java) groups `GenericFieldErrorCodes` by field and returns HTTP `400`.
-- [`PersistenceExceptionMapper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/PersistenceExceptionMapper.java) interprets constraint names such as `uq_*` and `*_fkey` to avoid leaking raw database details.
-- [`UncaughtExceptionMapper`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/UncaughtExceptionMapper.java) logs the stack trace but returns only a generic localized `INTERNAL_ERROR` payload.
+- [`CorrelationFilter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/http/CorrelationFilter.java) stores `X-Correlation-Id` in MDC and mirrors it back to the response.
+- [`ApiEnvelope`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/ApiEnvelope.java) adds a UTC timestamp plus the correlation ID to both success and error responses.
+- [`ConstraintViolationExceptionMapper`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/ConstraintViolationExceptionMapper.java) maps Bean Validation failures to HTTP `422`.
+- [`AppValidationExceptionMapper`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/AppValidationExceptionMapper.java) groups `GenericFieldErrorCodes` by field and returns HTTP `400`.
+- [`PersistenceExceptionMapper`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/PersistenceExceptionMapper.java) interprets constraint names such as `uq_*` and `*_fkey` to avoid leaking raw database details.
+- [`UncaughtExceptionMapper`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers/UncaughtExceptionMapper.java) logs the stack trace but returns only a generic localized `INTERNAL_ERROR` payload.
 
 ## Main flow: audit capture
 
@@ -120,27 +120,27 @@ sequenceDiagram
 
 ### Audit design details
 
-- [`AuditPublisher`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) suppresses update events when `DiffUtils.diff(...)` finds no field changes.
-- [`DiffUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/utils/DiffUtils.java) ignores sensitive or noisy fields such as `passwordHash`, `qrValidationHash`, `email`, `cpf`, `cnpj`, `createdAt`, and `updatedAt`.
-- [`AuditListener`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditListener.java) catches persistence errors internally so async audit failures do not fail the original business operation.
-- [`AuditLog`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditLog.java) is stored in MongoDB collection `audit_logs`.
-- The integration test [`AuditSystemTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/shared/infra/audit/AuditSystemTest.java) uses Awaitility to verify async persistence.
+- [`AuditPublisher`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) suppresses update events when `DiffUtils.diff(...)` finds no field changes.
+- [`DiffUtils`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/utils/DiffUtils.java) ignores sensitive or noisy fields such as `passwordHash`, `qrValidationHash`, `email`, `cpf`, `cnpj`, `createdAt`, and `updatedAt`.
+- [`AuditListener`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditListener.java) catches persistence errors internally so async audit failures do not fail the original business operation.
+- [`AuditLog`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditLog.java) is stored in MongoDB collection `audit_logs`.
+- The integration test [`AuditSystemTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/shared/infra/audit/AuditSystemTest.java) uses Awaitility to verify async persistence.
 
 ## Main flow: localization and presentation helpers
 
-- [`I18n`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/i18n/I18n.java) resolves keys from `messages_*.properties` and falls back to the raw key when it cannot resolve one.
-- [`PresenterUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/utils/PresenterUtils.java) defaults locale selection to `pt-BR` when headers are absent or invalid.
-- [`SharedDataPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/mappers/SharedDataPresenter.java) formats audit timestamps and localized campus labels for API output.
+- [`I18n`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/i18n/I18n.java) resolves keys from `messages_*.properties` and falls back to the raw key when it cannot resolve one.
+- [`PresenterUtils`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/utils/PresenterUtils.java) defaults locale selection to `pt-BR` when headers are absent or invalid.
+- [`SharedDataPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/presenter/mappers/SharedDataPresenter.java) formats audit timestamps and localized campus labels for API output.
 - Includes message bundles for `pt-BR` and `en-US` under `src/main/resources`.
 
 ## Main flow: persistence, IDs, and search helpers
 
-- [`BaseUuidV7Entity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseUuidV7Entity.java) defines the standard `UUID` primary key shape used by JPA entities.
-- [`UuidV7`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java) enforces UUID version 7 on request DTO fields before they reach domain code.
-- [`BaseAuditedEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseAuditedEntity.java) adds `createdAt` and `updatedAt` to persistent entities.
-- [`PageQuery`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageQuery.java), [`PageExecution`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageExecution.java), and [`PageResult`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageResult.java) form the shared pagination contract.
+- [`BaseUuidV7Entity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseUuidV7Entity.java) defines the standard `UUID` primary key shape used by JPA entities.
+- [`UuidV7`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java) enforces UUID version 7 on request DTO fields before they reach domain code.
+- [`BaseAuditedEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/BaseAuditedEntity.java) adds `createdAt` and `updatedAt` to persistent entities.
+- [`PageQuery`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageQuery.java), [`PageExecution`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageExecution.java), and [`PageResult`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageResult.java) form the shared pagination contract.
 - `PageQuery` reserves `size = 1` as the fetch-all sentinel. That convention is code-backed and should be preserved when adding new read services.
-- [`JpaSearchUtils`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/JpaSearchUtils.java) centralizes accent-insensitive PostgreSQL `translate(...)` search expressions so read-side queries behave the same across modules.
+- [`JpaSearchUtils`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/persistence/JpaSearchUtils.java) centralizes accent-insensitive PostgreSQL `translate(...)` search expressions so read-side queries behave the same across modules.
 
 ## Important design decisions
 
@@ -188,8 +188,8 @@ sequenceDiagram
 ### Outbound dependencies
 
 - `identity` module interfaces:
-  - [`AuthService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java)
-  - [`PasswordService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/PasswordService.java)
+  - [`AuthService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java)
+  - [`PasswordService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/PasswordService.java)
 - PostgreSQL/JPA:
   - base entity classes and `JpaSearchUtils`
 - MongoDB:

@@ -1,4 +1,4 @@
-﻿# Identity Module Architecture
+# Identity Module Architecture
 
 [Back to module README](./README.md)
 
@@ -55,14 +55,14 @@ flowchart LR
 
 ### Tables and seed data
 
-- [`V001__create_users_table.sql`](../../../pug-service/src/main/resources/db/migration/V001__create_users_table.sql)
-- [`V002__create_accounts_table.sql`](../../../pug-service/src/main/resources/db/migration/V002__create_accounts_table.sql)
-- [`V004__create_admins_table.sql`](../../../pug-service/src/main/resources/db/migration/V004__create_admins_table.sql)
-- [`V014__create_refresh_tokens_table.sql`](../../../pug-service/src/main/resources/db/migration/V014__create_refresh_tokens_table.sql)
-- [`V015__seed_system_user.sql`](../../../pug-service/src/main/resources/db/migration/V015__seed_system_user.sql)
+- [`V001__create_users_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V001__create_users_table.sql)
+- [`V002__create_accounts_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V002__create_accounts_table.sql)
+- [`V004__create_admins_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V004__create_admins_table.sql)
+- [`V014__create_refresh_tokens_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V014__create_refresh_tokens_table.sql)
+- [`V015__seed_system_user.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V015__seed_system_user.sql)
   - seeds `admin@pug.com`
   - stores a BCrypt hash for `Admin123*` without pepper
-  - runtime re-hashing is completed by [`AdminPasswordSeeder`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java)
+  - runtime re-hashing is completed by [`AdminPasswordSeeder`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java)
 
 ## Main flow: login, refresh, logout, and session checks
 
@@ -100,7 +100,7 @@ sequenceDiagram
 
 ### What the code actually does
 
-- [`AuthServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/AuthServiceImpl.java) signs short-lived JWTs with claims:
+- [`AuthServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/AuthServiceImpl.java) signs short-lived JWTs with claims:
   - `accountId`
   - `userId`
   - `passwordWired`
@@ -109,7 +109,7 @@ sequenceDiagram
 - Access-token lifespan and refresh-token lifespan come from:
   - `pug.auth.access-token.lifespan`
   - `pug.auth.refresh-token.lifespan`
-- Password hashing uses BCrypt plus `security.password.pepper` through [`PasswordServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/PasswordServiceImpl.java).
+- Password hashing uses BCrypt plus `security.password.pepper` through [`PasswordServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/PasswordServiceImpl.java).
 - Password strength requires:
   - minimum 8 characters
   - uppercase, lowercase, digit, and special character
@@ -145,12 +145,12 @@ sequenceDiagram
 
 ### Guard behavior
 
-- [`PasswordSetupGuardFilter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/security/PasswordSetupGuardFilter.java)
+- [`PasswordSetupGuardFilter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/security/PasswordSetupGuardFilter.java)
   - ignores anonymous requests
   - allows `/v1/auth/**`
   - allows `/me` endpoints
   - throws `ACCOUNT_PASSWORD_SETUP_REQUIRED` for most other protected routes when `passwordWired=false`
-- [`ActiveSessionGuardFilter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/security/ActiveSessionGuardFilter.java)
+- [`ActiveSessionGuardFilter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/security/ActiveSessionGuardFilter.java)
   - skips anonymous requests and `/v1/auth/**`
   - verifies the refresh-token session embedded in the access token still exists and is not expired
   - makes logout and logout-all effective immediately instead of waiting for JWT expiration
@@ -181,18 +181,18 @@ sequenceDiagram
 
 ### Provisioning details
 
-- [`AdminPresenter.toCommand(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AdminPresenter.java) builds:
+- [`AdminPresenter.toCommand(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AdminPresenter.java) builds:
   - `UserCreateCommand`
   - `AccountCreateCommand` with `AccountType.ADMIN`
   - `passwordHash = null`
   - `AdminCreateCommand`
-- [`AccountsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/AccountsServiceImpl.java)
+- [`AccountsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/AccountsServiceImpl.java)
   - reuses an existing `User` when the CPF already exists
   - otherwise creates a new `User`
   - deletes orphan `User` rows when the last linked account is removed
-- [`AdminsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/AdminsServiceImpl.java)
+- [`AdminsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/AdminsServiceImpl.java)
   - delegates account lifecycle to `AccountsService`
-  - blocks deletion when [`ProjectService.existsByCreatedBy(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/ProjectService.java) returns true
+  - blocks deletion when [`ProjectService.existsByCreatedBy(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/ProjectService.java) returns true
   - `PATCH /status` updates the linked account's `active` flag, not a separate admin-active field
 
 ## Main flow: read/search side
@@ -200,15 +200,15 @@ sequenceDiagram
 The module uses read projections instead of domain aggregates for public list/search endpoints.
 
 - Accounts:
-  - [`AccountsQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/AccountsQueriesImpl.java)
+  - [`AccountsQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/AccountsQueriesImpl.java)
   - joins `AccountEntity` and `UserEntity`
   - filters by `name`, `cpf`, `email`, `accountTypes`, `dateFrom`, `dateTo`, `activeOnly`
 - Admins:
-  - [`AdminsQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/AdminsQueriesImpl.java)
+  - [`AdminsQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/AdminsQueriesImpl.java)
   - joins `AdminEntity`, `AccountEntity`, and `UserEntity`
   - filters by `name`, `cpf`, `email`, `dateFrom`, `dateTo`, `activeOnly`
 - Users:
-  - [`UsersQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/UsersQueriesImpl.java)
+  - [`UsersQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/UsersQueriesImpl.java)
   - filters by `cpf`, `dateFrom`, `dateTo`, `name`
 - All three query implementations:
   - order by person name ascending
@@ -217,14 +217,14 @@ The module uses read projections instead of domain aggregates for public list/se
 
 ## Presentation model
 
-- [`AccountPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AccountPresenter.java)
+- [`AccountPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AccountPresenter.java)
   - localizes `AccountType`
   - flattens account reads to `userId` instead of nesting full user payloads
   - account search responses include a lightweight nested user object with `id` and `name`
-- [`AdminPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AdminPresenter.java)
+- [`AdminPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AdminPresenter.java)
   - nests the account response
   - localizes campus values and formats `grantedAt`
-- [`UserPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/UserPresenter.java)
+- [`UserPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/UserPresenter.java)
   - formats CPF as `000.000.000-00`
   - attaches formatted audit timestamps
 

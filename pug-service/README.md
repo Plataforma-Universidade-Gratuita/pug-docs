@@ -4,7 +4,7 @@
 
 ## Project purpose
 
-The service provides the business API for the Universidade Gratuita platform. In the current codebase, that includes:
+The service provides the business API for the Universidade Gratuita platform. It currently includes:
 
 - JWT login, refresh-token sessions, and account identity flows
 - admin, user, and partner staff administration
@@ -48,7 +48,7 @@ flowchart LR
 
 ## Tech stack
 
-| Area | Current codebase |
+| Area | Repository |
 | --- | --- |
 | Language | Java 21 |
 | Framework | Quarkus 3.14.4 |
@@ -62,7 +62,7 @@ flowchart LR
 | API docs | SmallRye OpenAPI + Swagger UI |
 | Metrics/health | Micrometer + SmallRye Health |
 | Test stack | JUnit 5, Quarkus Test, Mockito, RestAssured, AssertJ, Awaitility |
-| Request collection | Bruno under [`requests`](../../pug-service/requests) |
+| Request collection | Bruno under [`requests`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/requests) |
 | Container build | Docker multi-stage build |
 | CI | GitHub Actions |
 
@@ -72,14 +72,14 @@ flowchart LR
 
 | Path | Purpose |
 | --- | --- |
-| [`src/main/java/br/org/catolicasc/pug`](../../pug-service/src/main/java/br/org/catolicasc/pug) | production code by module |
-| [`src/main/resources`](../../pug-service/src/main/resources) | Quarkus profiles, i18n bundles, Flyway migrations |
-| [`src/test/java/br/org/catolicasc/pug`](../../pug-service/src/test/java/br/org/catolicasc/pug) | test suites and helpers |
-| [`requests`](../../pug-service/requests) | Bruno API collection and local environment file |
-| [`.github/workflows`](../../pug-service/.github/workflows) | CI/image workflows |
-| [`docker-compose.yml`](../../pug-service/docker-compose.yml) | local PostgreSQL + MongoDB containers |
-| [`Dockerfile`](../../pug-service/Dockerfile) | application image build |
-| [`pom.xml`](../../pug-service/pom.xml) | single-module build, quality plugins, coverage rules |
+| [`src/main/java/br/org/catolicasc/pug`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug) | production code by module |
+| [`src/main/resources`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/resources) | Quarkus profiles, i18n bundles, Flyway migrations |
+| [`src/test/java/br/org/catolicasc/pug`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug) | test suites and helpers |
+| [`requests`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/requests) | Bruno API collection and local environment file |
+| [`.github/workflows`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/.github/workflows) | CI/image workflows |
+| [`docker-compose.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/docker-compose.yml) | local PostgreSQL + MongoDB containers |
+| [`Dockerfile`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/Dockerfile) | application image build |
+| [`pom.xml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/pom.xml) | single-module build, quality plugins, coverage rules |
 
 ### Module docs
 
@@ -110,17 +110,17 @@ docker compose up -d postgres mongodb
 
 3. Use the local Bruno environment:
 
-- [`requests/environments/Local.bru`](../../pug-service/requests/environments/Local.bru)
+- [`requests/environments/Local.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/environments/Local.bru)
 
 4. Useful local URLs from the current config:
 
 - app base URL: `http://localhost:8080`
 - Swagger UI in dev: `http://localhost:8080/swagger-ui`
 
-Important current-codebase notes:
+Important repository notes:
 
-- [`application-dev.properties`](../../pug-service/src/main/resources/application-dev.properties) disables Dev Services in dev mode and points to PostgreSQL on `5433` and MongoDB on `27018`.
-- [`docker-compose.yml`](../../pug-service/docker-compose.yml) uses `registry-docker.weg.net/postgres:16` and `registry-docker.weg.net/mongo:7.0`.
+- [`application-dev.properties`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/application-dev.properties) disables Dev Services in dev mode and points to PostgreSQL on `5433` and MongoDB on `27018`.
+- [`docker-compose.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/docker-compose.yml) uses `registry-docker.weg.net/postgres:16` and `registry-docker.weg.net/mongo:7.0`.
 - local test runs behave differently from dev mode: tests use Quarkus Dev Services by default unless overridden by CI.
 
 ## How to build
@@ -143,7 +143,7 @@ Important current-codebase notes:
 ./mvnw package -Dnative
 ```
 
-The `native` profile exists in `pom.xml`, but dedicated `@QuarkusIntegrationTest` classes were not found in the current codebase.
+The `native` profile exists in `pom.xml`, but dedicated `@QuarkusIntegrationTest` classes are not part of the repository.
 
 ## How to test
 

@@ -15,10 +15,10 @@ This repository provides:
 
 Representative files:
 
-- [src/server.mjs](../../pug-mocks/src/server.mjs)
-- [src/routes.mjs](../../pug-mocks/src/routes.mjs)
-- [src/shared/http.mjs](../../pug-mocks/src/shared/http.mjs)
-- [src/identity/auth/session.mjs](../../pug-mocks/src/identity/auth/session.mjs)
+- [src/server.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/server.mjs)
+- [src/routes.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/routes.mjs)
+- [src/shared/http.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/shared/http.mjs)
+- [src/identity/auth/session.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/identity/auth/session.mjs)
 
 ## ✨ High-level feature summary
 
@@ -46,26 +46,26 @@ The mocked domains currently present in `src/` are:
 - **HTTP layer:** Node standard library `http`
 - **Persistence:** in-memory only
 - **Package manager:** npm
-- **External runtime dependencies:** Not found in the current codebase
+- **External runtime dependencies:** None
 
 Key files:
 
-- [package.json](../../pug-mocks/package.json)
-- [src/server.mjs](../../pug-mocks/src/server.mjs)
+- [package.json](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/package.json)
+- [src/server.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/server.mjs)
 
 ## 🗂️ Repository overview
 
 | Path | Role |
 | --- | --- |
-| [src/server.mjs](../../pug-mocks/src/server.mjs) | server bootstrap, config, CORS, request dispatch, response writing |
-| [src/routes.mjs](../../pug-mocks/src/routes.mjs) | top-level route aggregation including `/health` |
-| [src/shared/](../../pug-mocks/src/shared) | HTTP envelopes, route matching, ids, formatting, paging/filter helpers |
-| [src/identity/auth/](../../pug-mocks/src/identity/auth) | auth routes, credential wiring, mock sessions, guards |
-| [src/academic/](../../pug-mocks/src/academic) | academic mock modules |
-| [src/geo/](../../pug-mocks/src/geo) | geo mock modules |
-| [src/identity/](../../pug-mocks/src/identity) | identity mock modules |
-| [src/partner/](../../pug-mocks/src/partner) | partner mock modules |
-| [src/project/](../../pug-mocks/src/project) | project mock modules |
+| [src/server.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/server.mjs) | server bootstrap, config, CORS, request dispatch, response writing |
+| [src/routes.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/routes.mjs) | top-level route aggregation including `/health` |
+| [src/shared/](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/tree/main/src/shared) | HTTP envelopes, route matching, ids, formatting, paging/filter helpers |
+| [src/identity/auth/](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/tree/main/src/identity/auth) | auth routes, credential wiring, mock sessions, guards |
+| [src/academic/](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/tree/main/src/academic) | academic mock modules |
+| [src/geo/](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/tree/main/src/geo) | geo mock modules |
+| [src/identity/](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/tree/main/src/identity) | identity mock modules |
+| [src/partner/](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/tree/main/src/partner) | partner mock modules |
+| [src/project/](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/tree/main/src/project) | project mock modules |
 
 Leaf modules follow a stable pattern:
 
@@ -87,7 +87,7 @@ or:
 npm run start
 ```
 
-Default runtime values from [src/server.mjs](../../pug-mocks/src/server.mjs):
+Default runtime values from [src/server.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/server.mjs):
 
 - `MOCK_API_HOST=0.0.0.0`
 - `MOCK_API_PORT=8090`
@@ -165,9 +165,9 @@ sequenceDiagram
 
 ### Main architectural decisions
 
-- route registration is centralized through `createRoute(...)` in [src/shared/router.mjs](../../pug-mocks/src/shared/router.mjs)
-- all top-level route aggregation stays in [src/routes.mjs](../../pug-mocks/src/routes.mjs)
-- success and error payloads use a shared API envelope from [src/shared/http.mjs](../../pug-mocks/src/shared/http.mjs)
+- route registration is centralized through `createRoute(...)` in [src/shared/router.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/shared/router.mjs)
+- all top-level route aggregation stays in [src/routes.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/routes.mjs)
+- success and error payloads use a shared API envelope from [src/shared/http.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/shared/http.mjs)
 - all domain state is process-local and mutable
 - restarting the process clears all sessions and all in-memory mutations
 
@@ -190,7 +190,7 @@ What it does not own:
 
 Auth is intentionally simplified for local integration work.
 
-Observed behavior from [src/identity/auth/state.mjs](../../pug-mocks/src/identity/auth/state.mjs), [src/identity/auth/session.mjs](../../pug-mocks/src/identity/auth/session.mjs), and [src/identity/auth/routes.mjs](../../pug-mocks/src/identity/auth/routes.mjs):
+Observed behavior from [src/identity/auth/state.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/identity/auth/state.mjs), [src/identity/auth/session.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/identity/auth/session.mjs), and [src/identity/auth/routes.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/identity/auth/routes.mjs):
 
 - login checks email existence and active state
 - the mock `authenticate(...)` flow does **not** validate the password value
@@ -212,10 +212,10 @@ Important guard behavior:
 
 Keep responsibilities split the same way the repo already does:
 
-- server bootstrap in [src/server.mjs](../../pug-mocks/src/server.mjs)
-- route aggregation in [src/routes.mjs](../../pug-mocks/src/routes.mjs)
-- generic route helpers in [src/shared/router.mjs](../../pug-mocks/src/shared/router.mjs)
-- envelope helpers in [src/shared/http.mjs](../../pug-mocks/src/shared/http.mjs)
+- server bootstrap in [src/server.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/server.mjs)
+- route aggregation in [src/routes.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/routes.mjs)
+- generic route helpers in [src/shared/router.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/shared/router.mjs)
+- envelope helpers in [src/shared/http.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/shared/http.mjs)
 - domain behavior in each module’s `state.mjs`
 - seeded domain data in each module’s `data.mjs`
 
@@ -225,7 +225,7 @@ Keep responsibilities split the same way the repo already does:
 - keep search endpoints as `POST .../search`
 - keep relationship routes nested where the current contract expects them
 - keep specific routes before generic `/:id` routes inside the same module
-- keep `/health` defined in [src/routes.mjs](../../pug-mocks/src/routes.mjs)
+- keep `/health` defined in [src/routes.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/routes.mjs)
 
 ### State conventions
 
@@ -236,7 +236,7 @@ Keep responsibilities split the same way the repo already does:
 
 Concrete example:
 
-- [src/project/projects/state.mjs](../../pug-mocks/src/project/projects/state.mjs) removes linked project-area associations, enrollments, and attendances when a project is deleted
+- [src/project/projects/state.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/project/projects/state.mjs) removes linked project-area associations, enrollments, and attendances when a project is deleted
 
 ### Error and response conventions
 
@@ -254,16 +254,16 @@ npm run check
 Then verify:
 
 - the new route is exported through its module `routes.mjs`
-- the module routes are aggregated in [src/routes.mjs](../../pug-mocks/src/routes.mjs)
+- the module routes are aggregated in [src/routes.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/routes.mjs)
 - route ordering still keeps specific paths ahead of generic parameter paths
 
-The repository root [README.md](../../pug-mocks/README.md) is currently the stricter day-to-day development contract.
+The repository root [README.md](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/README.md) is currently the stricter day-to-day development contract.
 
 ## 🚦 CI/CD
 
 Current GitHub Actions workflows:
 
-- [verify.yml](../../pug-mocks/.github/workflows/verify.yml)
+- [verify.yml](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/.github/workflows/verify.yml)
 
 ### Verify workflow
 
@@ -286,5 +286,5 @@ flowchart TD
 
 - consumers should be able to switch between `pug-service` and `pug-mocks` by changing the base URL only
 - clients should not need mock-specific route aliases
-- CORS is controlled centrally in [src/server.mjs](../../pug-mocks/src/server.mjs)
+- CORS is controlled centrally in [src/server.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/server.mjs)
 - all in-memory changes disappear when the process restarts

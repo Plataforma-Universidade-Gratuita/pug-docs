@@ -38,10 +38,10 @@ flowchart LR
 
 That structure is visible across modules such as:
 
-- [`identity`](../../pug-service/src/main/java/br/org/catolicasc/pug/identity)
-- [`partner`](../../pug-service/src/main/java/br/org/catolicasc/pug/partner)
-- [`academic`](../../pug-service/src/main/java/br/org/catolicasc/pug/academic)
-- [`project`](../../pug-service/src/main/java/br/org/catolicasc/pug/project)
+- [`identity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/identity)
+- [`partner`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/partner)
+- [`academic`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/academic)
+- [`project`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project)
 
 ## Established code patterns
 
@@ -58,11 +58,11 @@ That structure is visible across modules such as:
 
 Concrete examples:
 
-- [`ProjectsResource`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/presenter/ProjectsResource.java)
-- [`ProjectPresenter`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/presenter/mappers/ProjectPresenter.java)
-- [`ProjectServiceImpl`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/impl/ProjectServiceImpl.java)
-- [`Project`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/domain/Project.java)
-- [`ProjectQueriesImpl`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/infra/read/impl/ProjectQueriesImpl.java)
+- [`ProjectsResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/presenter/ProjectsResource.java)
+- [`ProjectPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/presenter/mappers/ProjectPresenter.java)
+- [`ProjectServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/impl/ProjectServiceImpl.java)
+- [`Project`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/domain/Project.java)
+- [`ProjectQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/infra/read/impl/ProjectQueriesImpl.java)
 
 ### 2. Use commands and criteria between the presenter and service layers
 
@@ -74,9 +74,9 @@ The codebase does not pass request DTOs directly into services.
 
 Examples:
 
-- [`ProjectCreateCommand`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/dtos/projects/ProjectCreateCommand.java)
-- [`EnrollmentComplexSearchCriteria`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/dtos/enrollments/EnrollmentComplexSearchCriteria.java)
-- [`FormerStudentComplexSearchRequest`](../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/formerstudents/FormerStudentComplexSearchRequest.java)
+- [`ProjectCreateCommand`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/dtos/projects/ProjectCreateCommand.java)
+- [`EnrollmentComplexSearchCriteria`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/dtos/enrollments/EnrollmentComplexSearchCriteria.java)
+- [`FormerStudentComplexSearchRequest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/formerstudents/FormerStudentComplexSearchRequest.java)
 
 ### 3. Favor read projections for API reads
 
@@ -89,7 +89,7 @@ That pattern is especially consistent in `academic`, `identity`, `partner`, and 
 
 ### 4. Publish audit events from write services
 
-Create, update, and delete flows typically publish audit events through [`AuditPublisher`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) after persistence succeeds. New write code should preserve that behavior.
+Create, update, and delete flows typically publish audit events through [`AuditPublisher`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java) after persistence succeeds. New write code should preserve that behavior.
 
 ### 5. Keep cross-module calls at the service/query boundary
 
@@ -97,9 +97,9 @@ The modules call each other through service interfaces or read-query contracts, 
 
 Concrete examples:
 
-- `project` calls [`FormerStudentsService`](../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java) and [`EntitiesService`](../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/EntitiesService.java)
-- `academic` calls [`ProjectAreaOfExpertiseService`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/ProjectAreaOfExpertiseService.java)
-- `shared` calls [`AuthService`](../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java) for audit context
+- `project` calls [`FormerStudentsService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java) and [`EntitiesService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/EntitiesService.java)
+- `academic` calls [`ProjectAreaOfExpertiseService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/ProjectAreaOfExpertiseService.java)
+- `shared` calls [`AuthService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java) for audit context
 
 ## Package and module conventions
 
@@ -156,14 +156,14 @@ Tests follow the same convention:
 
 ### API-level error mapping
 
-The API does not build ad hoc error JSON in resources. Errors are normalized through the shared REST mappers under [`shared/presenter/rest/mappers`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers).
+The API does not build ad hoc error JSON in resources. Errors are normalized through the shared REST mappers under [`shared/presenter/rest/mappers`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/shared/presenter/rest/mappers).
 
 ### Exception types already in use
 
-- [`AppValidationException`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/exceptions/AppValidationException.java): request/domain validation errors collected into field-level details
-- [`BusinessRuleException`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/exceptions/BusinessRuleException.java): invalid lifecycle transitions and rule violations
-- [`DuplicateResourceException`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/exceptions/DuplicateResourceException.java): uniqueness collisions
-- [`ResourceNotFoundException`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/exceptions/ResourceNotFoundException.java): missing records
+- [`AppValidationException`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/exceptions/AppValidationException.java): request/domain validation errors collected into field-level details
+- [`BusinessRuleException`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/exceptions/BusinessRuleException.java): invalid lifecycle transitions and rule violations
+- [`DuplicateResourceException`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/exceptions/DuplicateResourceException.java): uniqueness collisions
+- [`ResourceNotFoundException`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/exceptions/ResourceNotFoundException.java): missing records
 
 ### Practical rule
 
@@ -187,13 +187,13 @@ REST DTOs use Jakarta annotations such as:
 - `@Size`
 - `@DecimalMin`
 - `@Min`
-- [`@UuidV7`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java)
+- [`@UuidV7`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/validation/UuidV7.java)
 
 Examples:
 
-- [`ProjectCreateRequest`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/presenter/dtos/projects/ProjectCreateRequest.java)
-- [`AttendanceValidateRequest`](../../pug-service/src/main/java/br/org/catolicasc/pug/project/presenter/dtos/attendance/AttendanceValidateRequest.java)
-- [`FormerStudentCreateRequest`](../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/formerstudents/FormerStudentCreateRequest.java)
+- [`ProjectCreateRequest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/presenter/dtos/projects/ProjectCreateRequest.java)
+- [`AttendanceValidateRequest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/presenter/dtos/attendance/AttendanceValidateRequest.java)
+- [`FormerStudentCreateRequest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/formerstudents/FormerStudentCreateRequest.java)
 
 ### Domain validation
 
@@ -213,9 +213,9 @@ Examples:
 
 Search endpoints normalize null request bodies and null lists before passing criteria into the query layer. Pagination is standardized through:
 
-- [`PageQuery`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageQuery.java)
-- [`PageExecution`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageExecution.java)
-- [`PageResult`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageResult.java)
+- [`PageQuery`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageQuery.java)
+- [`PageExecution`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageExecution.java)
+- [`PageResult`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/service/dtos/PageResult.java)
 
 ## Local development workflow
 
@@ -225,14 +225,14 @@ The current repository expects Docker-backed infra in development.
    - `docker compose up -d postgres mongodb`
 2. Run the service:
    - `./mvnw quarkus:dev`
-3. Use the Bruno collection under [`requests`](../../pug-service/requests) with [`requests/environments/Local.bru`](../../pug-service/requests/environments/Local.bru)
+3. Use the Bruno collection under [`requests`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/requests) with [`requests/environments/Local.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/environments/Local.bru)
 4. In dev profile, Swagger UI is exposed at `/swagger-ui`
 
 Important details:
 
-- [`application-dev.properties`](../../pug-service/src/main/resources/application-dev.properties) disables Dev Services and points to PostgreSQL on `localhost:5433` and MongoDB on `localhost:27018`.
-- [`docker-compose.yml`](../../pug-service/docker-compose.yml) uses `registry-docker.weg.net/postgres:16` and `registry-docker.weg.net/mongo:7.0`.
-- If that registry is unavailable in your environment, the current codebase does not provide a second compose file. The docs should not assume one exists.
+- [`application-dev.properties`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/application-dev.properties) disables Dev Services and points to PostgreSQL on `localhost:5433` and MongoDB on `localhost:27018`.
+- [`docker-compose.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/docker-compose.yml) uses `registry-docker.weg.net/postgres:16` and `registry-docker.weg.net/mongo:7.0`.
+- If that registry is unavailable in your environment, the repository does not provide a second compose file. The docs should not assume one exists.
 
 ## Testing expectations for new code
 
@@ -247,10 +247,10 @@ The current quality bar is package-level, not file-level.
 
 Useful existing helpers:
 
-- [`BaseResourceTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/BaseResourceTest.java)
-- [`TestDataFactory`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/TestDataFactory.java)
-- request builders under [`helpers/builders/requests`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/builders/requests)
-- command builders under [`helpers/builders/commands`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/builders/commands)
+- [`BaseResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/helpers/BaseResourceTest.java)
+- [`TestDataFactory`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/helpers/TestDataFactory.java)
+- request builders under [`helpers/builders/requests`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/helpers/builders/requests)
+- command builders under [`helpers/builders/commands`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/helpers/builders/commands)
 
 ## How to preserve existing standards
 

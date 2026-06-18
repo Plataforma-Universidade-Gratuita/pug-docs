@@ -4,19 +4,19 @@ The `partner` package owns the partner-organization side of `pug-service`. It ma
 
 ## Module purpose
 
-- ?? Register and maintain partner organizations, including CNPJ, city, and address.
-- ?? Attach `AccountType.PARTNER` accounts to partner organizations through the `staff` table.
-- ?? Provide authenticated list and search endpoints for entities and staff.
-- ?? Enforce cross-module rules before write operations reach the database.
-- ?? Publish audit events after create, update, and delete operations.
+- Register and maintain partner organizations, including CNPJ, city, and address.
+- Attach `AccountType.PARTNER` accounts to partner organizations through the `staff` table.
+- Provide authenticated list and search endpoints for entities and staff.
+- Enforce cross-module rules before write operations reach the database.
+- Publish audit events after create, update, and delete operations.
 
 ## Main responsibilities
 
-- Manage the `entities` table through the [`Entity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/Entity.java) aggregate and [`EntityRepositoryImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/persistence/impl/EntityRepositoryImpl.java).
-- Manage the `staff` table through the [`Staff`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/Staff.java) aggregate and [`StaffRepositoryImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/persistence/impl/StaffRepositoryImpl.java).
-- Expose CRUD and search endpoints through [`EntitiesResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/EntitiesResource.java) and [`StaffResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/StaffResource.java).
-- Validate CNPJ and aggregate invariants through [`Cnpj`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/vos/Cnpj.java), [`EntityProcessor`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/utils/EntityProcessor.java), and [`StaffProcessor`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/utils/StaffProcessor.java).
-- Orchestrate account provisioning and status updates through [`StaffServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java).
+- Manage the `entities` table through the [`Entity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/Entity.java) aggregate and [`EntityRepositoryImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/persistence/impl/EntityRepositoryImpl.java).
+- Manage the `staff` table through the [`Staff`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/Staff.java) aggregate and [`StaffRepositoryImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/persistence/impl/StaffRepositoryImpl.java).
+- Expose CRUD and search endpoints through [`EntitiesResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/EntitiesResource.java) and [`StaffResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/StaffResource.java).
+- Validate CNPJ and aggregate invariants through [`Cnpj`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/vos/Cnpj.java), [`EntityProcessor`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/utils/EntityProcessor.java), and [`StaffProcessor`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/utils/StaffProcessor.java).
+- Orchestrate account provisioning and status updates through [`StaffServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java).
 
 ## Public API
 
@@ -46,16 +46,16 @@ The `partner` package owns the partner-organization side of `pug-service`. It ma
 
 ## Concrete behavior from the repository
 
-- Entity search joins city data and returns a richer projection than the plain `GET` list. That behavior is implemented in [`EntitiesQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/EntitiesQueriesImpl.java) and mapped by [`EntityPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/EntityPresenter.java).
-- Staff search defaults `activeOnly` to `true` when the request omits it. That default is applied in [`StaffResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/StaffResource.java).
-- Staff creation builds an `AccountType.PARTNER` account command with a `null` password and then persists the partner assignment. The mapping lives in [`StaffPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/StaffPresenter.java).
-- Entity deletion is blocked when [`ProjectService.existsAnyByEntityId(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/ProjectService.java) returns `true`, and successful deletion cascades to [`StaffService.deleteAllByEntityId(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/StaffService.java).
-- Staff deletion is blocked when the linked account still owns projects or validated attendances. The checks live in [`StaffServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java).
+- Entity search joins city data and returns a richer projection than the plain `GET` list. That behavior is implemented in [`EntitiesQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/EntitiesQueriesImpl.java) and mapped by [`EntityPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/EntityPresenter.java).
+- Staff search defaults `activeOnly` to `true` when the request omits it. That default is applied in [`StaffResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/StaffResource.java).
+- Staff creation builds an `AccountType.PARTNER` account command with a `null` password and then persists the partner assignment. The mapping lives in [`StaffPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/StaffPresenter.java).
+- Entity deletion is blocked when [`ProjectService.existsAnyByEntityId(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/ProjectService.java) returns `true`, and successful deletion cascades to [`StaffService.deleteAllByEntityId(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/StaffService.java).
+- Staff deletion is blocked when the linked account still owns projects or validated attendances. The checks live in [`StaffServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java).
 - Search filters use shared `JpaSearchUtils.containsClause(...)`, so the string filters are substring-based and follow the project-wide search conventions.
 
 ## Example payloads
 
-A create-entity request exists in [`requests/partner`](../../../pug-service/requests/partner):
+A create-entity request exists in [`requests/partner`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/requests/partner):
 
 ```json
 {
@@ -66,7 +66,7 @@ A create-entity request exists in [`requests/partner`](../../../pug-service/requ
 }
 ```
 
-A staff search request can combine multiple filters. The repository tests use the same pattern in [`StaffResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/presenter/StaffResourceTest.java):
+A staff search request can combine multiple filters. The repository tests use the same pattern in [`StaffResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/presenter/StaffResourceTest.java):
 
 ```json
 {
@@ -77,48 +77,48 @@ A staff search request can combine multiple filters. The repository tests use th
 }
 ```
 
-The seeded Flyway data in [`V018__seed_test_data.sql`](../../../pug-service/src/main/resources/db/migration/V018__seed_test_data.sql) includes concrete partner examples such as `Inova Tech Labs Ltda`, `Instituto Crescer Social`, and staff emails under `@partner.pug.br`.
+The seeded Flyway data in [`V018__seed_test_data.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V018__seed_test_data.sql) includes concrete partner examples such as `Inova Tech Labs Ltda`, `Instituto Crescer Social`, and staff emails under `@partner.pug.br`.
 
 ## Important classes and files
 
 - Domain:
-  - [`Entity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/Entity.java)
-  - [`Staff`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/Staff.java)
-  - [`Cnpj`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/vos/Cnpj.java)
-  - [`PartnerErrorCodes`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/enums/PartnerErrorCodes.java)
+  - [`Entity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/Entity.java)
+  - [`Staff`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/Staff.java)
+  - [`Cnpj`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/vos/Cnpj.java)
+  - [`PartnerErrorCodes`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/enums/PartnerErrorCodes.java)
 - Write services:
-  - [`EntitiesServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/EntitiesServiceImpl.java)
-  - [`StaffServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java)
+  - [`EntitiesServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/EntitiesServiceImpl.java)
+  - [`StaffServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java)
 - Read services and queries:
-  - [`EntitiesReadServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/EntitiesReadServiceImpl.java)
-  - [`StaffReadServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffReadServiceImpl.java)
-  - [`EntitiesQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/EntitiesQueriesImpl.java)
-  - [`StaffQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/StaffQueriesImpl.java)
+  - [`EntitiesReadServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/EntitiesReadServiceImpl.java)
+  - [`StaffReadServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffReadServiceImpl.java)
+  - [`EntitiesQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/EntitiesQueriesImpl.java)
+  - [`StaffQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/StaffQueriesImpl.java)
 - Presentation:
-  - [`EntitiesResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/EntitiesResource.java)
-  - [`StaffResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/StaffResource.java)
-  - [`EntityPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/EntityPresenter.java)
-  - [`StaffPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/StaffPresenter.java)
+  - [`EntitiesResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/EntitiesResource.java)
+  - [`StaffResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/StaffResource.java)
+  - [`EntityPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/EntityPresenter.java)
+  - [`StaffPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/StaffPresenter.java)
 - Persistence and schema:
-  - [`EntityEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/persistence/EntityEntity.java)
-  - [`StaffEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/persistence/StaffEntity.java)
-  - [`V005__create_entities_table.sql`](../../../pug-service/src/main/resources/db/migration/V005__create_entities_table.sql)
-  - [`V006__create_staff_table.sql`](../../../pug-service/src/main/resources/db/migration/V006__create_staff_table.sql)
+  - [`EntityEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/persistence/EntityEntity.java)
+  - [`StaffEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/persistence/StaffEntity.java)
+  - [`V005__create_entities_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V005__create_entities_table.sql)
+  - [`V006__create_staff_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V006__create_staff_table.sql)
 
 ## Dependencies on other modules
 
-- [`shared`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared): response envelopes, pagination, locale resolution, UUIDv7 validation, search helpers, and audit publishing.
-- [`geo`](../../../pug-service/src/main/java/br/org/catolicasc/pug/geo): `EntitiesServiceImpl` validates `cityId` through `CitiesReadService`, and the read side joins `CityEntity` for complex search responses.
-- [`identity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity): `StaffServiceImpl` provisions, updates, deactivates, and deletes accounts through `AccountsService`; `StaffResource` uses `AuthService` for `/me`.
-- [`project`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project): delete guards depend on `ProjectService` and `AttendancesService`; the `project` module also imports partner DTOs and `EntitiesService`.
+- [`shared`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/shared): response envelopes, pagination, locale resolution, UUIDv7 validation, search helpers, and audit publishing.
+- [`geo`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/geo): `EntitiesServiceImpl` validates `cityId` through `CitiesReadService`, and the read side joins `CityEntity` for complex search responses.
+- [`identity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/identity): `StaffServiceImpl` provisions, updates, deactivates, and deletes accounts through `AccountsService`; `StaffResource` uses `AuthService` for `/me`.
+- [`project`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project): delete guards depend on `ProjectService` and `AttendancesService`; the `project` module also imports partner DTOs and `EntitiesService`.
 
 ## How to test the module
 
-- Tests live under [`src/test/java/br/org/catolicasc/pug/partner`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner).
+- Tests live under [`src/test/java/br/org/catolicasc/pug/partner`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/partner).
 - The module has three useful test layers:
-  - domain and mapper tests such as [`CnpjTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/domain/vos/CnpjTest.java), [`EntityMapperTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/infra/EntityMapperTest.java), and [`StaffMapperTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/infra/StaffMapperTest.java)
-  - query/read tests such as [`EntitiesQueriesImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/infra/read/impl/EntitiesQueriesImplTest.java) and [`StaffQueriesImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/infra/read/impl/StaffQueriesImplTest.java)
-  - resource/service integration tests such as [`EntitiesResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/presenter/EntitiesResourceTest.java), [`StaffResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/presenter/StaffResourceTest.java), [`EntitiesServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/service/impl/EntitiesServiceImplTest.java), and [`StaffServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImplTest.java)
+  - domain and mapper tests such as [`CnpjTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/domain/vos/CnpjTest.java), [`EntityMapperTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/infra/EntityMapperTest.java), and [`StaffMapperTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/infra/StaffMapperTest.java)
+  - query/read tests such as [`EntitiesQueriesImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/infra/read/impl/EntitiesQueriesImplTest.java) and [`StaffQueriesImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/infra/read/impl/StaffQueriesImplTest.java)
+  - resource/service integration tests such as [`EntitiesResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/presenter/EntitiesResourceTest.java), [`StaffResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/presenter/StaffResourceTest.java), [`EntitiesServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/service/impl/EntitiesServiceImplTest.java), and [`StaffServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImplTest.java)
 - Commands:
   - full suite: `./mvnw test`
   - module-focused examples: `./mvnw -Dtest=EntityTest,StaffTest,CnpjTest,EntitiesQueriesImplTest,StaffQueriesImplTest,EntitiesResourceTest,StaffResourceTest,EntitiesServiceImplTest,StaffServiceImplTest test`

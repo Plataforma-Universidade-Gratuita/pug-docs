@@ -6,13 +6,13 @@ This document describes how tests are organized in `pug-service`, how the curren
 
 Tests are grouped by the same module boundaries used in production code:
 
-- [`shared`](../../pug-service/src/test/java/br/org/catolicasc/pug/shared)
-- [`geo`](../../pug-service/src/test/java/br/org/catolicasc/pug/geo)
-- [`identity`](../../pug-service/src/test/java/br/org/catolicasc/pug/identity)
-- [`partner`](../../pug-service/src/test/java/br/org/catolicasc/pug/partner)
-- [`academic`](../../pug-service/src/test/java/br/org/catolicasc/pug/academic)
-- [`project`](../../pug-service/src/test/java/br/org/catolicasc/pug/project)
-- [`helpers`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers)
+- [`shared`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/shared)
+- [`geo`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/geo)
+- [`identity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/identity)
+- [`partner`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/partner)
+- [`academic`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/academic)
+- [`project`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/project)
+- [`helpers`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/helpers)
 
 The current tree contains about 220 test source files and helper classes.
 
@@ -24,7 +24,7 @@ Within a module, tests usually mirror the production package split:
 - `infra/read/impl/` for query tests
 - `infra/persistence/` or `infra/` for mapper and repository coverage
 
-## Test types present in the current codebase
+## Test types present in the repository
 
 ### Domain-style tests
 
@@ -32,10 +32,10 @@ These are the closest thing to unit tests in the repository. They focus on lifec
 
 Examples:
 
-- [`ProjectTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/project/domain/ProjectTest.java)
-- [`EnrollmentTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/project/domain/EnrollmentTest.java)
-- [`CounterpartHoursTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/academic/domain/vos/CounterpartHoursTest.java)
-- [`UuidV7Test`](../../pug-service/src/test/java/br/org/catolicasc/pug/shared/validation/UuidV7Test.java)
+- [`ProjectTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/project/domain/ProjectTest.java)
+- [`EnrollmentTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/project/domain/EnrollmentTest.java)
+- [`CounterpartHoursTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/domain/vos/CounterpartHoursTest.java)
+- [`UuidV7Test`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/shared/validation/UuidV7Test.java)
 
 ### Quarkus-backed integration tests
 
@@ -48,10 +48,10 @@ Most non-domain tests use `@QuarkusTest`. That includes:
 
 Examples:
 
-- [`ProjectResourceTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/project/presenter/ProjectResourceTest.java)
-- [`FormerStudentsServiceImplTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImplTest.java)
-- [`ProjectQueriesImplTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/project/infra/read/impl/ProjectQueriesImplTest.java)
-- [`AuditSystemTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/shared/infra/audit/AuditSystemTest.java)
+- [`ProjectResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/project/presenter/ProjectResourceTest.java)
+- [`FormerStudentsServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImplTest.java)
+- [`ProjectQueriesImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/project/infra/read/impl/ProjectQueriesImplTest.java)
+- [`AuditSystemTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/shared/infra/audit/AuditSystemTest.java)
 
 ## Naming conventions
 
@@ -73,13 +73,13 @@ Examples:
 
 ### 1. `TestDataFactory` for graph setup
 
-[`TestDataFactory`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/TestDataFactory.java) is the main fixture builder for persisted graphs. It creates users, accounts, entities, courses, former students, projects, enrollments, project-area links, and attendances in FK-safe order.
+[`TestDataFactory`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/helpers/TestDataFactory.java) is the main fixture builder for persisted graphs. It creates users, accounts, entities, courses, former students, projects, enrollments, project-area links, and attendances in FK-safe order.
 
 Prefer it over hand-wiring long persistence graphs in each test.
 
 ### 2. `BaseResourceTest` for resource tests
 
-[`BaseResourceTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/BaseResourceTest.java) provides:
+[`BaseResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/helpers/BaseResourceTest.java) provides:
 
 - injected `TestDataFactory`
 - injected `EntityManager`
@@ -99,9 +99,9 @@ Resource tests typically:
 
 The repository contains test builders under:
 
-- [`helpers/builders/commands`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/builders/commands)
-- [`helpers/builders/requests`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/builders/requests)
-- [`helpers/builders/domain`](../../pug-service/src/test/java/br/org/catolicasc/pug/helpers/builders/domain)
+- [`helpers/builders/commands`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/helpers/builders/commands)
+- [`helpers/builders/requests`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/helpers/builders/requests)
+- [`helpers/builders/domain`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/helpers/builders/domain)
 
 Use these builders when adding tests for create/update/validate flows. That is the established pattern for keeping test setup concise.
 
@@ -113,14 +113,14 @@ Common patterns already in use:
 
 - mock cross-module services in service tests
 - mock `AuthService` in resource tests and service tests when the current account matters
-- verify audit publishing with mocked [`AuditPublisher`](../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java)
+- verify audit publishing with mocked [`AuditPublisher`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/audit/AuditPublisher.java)
 - stub security restrictions like `requireCurrentAccountNotOfType(...)` when the test is about another branch
 
 Examples:
 
-- [`ProjectServiceImplTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/project/service/impl/ProjectServiceImplTest.java)
-- [`EnrollmentsServiceImplTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/project/service/impl/EnrollmentsServiceImplTest.java)
-- [`AttendanceServiceImplTest`](../../pug-service/src/test/java/br/org/catolicasc/pug/project/service/impl/AttendanceServiceImplTest.java)
+- [`ProjectServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/project/service/impl/ProjectServiceImplTest.java)
+- [`EnrollmentsServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/project/service/impl/EnrollmentsServiceImplTest.java)
+- [`AttendanceServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/project/service/impl/AttendanceServiceImplTest.java)
 
 Mockito and AssertJ are already part of the test stack through `quarkus-junit5-mockito`, `mockito-core`, `mockito-junit-jupiter`, and `assertj-core`.
 
@@ -128,7 +128,7 @@ Mockito and AssertJ are already part of the test stack through `quarkus-junit5-m
 
 ### Local test profile
 
-[`src/test/resources/application.properties`](../../pug-service/src/test/resources/application.properties) configures the test profile to:
+[`src/test/resources/application.properties`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/resources/application.properties) configures the test profile to:
 
 - use random HTTP ports
 - enable CORS for local frontend calls
@@ -140,7 +140,7 @@ That means local `./mvnw test` expects a working container runtime, even if it d
 
 ### CI behavior
 
-The [`verify.yml`](../../pug-service/.github/workflows/verify.yml) workflow disables Dev Services and injects explicit PostgreSQL and MongoDB connection settings that point at GitHub Actions service containers:
+The [`verify.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/.github/workflows/verify.yml) workflow disables Dev Services and injects explicit PostgreSQL and MongoDB connection settings that point at GitHub Actions service containers:
 
 - PostgreSQL on `localhost:5434`
 - MongoDB on `localhost:27019`
@@ -210,7 +210,7 @@ The profile exists in `pom.xml`, but dedicated native integration tests are not 
 
 ## JaCoCo constraints and coverage expectations
 
-Coverage is enforced in [`pom.xml`](../../pug-service/pom.xml) through both `quarkus-jacoco` and `jacoco-maven-plugin`.
+Coverage is enforced in [`pom.xml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/pom.xml) through both `quarkus-jacoco` and `jacoco-maven-plugin`.
 
 Current behavior:
 

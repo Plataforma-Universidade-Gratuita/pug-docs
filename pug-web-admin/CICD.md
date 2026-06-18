@@ -8,9 +8,9 @@ The repository currently has three GitHub Actions workflows:
 
 | Workflow | File | Trigger | Purpose |
 | --- | --- | --- | --- |
-| Verify | [verify.yml](../../pug-web-admin/.github/workflows/verify.yml) | `pull_request`, push to `main` | Run the repository quality gate |
-| Build Image | [build-image.yml](../../pug-web-admin/.github/workflows/build-image.yml) | `pull_request`, `workflow_dispatch` | Validate that the Docker image builds |
-| Publish Image | [publish-image.yml](../../pug-web-admin/.github/workflows/publish-image.yml) | tag push `v*`, `workflow_dispatch` | Build and publish the container image to GHCR |
+| Verify | [verify.yml](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/.github/workflows/verify.yml) | `pull_request`, push to `main` | Run the repository quality gate |
+| Build Image | [build-image.yml](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/.github/workflows/build-image.yml) | `pull_request`, `workflow_dispatch` | Validate that the Docker image builds |
+| Publish Image | [publish-image.yml](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/.github/workflows/publish-image.yml) | tag push `v*`, `workflow_dispatch` | Build and publish the container image to GHCR |
 
 ```mermaid
 flowchart TD
@@ -77,10 +77,10 @@ That means the current CI gate covers:
 
 Relevant files:
 
-- [package.json](../../pug-web-admin/package.json)
-- [scripts/reorderTranslations.js](../../pug-web-admin/scripts/reorderTranslations.js)
-- [scripts/checkMissingTranslations.js](../../pug-web-admin/scripts/checkMissingTranslations.js)
-- [scripts/checkUnusedTranslations.js](../../pug-web-admin/scripts/checkUnusedTranslations.js)
+- [package.json](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/package.json)
+- [scripts/reorderTranslations.js](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/scripts/reorderTranslations.js)
+- [scripts/checkMissingTranslations.js](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/scripts/checkMissingTranslations.js)
+- [scripts/checkUnusedTranslations.js](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/scripts/checkUnusedTranslations.js)
 
 ### Build Image workflow
 
@@ -88,7 +88,7 @@ The image-build workflow:
 
 1. checks out the repository
 2. sets up Docker Buildx
-3. builds the image from [Dockerfile](../../pug-web-admin/Dockerfile)
+3. builds the image from [Dockerfile](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/Dockerfile)
 4. keeps `push: false`
 
 This workflow validates container buildability, but it does **not** run `npm run verify`.
@@ -102,7 +102,7 @@ It:
 1. checks out with `fetch-depth: 0`
 2. ensures the tagged commit belongs to `main`
 3. sets up Node `22`
-4. reads `name` and `version` from [package.json](../../pug-web-admin/package.json)
+4. reads `name` and `version` from [package.json](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/package.json)
 5. fails if the pushed tag is not exactly `v${package.json.version}`
 6. sets up Docker Buildx
 7. logs in to `ghcr.io`
@@ -130,7 +130,7 @@ Important nuance:
 
 Discovered in workflow files:
 
-- `GITHUB_TOKEN` for GHCR login in [publish-image.yml](../../pug-web-admin/.github/workflows/publish-image.yml)
+- `GITHUB_TOKEN` for GHCR login in [publish-image.yml](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/.github/workflows/publish-image.yml)
 
 No additional custom secrets were found in the current workflow files.
 
@@ -145,11 +145,11 @@ Workflow-level environment values found:
 
 Defined or consumed in the repo:
 
-- `NEXT_PUBLIC_API_URL` in [constants/api.ts](../../pug-web-admin/constants/api.ts)
-- `NEXT_PUBLIC_APP_URL` in [app/layout.tsx](../../pug-web-admin/app/layout.tsx)
-- `NODE_ENV=production` in [Dockerfile](../../pug-web-admin/Dockerfile)
-- `PORT=3000` in [Dockerfile](../../pug-web-admin/Dockerfile)
-- `HOSTNAME=0.0.0.0` in [Dockerfile](../../pug-web-admin/Dockerfile)
+- `NEXT_PUBLIC_API_URL` in [constants/api.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/constants/api.ts)
+- `NEXT_PUBLIC_APP_URL` in [app/layout.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/layout.tsx)
+- `NODE_ENV=production` in [Dockerfile](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/Dockerfile)
+- `PORT=3000` in [Dockerfile](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/Dockerfile)
+- `HOSTNAME=0.0.0.0` in [Dockerfile](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/Dockerfile)
 
 ## 🧪 Tests, lint, and coverage status
 
@@ -161,9 +161,9 @@ What the pipeline enforces today:
 - translation checks
 - production build success
 
-What was **not found in the current codebase**:
+Repository scope excludes:
 
-- a dedicated automated test script in [package.json](../../pug-web-admin/package.json)
+- a dedicated automated test script in [package.json](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/package.json)
 - coverage reporting
 - a coverage threshold gate
 
@@ -177,7 +177,7 @@ Present in the codebase:
 - container image build validation
 - container image publishing to GHCR
 
-Not found in the current codebase:
+Repository scope excludes:
 
 - a deployment workflow to an environment
 - preview environment provisioning

@@ -2,9 +2,9 @@
 
 The `academic` package owns the university-side reference data and former-student records in `pug-service`. Unlike `geo` or `partner`, this package contains three related academic slices in one module:
 
-- ?? `areas-of-expertise`
-- ?? `courses`
-- ?? `former-students`
+- `areas-of-expertise`
+- `courses`
+- `former-students`
 
 ## Module purpose
 
@@ -16,9 +16,9 @@ The `academic` package owns the university-side reference data and former-studen
 
 ## Main responsibilities
 
-- Manage [`AreaOfExpertise`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/AreaOfExpertise.java) through [`AreasOfExpertiseServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/AreasOfExpertiseServiceImpl.java).
-- Manage [`Course`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/Course.java) through [`CoursesServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/CoursesServiceImpl.java).
-- Manage [`FormerStudent`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/FormerStudent.java) plus its academic value objects through [`FormerStudentsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java).
+- Manage [`AreaOfExpertise`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/AreaOfExpertise.java) through [`AreasOfExpertiseServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/AreasOfExpertiseServiceImpl.java).
+- Manage [`Course`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/Course.java) through [`CoursesServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/CoursesServiceImpl.java).
+- Manage [`FormerStudent`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/FormerStudent.java) plus its academic value objects through [`FormerStudentsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java).
 - Provide dedicated read projections and search queries for all three slices.
 - Bridge academic records with identity accounts and project enrollments.
 
@@ -64,27 +64,27 @@ The `academic` package owns the university-side reference data and former-studen
 
 These are real public service methods in code, but they are **not** exposed as REST endpoints:
 
-- [`FormerStudentsService.addCompletedHours(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java)
-- [`FormerStudentsService.removeCompletedHours(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java)
-- [`FormerStudentsService.getAreaOfExpertise(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java)
+- [`FormerStudentsService.addCompletedHours(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java)
+- [`FormerStudentsService.removeCompletedHours(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java)
+- [`FormerStudentsService.getAreaOfExpertise(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java)
 
 Those methods are called from the `project` module when attendances are validated and when enrollments are created.
 
 ## Concrete behavior from the repository
 
-- Area-of-expertise writes are admin-only, and deletion is blocked when [`CoursesService.existsAnyByAreaOfExpertiseId(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/CoursesService.java) reports linked courses.
-- Successful area deletion also removes project-to-area links through [`ProjectAreaOfExpertiseService.deleteAllByAreaOfExpertiseId(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/ProjectAreaOfExpertiseService.java).
-- Course writes validate the referenced area of expertise through [`AreasOfExpertiseService.getById(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/AreasOfExpertiseService.java).
-- Course deletion is blocked when [`FormerStudentsService.existsAnyByCourseId(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java) finds enrolled former students.
-- Former-student creation builds an `AccountType.FORMER_STUDENT` account command with a `null` password through [`FormerStudentPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/mappers/FormerStudentPresenter.java).
+- Area-of-expertise writes are admin-only, and deletion is blocked when [`CoursesService.existsAnyByAreaOfExpertiseId(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/CoursesService.java) reports linked courses.
+- Successful area deletion also removes project-to-area links through [`ProjectAreaOfExpertiseService.deleteAllByAreaOfExpertiseId(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/ProjectAreaOfExpertiseService.java).
+- Course writes validate the referenced area of expertise through [`AreasOfExpertiseService.getById(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/AreasOfExpertiseService.java).
+- Course deletion is blocked when [`FormerStudentsService.existsAnyByCourseId(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java) finds enrolled former students.
+- Former-student creation builds an `AccountType.FORMER_STUDENT` account command with a `null` password through [`FormerStudentPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/mappers/FormerStudentPresenter.java).
 - Former-student bulk creation validates all distinct `courseId` values first, rejects duplicate academic registrations in the payload or database, then creates accounts in bulk and persists the academic rows.
 - Former-student search defaults to `activeOnly = true` and `includeConcluded = false` when the request omits those flags or the request body is missing.
 - `FormerStudentPresenter` calculates response-only fields such as `missingHours`, `progress`, `remainingDays`, and a localized `remainingDaysFormatted` string.
-- There is no REST endpoint for adding or removing completed hours. Those service methods are called from [`AttendancesServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/impl/AttendancesServiceImpl.java).
+- There is no REST endpoint for adding or removing completed hours. Those service methods are called from [`AttendancesServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/impl/AttendancesServiceImpl.java).
 
 ## Example payloads
 
-A bulk former-student request exists in [`requests/academic`](../../../pug-service/requests/academic/former-student/Create%20Former%20Students%20Bulk.bru):
+A bulk former-student request exists in [`requests/academic`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/academic/former-student/Create%2520Former%2520Students%2520Bulk.bru):
 
 ```json
 [
@@ -121,53 +121,53 @@ A former-student search request can combine academic and identity filters:
 
 Concrete seed data lives in:
 
-- [`V017__seed_areas_of_expertise_and_courses.sql`](../../../pug-service/src/main/resources/db/migration/V017__seed_areas_of_expertise_and_courses.sql)
-- [`V018__seed_test_data.sql`](../../../pug-service/src/main/resources/db/migration/V018__seed_test_data.sql)
+- [`V017__seed_areas_of_expertise_and_courses.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V017__seed_areas_of_expertise_and_courses.sql)
+- [`V018__seed_test_data.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V018__seed_test_data.sql)
 
 Examples from those files include courses such as `Engenharia de Software`, `Design`, and `Direito`, plus former-student emails under `@former-student.pug.br`.
 
 ## Important classes and files
 
 - Areas of expertise:
-  - [`AreasOfExpertiseResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/AreasOfExpertiseResource.java)
-  - [`AreasOfExpertiseServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/AreasOfExpertiseServiceImpl.java)
-  - [`AreasOfExpertiseQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/AreasOfExpertiseQueriesImpl.java)
+  - [`AreasOfExpertiseResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/AreasOfExpertiseResource.java)
+  - [`AreasOfExpertiseServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/AreasOfExpertiseServiceImpl.java)
+  - [`AreasOfExpertiseQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/AreasOfExpertiseQueriesImpl.java)
 - Courses:
-  - [`CoursesResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/CoursesResource.java)
-  - [`CoursesServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/CoursesServiceImpl.java)
-  - [`CoursesQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/CoursesQueriesImpl.java)
+  - [`CoursesResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/CoursesResource.java)
+  - [`CoursesServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/CoursesServiceImpl.java)
+  - [`CoursesQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/CoursesQueriesImpl.java)
 - Former students:
-  - [`FormerStudentsResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/FormerStudentsResource.java)
-  - [`FormerStudentsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java)
-  - [`FormerStudentsQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/FormerStudentsQueriesImpl.java)
-  - [`FormerStudentPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/mappers/FormerStudentPresenter.java)
-  - [`FormerStudentProcessor`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/utils/FormerStudentProcessor.java)
+  - [`FormerStudentsResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/FormerStudentsResource.java)
+  - [`FormerStudentsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java)
+  - [`FormerStudentsQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/FormerStudentsQueriesImpl.java)
+  - [`FormerStudentPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/mappers/FormerStudentPresenter.java)
+  - [`FormerStudentProcessor`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/utils/FormerStudentProcessor.java)
 - Persistence and schema:
-  - [`AreaOfExpertiseEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/persistence/AreaOfExpertiseEntity.java)
-  - [`CourseEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/persistence/CourseEntity.java)
-  - [`FormerStudentEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/persistence/FormerStudentEntity.java)
-  - [`V007__create_areas_of_expertise_table.sql`](../../../pug-service/src/main/resources/db/migration/V007__create_areas_of_expertise_table.sql)
-  - [`V008__create_courses_table.sql`](../../../pug-service/src/main/resources/db/migration/V008__create_courses_table.sql)
-  - [`V009__create_former_students_table.sql`](../../../pug-service/src/main/resources/db/migration/V009__create_former_students_table.sql)
+  - [`AreaOfExpertiseEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/persistence/AreaOfExpertiseEntity.java)
+  - [`CourseEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/persistence/CourseEntity.java)
+  - [`FormerStudentEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/persistence/FormerStudentEntity.java)
+  - [`V007__create_areas_of_expertise_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V007__create_areas_of_expertise_table.sql)
+  - [`V008__create_courses_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V008__create_courses_table.sql)
+  - [`V009__create_former_students_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V009__create_former_students_table.sql)
 
 ## Dependencies on other modules
 
-- [`shared`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared): response envelopes, pagination, locale handling, `Campi`, UUIDv7 validation, audit publishing, and shared persistence/search helpers.
-- [`identity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity): former-student create/update/status/delete flows delegate to `AccountsService`, `/me` uses `AuthService`, and presenter mapping composes identity account responses.
-- [`project`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project): area deletion clears project-area associations; former-student deletion is blocked by enrollments; attendance validation updates completed hours; enrollment creation checks area-of-expertise compatibility.
+- [`shared`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/shared): response envelopes, pagination, locale handling, `Campi`, UUIDv7 validation, audit publishing, and shared persistence/search helpers.
+- [`identity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/identity): former-student create/update/status/delete flows delegate to `AccountsService`, `/me` uses `AuthService`, and presenter mapping composes identity account responses.
+- [`project`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/main/java/br/org/catolicasc/pug/project): area deletion clears project-area associations; former-student deletion is blocked by enrollments; attendance validation updates completed hours; enrollment creation checks area-of-expertise compatibility.
 
 ### Inbound use from other modules
 
-- The `project` module imports academic domain/services such as [`FormerStudentsService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java) and [`AreaOfExpertise`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/AreaOfExpertise.java).
-- The `project` presenter layer also reuses academic DTOs such as [`AreaOfExpertiseResponse`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/areasofexpertise/AreaOfExpertiseResponse.java) and [`FormerStudentSimpleComplexSearchResponse`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/formerstudents/FormerStudentSimpleComplexSearchResponse.java).
+- The `project` module imports academic domain/services such as [`FormerStudentsService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java) and [`AreaOfExpertise`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/AreaOfExpertise.java).
+- The `project` presenter layer also reuses academic DTOs such as [`AreaOfExpertiseResponse`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/areasofexpertise/AreaOfExpertiseResponse.java) and [`FormerStudentSimpleComplexSearchResponse`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/formerstudents/FormerStudentSimpleComplexSearchResponse.java).
 
 ## How to test the module
 
-- Tests live under [`src/test/java/br/org/catolicasc/pug/academic`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic).
+- Tests live under [`src/test/java/br/org/catolicasc/pug/academic`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/src/test/java/br/org/catolicasc/pug/academic).
 - Representative test groups:
-  - domain/value objects: [`AreaOfExpertiseTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/domain/AreaOfExpertiseTest.java), [`CourseTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/domain/CourseTest.java), [`FormerStudentTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/domain/FormerStudentTest.java), [`CounterpartHoursTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/domain/vos/CounterpartHoursTest.java), [`PeriodTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/domain/vos/PeriodTest.java)
-  - read/query coverage: [`AreasOfExpertiseQueriesImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/infra/read/impl/AreasOfExpertiseQueriesImplTest.java), [`CoursesQueriesImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/infra/read/impl/CoursesQueriesImplTest.java), [`FormerStudentsQueriesImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/infra/read/impl/FormerStudentsQueriesImplTest.java)
-  - resource/service coverage: [`AreasOfExpertiseResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/presenter/AreasOfExpertiseResourceTest.java), [`CoursesResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/presenter/CoursesResourceTest.java), [`FormerStudentsResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/presenter/FormerStudentsResourceTest.java), [`AreasOfExpertiseServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/service/impl/AreasOfExpertiseServiceImplTest.java), [`CoursesServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/service/impl/CoursesServiceImplTest.java), [`FormerStudentsServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImplTest.java)
+  - domain/value objects: [`AreaOfExpertiseTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/domain/AreaOfExpertiseTest.java), [`CourseTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/domain/CourseTest.java), [`FormerStudentTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/domain/FormerStudentTest.java), [`CounterpartHoursTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/domain/vos/CounterpartHoursTest.java), [`PeriodTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/domain/vos/PeriodTest.java)
+  - read/query coverage: [`AreasOfExpertiseQueriesImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/infra/read/impl/AreasOfExpertiseQueriesImplTest.java), [`CoursesQueriesImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/infra/read/impl/CoursesQueriesImplTest.java), [`FormerStudentsQueriesImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/infra/read/impl/FormerStudentsQueriesImplTest.java)
+  - resource/service coverage: [`AreasOfExpertiseResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/presenter/AreasOfExpertiseResourceTest.java), [`CoursesResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/presenter/CoursesResourceTest.java), [`FormerStudentsResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/presenter/FormerStudentsResourceTest.java), [`AreasOfExpertiseServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/service/impl/AreasOfExpertiseServiceImplTest.java), [`CoursesServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/service/impl/CoursesServiceImplTest.java), [`FormerStudentsServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImplTest.java)
 - Commands:
   - full suite: `./mvnw test`
   - module-focused examples: `./mvnw -Dtest=AreaOfExpertiseTest,CourseTest,FormerStudentTest,AreasOfExpertiseQueriesImplTest,CoursesQueriesImplTest,FormerStudentsQueriesImplTest,AreasOfExpertiseResourceTest,CoursesResourceTest,FormerStudentsResourceTest,AreasOfExpertiseServiceImplTest,CoursesServiceImplTest,FormerStudentsServiceImplTest test`

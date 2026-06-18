@@ -52,9 +52,9 @@ flowchart TD
 
 Unlike `partner`, this module is not split around one resource. It is a small internal subsystem with three public resource controllers:
 
-- [`AreasOfExpertiseResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/AreasOfExpertiseResource.java)
-- [`CoursesResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/CoursesResource.java)
-- [`FormerStudentsResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/FormerStudentsResource.java)
+- [`AreasOfExpertiseResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/AreasOfExpertiseResource.java)
+- [`CoursesResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/CoursesResource.java)
+- [`FormerStudentsResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/FormerStudentsResource.java)
 
 ## Data model and persistence
 
@@ -68,9 +68,9 @@ Unlike `partner`, this module is not split around one resource. It is a small in
 
 Schema files:
 
-- [`V007__create_areas_of_expertise_table.sql`](../../../pug-service/src/main/resources/db/migration/V007__create_areas_of_expertise_table.sql)
-- [`V008__create_courses_table.sql`](../../../pug-service/src/main/resources/db/migration/V008__create_courses_table.sql)
-- [`V009__create_former_students_table.sql`](../../../pug-service/src/main/resources/db/migration/V009__create_former_students_table.sql)
+- [`V007__create_areas_of_expertise_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V007__create_areas_of_expertise_table.sql)
+- [`V008__create_courses_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V008__create_courses_table.sql)
+- [`V009__create_former_students_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V009__create_former_students_table.sql)
 
 Important constraints from the code and migrations:
 
@@ -86,21 +86,21 @@ Important constraints from the code and migrations:
 
 | Type | Purpose |
 | --- | --- |
-| [`AreaOfExpertise`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/AreaOfExpertise.java) | Immutable catalog aggregate with rename behavior and audit info. |
-| [`Course`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/Course.java) | Immutable course aggregate linked to one area of expertise. |
-| [`FormerStudent`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/FormerStudent.java) | Academic record linked to one account, one course, one campus, one registration, one progress window. |
-| [`AcademicRegistration`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/vos/AcademicRegistration.java) | Trimmed registration value with max-length validation. |
-| [`CounterpartHours`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/vos/CounterpartHours.java) | Required/completed hour accounting plus concluded flag. |
-| [`Period`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/vos/Period.java) | Enrollment start/due date pair with range validation. |
+| [`AreaOfExpertise`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/AreaOfExpertise.java) | Immutable catalog aggregate with rename behavior and audit info. |
+| [`Course`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/Course.java) | Immutable course aggregate linked to one area of expertise. |
+| [`FormerStudent`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/FormerStudent.java) | Academic record linked to one account, one course, one campus, one registration, one progress window. |
+| [`AcademicRegistration`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/vos/AcademicRegistration.java) | Trimmed registration value with max-length validation. |
+| [`CounterpartHours`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/vos/CounterpartHours.java) | Required/completed hour accounting plus concluded flag. |
+| [`Period`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/vos/Period.java) | Enrollment start/due date pair with range validation. |
 
 ### Read-side projections
 
 | Projection | Used by | Shape |
 | --- | --- | --- |
-| [`AreaOfExpertiseView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/dtos/AreaOfExpertiseView.java) | area list/get/search | area plus audit timestamps |
-| [`CourseView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/dtos/CourseView.java) | course list/get/search | course plus nested area view |
-| [`FormerStudentView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/dtos/FormerStudentView.java) | former-student list/get/me | former-student scalars only, including `courseId` |
-| [`FormerStudentComplexSearchView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/dtos/FormerStudentComplexSearchView.java) | former-student search | nested account projection plus nested course and area projections |
+| [`AreaOfExpertiseView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/dtos/AreaOfExpertiseView.java) | area list/get/search | area plus audit timestamps |
+| [`CourseView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/dtos/CourseView.java) | course list/get/search | course plus nested area view |
+| [`FormerStudentView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/dtos/FormerStudentView.java) | former-student list/get/me | former-student scalars only, including `courseId` |
+| [`FormerStudentComplexSearchView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/dtos/FormerStudentComplexSearchView.java) | former-student search | nested account projection plus nested course and area projections |
 
 That split matters for the API contract:
 
@@ -144,7 +144,7 @@ sequenceDiagram
 
 The same pattern repeats for courses:
 
-- [`CoursesServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/CoursesServiceImpl.java) validates the referenced area through `AreasOfExpertiseService.getById(...)`
+- [`CoursesServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/CoursesServiceImpl.java) validates the referenced area through `AreasOfExpertiseService.getById(...)`
 - duplicate course names are blocked in both service code and schema
 - deletion is blocked when `FormerStudentsService.existsAnyByCourseId(...)` reports enrolled former students
 
@@ -187,7 +187,7 @@ flowchart TD
     accountDelete --> auditDelete[AuditPublisher.fireDelete]
 ```
 
-Key implementation details from [`FormerStudentsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java):
+Key implementation details from [`FormerStudentsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java):
 
 - the identity account is provisioned by `AccountsService`; the academic module stores only the academic extension row
 - single create checks duplicate academic registration after account creation but before persisting the academic row
@@ -218,16 +218,16 @@ sequenceDiagram
 
 The actual call sites are in:
 
-- [`AttendancesServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/impl/AttendancesServiceImpl.java)
-- [`FormerStudentsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java)
+- [`AttendancesServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/impl/AttendancesServiceImpl.java)
+- [`FormerStudentsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java)
 
 ### Enrollment area-of-expertise matching
 
 The `academic` module also provides the data that the `project` module uses to decide whether a former student can enroll in a project.
 
-- [`FormerStudent.validateCanEnroll()`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/domain/FormerStudent.java) blocks new enrollments when required hours are already concluded.
-- [`FormerStudentsService.getAreaOfExpertise(...)`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java) resolves the former student's academic area through `former_students -> courses -> areas_of_expertise`.
-- [`EnrollmentsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/impl/EnrollmentsServiceImpl.java) compares that area against the areas linked to the target project.
+- [`FormerStudent.validateCanEnroll()`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/domain/FormerStudent.java) blocks new enrollments when required hours are already concluded.
+- [`FormerStudentsService.getAreaOfExpertise(...)`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/FormerStudentsService.java) resolves the former student's academic area through `former_students -> courses -> areas_of_expertise`.
+- [`EnrollmentsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/impl/EnrollmentsServiceImpl.java) compares that area against the areas linked to the target project.
 
 ## Search and request/data flow
 
@@ -244,19 +244,19 @@ flowchart LR
 
 ### Areas of expertise
 
-- [`AreasOfExpertiseQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/AreasOfExpertiseQueriesImpl.java) supports only one filter: partial `name`.
+- [`AreasOfExpertiseQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/AreasOfExpertiseQueriesImpl.java) supports only one filter: partial `name`.
 - Results are ordered by area name ascending.
 - `size = 1` uses the shared fetch-all sentinel behavior.
 
 ### Courses
 
-- [`CoursesQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/CoursesQueriesImpl.java) supports partial `name` plus `areaOfExpertiseIds`.
+- [`CoursesQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/CoursesQueriesImpl.java) supports partial `name` plus `areaOfExpertiseIds`.
 - Read projections always join the linked area-of-expertise row.
-- Search responses use [`CourseWithAuditInfoComplexSearchResponse`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/courses/CourseWithAuditInfoComplexSearchResponse.java), which includes nested area data and audit info.
+- Search responses use [`CourseWithAuditInfoComplexSearchResponse`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/dtos/courses/CourseWithAuditInfoComplexSearchResponse.java), which includes nested area data and audit info.
 
 ### Former students
 
-- [`FormerStudentsQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/FormerStudentsQueriesImpl.java) joins `FormerStudentEntity`, `AccountEntity`, `UserEntity`, `CourseEntity`, and `AreaOfExpertiseEntity`.
+- [`FormerStudentsQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/infra/read/impl/FormerStudentsQueriesImpl.java) joins `FormerStudentEntity`, `AccountEntity`, `UserEntity`, `CourseEntity`, and `AreaOfExpertiseEntity`.
 - Supported filters are:
   - `name`
   - `cpf`
@@ -276,7 +276,7 @@ flowchart LR
 
 ## Presentation-layer details
 
-- [`FormerStudentPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/presenter/mappers/FormerStudentPresenter.java) computes derived response data that is not stored directly in the database:
+- [`FormerStudentPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/presenter/mappers/FormerStudentPresenter.java) computes derived response data that is not stored directly in the database:
   - `missingHours`
   - `progress` percentage
   - `remainingDays`
@@ -334,5 +334,5 @@ flowchart LR
 - Primary persistence is PostgreSQL through JPA/Panache.
 - Audit persistence is not owned by this module; writes publish events through `shared`.
 - Seed data exists for local/test scenarios in:
-  - [`V017__seed_areas_of_expertise_and_courses.sql`](../../../pug-service/src/main/resources/db/migration/V017__seed_areas_of_expertise_and_courses.sql)
-  - [`V018__seed_test_data.sql`](../../../pug-service/src/main/resources/db/migration/V018__seed_test_data.sql)
+  - [`V017__seed_areas_of_expertise_and_courses.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V017__seed_areas_of_expertise_and_courses.sql)
+  - [`V018__seed_test_data.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V018__seed_test_data.sql)

@@ -10,8 +10,8 @@ App Router page files are intentionally thin. They usually import a feature entr
 
 Representative route wrappers live in `app/(app)/project/page.tsx` and `app/(app)/identity/users/page.tsx`. Their paired feature entries are:
 
-- [features/project/ProjectOverviewPage.tsx](../../pug-web-admin/features/project/ProjectOverviewPage.tsx)
-- [features/identity/users/UsersPage.tsx](../../pug-web-admin/features/identity/users/UsersPage.tsx)
+- [features/project/ProjectOverviewPage.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/features/project/ProjectOverviewPage.tsx)
+- [features/identity/users/UsersPage.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/features/identity/users/UsersPage.tsx)
 
 This keeps routing concerns in `app/` and view logic in `features/`.
 
@@ -19,9 +19,9 @@ This keeps routing concerns in `app/` and view logic in `features/`.
 
 The repo consistently separates:
 
-1. **Client hooks and browser fetches** in [api/web/](../../pug-web-admin/api/web)
-2. **Browser-facing Next route handlers** in [app/api/v1/](../../pug-web-admin/app/api/v1)
-3. **Backend service wrappers** in [api/services/](../../pug-web-admin/api/services)
+1. **Client hooks and browser fetches** in [api/web/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/api/web)
+2. **Browser-facing Next route handlers** in [app/api/v1/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/app/api/v1)
+3. **Backend service wrappers** in [api/services/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/api/services)
 
 Preserve that split. Client components should normally call `api/web`, not `api/services` directly.
 
@@ -29,14 +29,14 @@ Preserve that split. Client components should normally call `api/web`, not `api/
 
 Global behavior is centralized in:
 
-- [app/layout.tsx](../../pug-web-admin/app/layout.tsx)
-- [app/providers.tsx](../../pug-web-admin/app/providers.tsx)
+- [app/layout.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/layout.tsx)
+- [app/providers.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/providers.tsx)
 
 New cross-cutting concerns should usually enter through this provider stack, not through ad hoc per-page setup.
 
 ### Feature-sliced UI composition
 
-The repository uses domain directories under [features/](../../pug-web-admin/features) and domain-matched route families under [app/](../../pug-web-admin/app).
+The repository uses domain directories under [features/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/features) and domain-matched route families under [app/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/app).
 
 Common structure:
 
@@ -47,7 +47,7 @@ Common structure:
 
 ### Validation-first requests
 
-Request and response parsing is not optional in the current codebase.
+Request and response parsing is not optional in the repository.
 
 - route handlers parse request bodies with `parseRouteBody(...)`
 - service wrappers parse backend envelopes with Zod
@@ -55,9 +55,9 @@ Request and response parsing is not optional in the current codebase.
 
 See:
 
-- [app/api/utils.ts](../../pug-web-admin/app/api/utils.ts)
-- [api/services/utils.ts](../../pug-web-admin/api/services/utils.ts)
-- [api/web/utils.ts](../../pug-web-admin/api/web/utils.ts)
+- [app/api/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/api/utils.ts)
+- [api/services/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/services/utils.ts)
+- [api/web/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/web/utils.ts)
 
 ## 🏷️ Naming conventions
 
@@ -71,7 +71,7 @@ Patterns visible in the repo:
 - **API types** ending in `Request`, `Response`, or `ComplexSearchResponse`
 - **React Query hooks** prefixed with `use`
 - **Constants** in screaming snake case
-- **Imports** favor the `@/*` alias from [tsconfig.json](../../pug-web-admin/tsconfig.json)
+- **Imports** favor the `@/*` alias from [tsconfig.json](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/tsconfig.json)
 
 Route param naming is also consistent:
 
@@ -92,7 +92,7 @@ Typical contents:
 
 Example:
 
-- [api/web/identity/users/](../../pug-web-admin/api/web/identity/users)
+- [api/web/identity/users/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/api/web/identity/users)
 
 ### `api/services`
 
@@ -116,8 +116,8 @@ Schemas and types mirror the domain split:
 
 ### `components`
 
-- [components/primitives/](../../pug-web-admin/components/primitives) for low-level reusable pieces
-- [components/composite/](../../pug-web-admin/components/composite) for higher-level composed building blocks
+- [components/primitives/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/components/primitives) for low-level reusable pieces
+- [components/composite/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/components/composite) for higher-level composed building blocks
 
 Use existing primitives before introducing new one-off controls.
 
@@ -125,15 +125,15 @@ Use existing primitives before introducing new one-off controls.
 
 ### Browser-facing errors
 
-[api/web/utils.ts](../../pug-web-admin/api/web/utils.ts) throws `WebApiError` and performs forced logout redirect handling for `401` and `403` responses.
+[api/web/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/web/utils.ts) throws `WebApiError` and performs forced logout redirect handling for `401` and `403` responses.
 
 ### Backend-facing errors
 
-[api/services/utils.ts](../../pug-web-admin/api/services/utils.ts) throws `ApiError` after parsing backend error envelopes, including field details and correlation IDs when present.
+[api/services/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/services/utils.ts) throws `ApiError` after parsing backend error envelopes, including field details and correlation IDs when present.
 
 ### Route handler errors
 
-[app/api/utils.ts](../../pug-web-admin/app/api/utils.ts) maps:
+[app/api/utils.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/api/utils.ts) maps:
 
 - `Not found` -> `404`
 - `Forbidden` -> `403`
@@ -153,12 +153,12 @@ Current standards in code:
 
 Representative files:
 
-- [api/web/project/projects/queries.ts](../../pug-web-admin/api/web/project/projects/queries.ts)
-- [app/api/v1/projects/](../../pug-web-admin/app/api/v1/projects) for the catch-all project route handler family
+- [api/web/project/projects/queries.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/api/web/project/projects/queries.ts)
+- [app/api/v1/projects/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/app/api/v1/projects) for the catch-all project route handler family
 
 ## 🧪 Testing expectations for new code
 
-Automated tests are **not configured in the current codebase**.
+Automated tests are **not configured in this repository**.
 
 What is enforced today:
 
@@ -177,7 +177,7 @@ When adding new code, at minimum keep `npm run verify` green.
 
 If you introduce automated tests, keep the repo consistent:
 
-- add an explicit script to [package.json](../../pug-web-admin/package.json)
+- add an explicit script to [package.json](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/package.json)
 - wire it into GitHub Actions
 - document whether the suite is unit, component, integration, or e2e
 
@@ -197,12 +197,12 @@ If you introduce automated tests, keep the repo consistent:
 - calling `NEXT_PUBLIC_API_URL` directly from client components
 - bypassing Zod parsing in route handlers or fetch wrappers
 - mixing page routing concerns into `features/` wrappers
-- storing auth token logic outside the helpers in [auth/](../../pug-web-admin/auth)
+- storing auth token logic outside the helpers in [auth/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/auth)
 - hardcoding user-facing text without adding translation entries
 - creating duplicate primitives when an existing primitive/composite already matches the need
 
 ## 🪤 Practical pitfalls
 
 - `npm run trans` is part of both `format` and `verify`, so translation drift breaks the pipeline quickly.
-- [scripts/checkUnusedTranslations.js](../../pug-web-admin/scripts/checkUnusedTranslations.js) scans `store` (singular), while the repo directory is [stores/](../../pug-web-admin/stores). If a key is referenced only from Zustand store files, verify that the checker still sees it.
-- `dev:mock` only swaps environment variables through [scripts/with-env.mjs](../../pug-web-admin/scripts/with-env.mjs); a mock server bootstrap was not found in this repository.
+- [scripts/checkUnusedTranslations.js](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/scripts/checkUnusedTranslations.js) scans `store` (singular), while the repo directory is [stores/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/stores). If a key is referenced only from Zustand store files, verify that the checker still sees it.
+- `dev:mock` only swaps environment variables through [scripts/with-env.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/scripts/with-env.mjs); a mock server bootstrap was not included here.

@@ -1,14 +1,14 @@
 # CI/CD Guide
 
-This document covers the GitHub Actions workflows currently present in [`pug-service/.github/workflows`](../../pug-service/.github/workflows). It reflects what is actually in the repository today: verification, image build, and image publish. A deployment workflow was **not found in the current codebase**.
+This document covers the GitHub Actions workflows currently present in [`pug-service/.github/workflows`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/.github/workflows). It reflects what is actually in the repository today: verification, image build, and image publish. A deployment workflow is not part of the repository.
 
 ## Pipeline overview
 
 The repository currently defines three workflows:
 
-- [`verify.yml`](../../pug-service/.github/workflows/verify.yml)
-- [`build-image.yml`](../../pug-service/.github/workflows/build-image.yml)
-- [`publish-image.yml`](../../pug-service/.github/workflows/publish-image.yml)
+- [`verify.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/.github/workflows/verify.yml)
+- [`build-image.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/.github/workflows/build-image.yml)
+- [`publish-image.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/.github/workflows/publish-image.yml)
 
 ```mermaid
 flowchart LR
@@ -43,7 +43,7 @@ All three workflows define `concurrency` groups so newer runs cancel older runs 
 
 ### What it does
 
-[`verify.yml`](../../pug-service/.github/workflows/verify.yml) is the main quality gate.
+[`verify.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/.github/workflows/verify.yml) is the main quality gate.
 
 Steps:
 
@@ -78,7 +78,7 @@ Important detail: the current build uses `spotless:apply`, not `spotless:check`.
 
 ### What it does
 
-[`build-image.yml`](../../pug-service/.github/workflows/build-image.yml) only verifies that the Docker image can be built.
+[`build-image.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/.github/workflows/build-image.yml) only verifies that the Docker image can be built.
 
 Steps:
 
@@ -98,7 +98,7 @@ This workflow is a packaging smoke test, not a quality gate by itself.
 
 ### What it does
 
-[`publish-image.yml`](../../pug-service/.github/workflows/publish-image.yml) builds and publishes a container image to GitHub Container Registry.
+[`publish-image.yml`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/.github/workflows/publish-image.yml) builds and publishes a container image to GitHub Container Registry.
 
 Steps:
 
@@ -146,7 +146,7 @@ No other GitHub Actions secrets were found in the workflow files.
 
 The publish workflow only pushes an image. Runtime environment values are defined by the application profiles, not by a deployment workflow in this repo.
 
-From [`application-prod.properties`](../../pug-service/src/main/resources/application-prod.properties) and [`application-qa.properties`](../../pug-service/src/main/resources/application-qa.properties), the runtime environment needs:
+From [`application-prod.properties`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/application-prod.properties) and [`application-qa.properties`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/application-qa.properties), the runtime environment needs:
 
 - `DB_URL`
 - `DB_USER`
@@ -172,7 +172,7 @@ Those variables are required by the application, but this repository does not co
 
 ## Docker build path
 
-The current [`Dockerfile`](../../pug-service/Dockerfile) uses a two-stage build:
+The current [`Dockerfile`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/tree/main/Dockerfile) uses a two-stage build:
 
 1. `maven:3.9.9-eclipse-temurin-21` builds the Quarkus application with `./mvnw -B -DskipTests package`
 2. `eclipse-temurin:21-jre` runs the produced `target/quarkus-app/`
@@ -195,7 +195,7 @@ Operational details:
 | JaCoCo report and coverage check | `verify.yml` through Maven `verify` |
 | image build smoke test | `build-image.yml` |
 | image publish | `publish-image.yml` |
-| deployment | Not found in the current codebase |
+| deployment | no deployment workflow in the repository |
 
 ## Deployment or publishing steps if present
 

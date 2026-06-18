@@ -14,10 +14,10 @@ This repository provides:
 
 Representative files:
 
-- [package.json](../../pug-web-admin/package.json)
-- [app/layout.tsx](../../pug-web-admin/app/layout.tsx)
-- [proxy.ts](../../pug-web-admin/proxy.ts)
-- [features/home/HomeCommandCenterPage.tsx](../../pug-web-admin/features/home/HomeCommandCenterPage.tsx)
+- [package.json](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/package.json)
+- [app/layout.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/app/layout.tsx)
+- [proxy.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/proxy.ts)
+- [features/home/HomeCommandCenterPage.tsx](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/features/home/HomeCommandCenterPage.tsx)
 
 ## ✨ High-level feature summary
 
@@ -43,9 +43,9 @@ Representative files:
 
 Key config files:
 
-- [next.config.ts](../../pug-web-admin/next.config.ts)
-- [tsconfig.json](../../pug-web-admin/tsconfig.json)
-- [Dockerfile](../../pug-web-admin/Dockerfile)
+- [next.config.ts](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/next.config.ts)
+- [tsconfig.json](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/tsconfig.json)
+- [Dockerfile](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/Dockerfile)
 
 ## 🗂️ Repository and module overview
 
@@ -53,18 +53,18 @@ Key config files:
 
 | Path | Role |
 | --- | --- |
-| [app/](../../pug-web-admin/app) | App Router layouts, route groups, pages, and local route handlers |
-| [app/api/v1/](../../pug-web-admin/app/api/v1) | Browser-facing API routes |
-| [api/web/](../../pug-web-admin/api/web) | Client-side endpoints and React Query hooks |
-| [api/services/](../../pug-web-admin/api/services) | Backend service wrappers |
-| [auth/](../../pug-web-admin/auth) | Cookie helpers, token validation, refresh logic |
-| [features/](../../pug-web-admin/features) | Page composition and feature logic |
-| [components/primitives/](../../pug-web-admin/components/primitives) | Reusable low-level UI |
-| [components/composite/](../../pug-web-admin/components/composite) | Higher-level UI composition |
-| [schemas/](../../pug-web-admin/schemas) | Zod schemas |
-| [stores/](../../pug-web-admin/stores) | Zustand state |
-| [scripts/](../../pug-web-admin/scripts) | Translation and env helper scripts |
-| [public/locales/](../../pug-web-admin/public/locales) | `pt-BR` and `en-US` translations |
+| [app/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/app) | App Router layouts, route groups, pages, and local route handlers |
+| [app/api/v1/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/app/api/v1) | Browser-facing API routes |
+| [api/web/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/api/web) | Client-side endpoints and React Query hooks |
+| [api/services/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/api/services) | Backend service wrappers |
+| [auth/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/auth) | Cookie helpers, token validation, refresh logic |
+| [features/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/features) | Page composition and feature logic |
+| [components/primitives/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/components/primitives) | Reusable low-level UI |
+| [components/composite/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/components/composite) | Higher-level UI composition |
+| [schemas/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/schemas) | Zod schemas |
+| [stores/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/stores) | Zustand state |
+| [scripts/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/scripts) | Translation and env helper scripts |
+| [public/locales/](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/public/locales) | `pt-BR` and `en-US` translations |
 
 ### Domain coverage
 
@@ -76,7 +76,7 @@ The current route and API structure covers:
 - `partner`
 - `project`
 
-There is also an `app/(app)/docs` route-group directory, but route files were **not found in the current codebase** under that tree.
+There is also an `app/(app)/docs` route-group directory, but no route files are present under that tree.
 
 ## ▶️ How to run locally
 
@@ -88,7 +88,7 @@ npm ci
 
 2. Configure the backend URL:
 
-- create `.env` from [.env.example](../../pug-web-admin/.env.example), or set the variable yourself
+- create `.env` from [.env.example](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/.env.example), or set the variable yourself
 - required backend base URL: `NEXT_PUBLIC_API_URL`
 
 Example:
@@ -111,9 +111,9 @@ Mock-oriented local mode:
 npm run dev:mock
 ```
 
-That command loads [mock-api.env](../../pug-web-admin/mock-api.env), which points `NEXT_PUBLIC_API_URL` to `http://localhost:8090`.
+That command loads [mock-api.env](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/mock-api.env), which points `NEXT_PUBLIC_API_URL` to `http://localhost:8090`.
 
-Mock API server bootstrap was **not found in the current codebase**. I checked [package.json](../../pug-web-admin/package.json) scripts and [scripts/](../../pug-web-admin/scripts).
+Mock API server bootstrap is not part of this repository. The documented `dev:mock` flow switches environment values only.
 
 ## 🏗️ How to build
 
@@ -130,11 +130,11 @@ Container build:
 docker build -t pug-web-admin .
 ```
 
-The Docker image uses Next standalone output and runs `server.js` on port `3000`. See [Dockerfile](../../pug-web-admin/Dockerfile).
+The Docker image uses Next standalone output and runs `server.js` on port `3000`. See [Dockerfile](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/tree/main/Dockerfile).
 
 ## ✅ How to test and verify
 
-Dedicated automated tests were **not found in the current codebase**.
+Dedicated automated tests are not part of the repository.
 
 Current verification commands are:
 

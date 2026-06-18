@@ -1,4 +1,4 @@
-﻿# Identity Module
+# Identity Module
 
 The `identity` package is the authentication and core identity boundary of `pug-service`. It owns users, accounts, administrators, JWT access tokens, opaque refresh tokens, and the guards that keep first-login and logout behavior consistent across the rest of the API.
 
@@ -24,12 +24,12 @@ The `identity` package is the authentication and core identity boundary of `pug-
 
 ### Auth endpoints
 
-Resource: [`AuthResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/AuthResource.java)
+Resource: [`AuthResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/AuthResource.java)
 
 - `POST /v1/auth/login`
   - `@PermitAll`
-  - accepts [`LoginRequest`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/dtos/auth/LoginRequest.java)
-  - returns [`TokenResponse`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/dtos/auth/TokenResponse.java)
+  - accepts [`LoginRequest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/dtos/auth/LoginRequest.java)
+  - returns [`TokenResponse`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/dtos/auth/TokenResponse.java)
 - `POST /v1/auth/refresh`
   - `@PermitAll`
   - validates the refresh token and issues a new access token
@@ -44,13 +44,13 @@ Resource: [`AuthResource`](../../../pug-service/src/main/java/br/org/catolicasc/
   - validates password strength, hashes with pepper, and stores the hash for an existing account
 
 Concrete request examples already live in the repository:
-- [`Login.bru`](../../../pug-service/requests/identity/auth/Login.bru)
-- [`Refresh.bru`](../../../pug-service/requests/identity/auth/Refresh.bru)
-- [`Wire Credentials.bru`](../../../pug-service/requests/identity/auth/Wire%20Credentials.bru)
+- [`Login.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/identity/auth/Login.bru)
+- [`Refresh.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/identity/auth/Refresh.bru)
+- [`Wire Credentials.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/identity/auth/Wire%2520Credentials.bru)
 
 ### Account endpoints
 
-Resource: [`AccountsReadOnlyResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/AccountsReadOnlyResource.java)
+Resource: [`AccountsReadOnlyResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/AccountsReadOnlyResource.java)
 
 - `GET /v1/identity/accounts/{id}`
   - admin-only
@@ -65,11 +65,11 @@ Resource: [`AccountsReadOnlyResource`](../../../pug-service/src/main/java/br/org
   - defaults `activeOnly` to `true` when omitted
 
 Example request collection:
-- [`Search Accounts.bru`](../../../pug-service/requests/identity/account/Search%20Accounts.bru)
+- [`Search Accounts.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/identity/account/Search%2520Accounts.bru)
 
 ### Admin endpoints
 
-Resource: [`AdminsResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/AdminsResource.java)
+Resource: [`AdminsResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/AdminsResource.java)
 
 All public admin endpoints are `ADMIN`-only.
 
@@ -90,12 +90,12 @@ All public admin endpoints are `ADMIN`-only.
   - blocked when that admin still owns projects
 
 Example requests:
-- [`Create Admin.bru`](../../../pug-service/requests/identity/admin/Create%20Admin.bru)
-- [`Update Admin Status.bru`](../../../pug-service/requests/identity/admin/Update%20Admin%20Status.bru)
+- [`Create Admin.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/identity/admin/Create%2520Admin.bru)
+- [`Update Admin Status.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/identity/admin/Update%2520Admin%2520Status.bru)
 
 ### User endpoints
 
-Resource: [`UsersReadOnlyResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/UsersReadOnlyResource.java)
+Resource: [`UsersReadOnlyResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/UsersReadOnlyResource.java)
 
 - `GET /v1/identity/users/{id}`
   - admin-only
@@ -109,72 +109,72 @@ Resource: [`UsersReadOnlyResource`](../../../pug-service/src/main/java/br/org/ca
   - filters: `cpf`, `dateFrom`, `dateTo`, `name`
 
 Example request collection:
-- [`Search Users.bru`](../../../pug-service/requests/identity/user/Search%20Users.bru)
+- [`Search Users.bru`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/requests/identity/user/Search%2520Users.bru)
 
 ### Internal services
 
 These are important because other modules use them directly even when no public REST endpoint exists.
 
-- [`AuthService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java)
-- [`PasswordService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/PasswordService.java)
-- [`AccountsService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AccountsService.java)
-- [`UsersService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/UsersService.java)
-- [`AdminsService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AdminsService.java)
+- [`AuthService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java)
+- [`PasswordService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/PasswordService.java)
+- [`AccountsService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AccountsService.java)
+- [`UsersService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/UsersService.java)
+- [`AdminsService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AdminsService.java)
 - read-side services:
-  - [`AccountsReadService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AccountsReadService.java)
-  - [`UsersReadService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/UsersReadService.java)
-  - [`AdminsReadService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AdminsReadService.java)
+  - [`AccountsReadService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AccountsReadService.java)
+  - [`UsersReadService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/UsersReadService.java)
+  - [`AdminsReadService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AdminsReadService.java)
 
 ### Jobs and security filters
 
-- [`ExpiredTokenCleanupJob`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/ExpiredTokenCleanupJob.java)
+- [`ExpiredTokenCleanupJob`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/ExpiredTokenCleanupJob.java)
   - scheduled daily at `03:00`
   - deletes expired rows from `refresh_tokens`
-- [`PasswordSetupGuardFilter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/security/PasswordSetupGuardFilter.java)
+- [`PasswordSetupGuardFilter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/security/PasswordSetupGuardFilter.java)
   - blocks most protected endpoints when `passwordWired=false`
   - still allows `/v1/auth/**` and `/me` endpoints
-- [`ActiveSessionGuardFilter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/security/ActiveSessionGuardFilter.java)
+- [`ActiveSessionGuardFilter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/security/ActiveSessionGuardFilter.java)
   - rejects access tokens whose backing refresh-token session no longer exists
 
 ## Important classes and files
 
 - Domain:
-  - [`User`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/domain/User.java)
-  - [`Account`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/domain/Account.java)
-  - [`Admin`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/domain/Admin.java)
-  - [`Cpf`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/domain/vos/Cpf.java)
-  - [`Email`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/domain/vos/Email.java)
+  - [`User`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/domain/User.java)
+  - [`Account`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/domain/Account.java)
+  - [`Admin`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/domain/Admin.java)
+  - [`Cpf`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/domain/vos/Cpf.java)
+  - [`Email`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/domain/vos/Email.java)
 - Persistence:
-  - [`UserEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/UserEntity.java)
-  - [`AccountEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/AccountEntity.java)
-  - [`AdminEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/AdminEntity.java)
-  - [`RefreshTokenEntity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/RefreshTokenEntity.java)
-  - [`RefreshTokenRepositoryImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/impl/RefreshTokenRepositoryImpl.java)
+  - [`UserEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/UserEntity.java)
+  - [`AccountEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/AccountEntity.java)
+  - [`AdminEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/AdminEntity.java)
+  - [`RefreshTokenEntity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/RefreshTokenEntity.java)
+  - [`RefreshTokenRepositoryImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/persistence/impl/RefreshTokenRepositoryImpl.java)
 - Service layer:
-  - [`AuthServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/AuthServiceImpl.java)
-  - [`PasswordServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/PasswordServiceImpl.java)
-  - [`AccountsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/AccountsServiceImpl.java)
-  - [`AdminsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/AdminsServiceImpl.java)
-  - [`UsersServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/UsersServiceImpl.java)
+  - [`AuthServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/AuthServiceImpl.java)
+  - [`PasswordServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/PasswordServiceImpl.java)
+  - [`AccountsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/AccountsServiceImpl.java)
+  - [`AdminsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/AdminsServiceImpl.java)
+  - [`UsersServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/UsersServiceImpl.java)
 - Read/query side:
-  - [`AccountsQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/AccountsQueriesImpl.java)
-  - [`AdminsQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/AdminsQueriesImpl.java)
-  - [`UsersQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/UsersQueriesImpl.java)
+  - [`AccountsQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/AccountsQueriesImpl.java)
+  - [`AdminsQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/AdminsQueriesImpl.java)
+  - [`UsersQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/infra/read/impl/UsersQueriesImpl.java)
 - Presentation:
-  - [`AccountPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AccountPresenter.java)
-  - [`AdminPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AdminPresenter.java)
-  - [`UserPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/UserPresenter.java)
+  - [`AccountPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AccountPresenter.java)
+  - [`AdminPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/AdminPresenter.java)
+  - [`UserPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/presenter/mappers/UserPresenter.java)
 
 ## Dependencies on other modules
 
 - Outbound dependencies:
   - `shared` for API envelopes, pagination, localized enum/campus formatting, UUID validation, exceptions, audit publishing, and utility/search helpers.
-  - `project` through [`ProjectService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/project/service/ProjectService.java), used by [`AdminsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/impl/AdminsServiceImpl.java) to block deletion of admins who still own projects.
+  - `project` through [`ProjectService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/project/service/ProjectService.java), used by [`AdminsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/impl/AdminsServiceImpl.java) to block deletion of admins who still own projects.
 - Inbound dependencies:
-  - [`FormerStudentsServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java) uses `AccountsService` to provision and delete former-student accounts.
-  - [`StaffServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java) uses `AccountsService` to provision and delete partner staff accounts.
-  - `academic`, `partner`, `project`, and `shared` import [`AuthService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java) for current-account claims and role checks.
-  - [`AdminPasswordSeeder`](../../../pug-service/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java) depends on `PasswordService` to re-hash the seeded admin password.
+  - [`FormerStudentsServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/academic/service/impl/FormerStudentsServiceImpl.java) uses `AccountsService` to provision and delete former-student accounts.
+  - [`StaffServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java) uses `AccountsService` to provision and delete partner staff accounts.
+  - `academic`, `partner`, `project`, and `shared` import [`AuthService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/identity/service/AuthService.java) for current-account claims and role checks.
+  - [`AdminPasswordSeeder`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/shared/infra/AdminPasswordSeeder.java) depends on `PasswordService` to re-hash the seeded admin password.
 
 ## Module relationships
 
@@ -195,22 +195,22 @@ flowchart LR
 - Identity tests live under `src/test/java/br/org/catolicasc/pug/identity`.
 - Representative tests by area:
   - auth and sessions:
-    - [`AuthResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/presenter/AuthResourceTest.java)
-    - [`AuthServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/service/impl/AuthServiceImplTest.java)
-    - [`AuthServiceImplPersistenceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/service/impl/AuthServiceImplPersistenceTest.java)
-    - [`ExpiredTokenCleanupJobTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/infra/ExpiredTokenCleanupJobTest.java)
+    - [`AuthResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/presenter/AuthResourceTest.java)
+    - [`AuthServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/service/impl/AuthServiceImplTest.java)
+    - [`AuthServiceImplPersistenceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/service/impl/AuthServiceImplPersistenceTest.java)
+    - [`ExpiredTokenCleanupJobTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/infra/ExpiredTokenCleanupJobTest.java)
   - security guards:
-    - [`PasswordSetupGuardFilterTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/presenter/security/PasswordSetupGuardFilterTest.java)
-    - [`SecurityGuardsIntegrationTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/presenter/security/SecurityGuardsIntegrationTest.java)
+    - [`PasswordSetupGuardFilterTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/presenter/security/PasswordSetupGuardFilterTest.java)
+    - [`SecurityGuardsIntegrationTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/presenter/security/SecurityGuardsIntegrationTest.java)
   - read/write resources:
-    - [`AccountsReadOnlyResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/presenter/AccountsReadOnlyResourceTest.java)
-    - [`AdminsResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/presenter/AdminsResourceTest.java)
-    - [`UsersReadOnlyResourceTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/presenter/UsersReadOnlyResourceTest.java)
+    - [`AccountsReadOnlyResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/presenter/AccountsReadOnlyResourceTest.java)
+    - [`AdminsResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/presenter/AdminsResourceTest.java)
+    - [`UsersReadOnlyResourceTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/presenter/UsersReadOnlyResourceTest.java)
   - services and domain:
-    - [`AccountsServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/service/impl/AccountsServiceImplTest.java)
-    - [`AdminsServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/service/impl/AdminsServiceImplTest.java)
-    - [`UsersServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/service/impl/UsersServiceImplTest.java)
-    - [`PasswordServiceImplTest`](../../../pug-service/src/test/java/br/org/catolicasc/pug/identity/service/impl/PasswordServiceImplTest.java)
+    - [`AccountsServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/service/impl/AccountsServiceImplTest.java)
+    - [`AdminsServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/service/impl/AdminsServiceImplTest.java)
+    - [`UsersServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/service/impl/UsersServiceImplTest.java)
+    - [`PasswordServiceImplTest`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/test/java/br/org/catolicasc/pug/identity/service/impl/PasswordServiceImplTest.java)
 - Useful commands:
   - full suite: `./mvnw test`
   - focused identity run: `./mvnw -Dtest=AuthResourceTest,AuthServiceImplTest,AuthServiceImplPersistenceTest,AccountsReadOnlyResourceTest,AdminsResourceTest,UsersReadOnlyResourceTest,SecurityGuardsIntegrationTest test`

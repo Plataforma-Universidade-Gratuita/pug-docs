@@ -6,8 +6,8 @@
 
 The `partner` package is a package-level module inside the Quarkus monolith. It owns two related concepts:
 
-- partner organizations, modeled by [`Entity`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/Entity.java)
-- partner staff assignments, modeled by [`Staff`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/domain/Staff.java)
+- partner organizations, modeled by [`Entity`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/Entity.java)
+- partner staff assignments, modeled by [`Staff`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/domain/Staff.java)
 
 The module does **not** own person identity end to end. Names, CPF, email, account type, and active status remain in the `identity` module, while `partner` stores only the organizational link in the `staff` table.
 
@@ -83,8 +83,8 @@ flowchart LR
 
 Concrete schema files:
 
-- [`V005__create_entities_table.sql`](../../../pug-service/src/main/resources/db/migration/V005__create_entities_table.sql)
-- [`V006__create_staff_table.sql`](../../../pug-service/src/main/resources/db/migration/V006__create_staff_table.sql)
+- [`V005__create_entities_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V005__create_entities_table.sql)
+- [`V006__create_staff_table.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V006__create_staff_table.sql)
 
 `entities.city_id` is stored as a UUID foreign key to `cities.id`, but the domain aggregate keeps it as a plain identifier instead of a JPA object graph. The same pattern is used for `staff.account_id` and `staff.entity_id`.
 
@@ -100,10 +100,10 @@ Concrete schema files:
 
 | Projection | Used by | Shape |
 | --- | --- | --- |
-| [`EntityView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/dtos/EntityView.java) | `GET /entities`, `GET /entities/{id}` | Entity data plus `cityId` only |
-| [`EntityComplexSearchView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/dtos/EntityComplexSearchView.java) | `POST /entities/search` | Entity data plus `cityName` and `cityIbgeCode` |
-| [`StaffView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/dtos/StaffView.java) | `GET /staff`, `GET /staff/{id}`, `GET /staff/me` | Nested `AccountView` plus `entityId` and `cityId` |
-| [`StaffComplexSearchView`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/dtos/StaffComplexSearchView.java) | `POST /staff/search` | Nested `AccountComplexSearchView` plus lightweight entity projection |
+| [`EntityView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/dtos/EntityView.java) | `GET /entities`, `GET /entities/{id}` | Entity data plus `cityId` only |
+| [`EntityComplexSearchView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/dtos/EntityComplexSearchView.java) | `POST /entities/search` | Entity data plus `cityName` and `cityIbgeCode` |
+| [`StaffView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/dtos/StaffView.java) | `GET /staff`, `GET /staff/{id}`, `GET /staff/me` | Nested `AccountView` plus `entityId` and `cityId` |
+| [`StaffComplexSearchView`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/dtos/StaffComplexSearchView.java) | `POST /staff/search` | Nested `AccountComplexSearchView` plus lightweight entity projection |
 
 This split matters for API behavior: plain `GET` endpoints return lightweight views, while `/search` endpoints join more tables and return richer nested data.
 
@@ -146,7 +146,7 @@ sequenceDiagram
 
 What the code actually enforces:
 
-- city existence is validated before entity persistence in [`EntitiesServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/EntitiesServiceImpl.java)
+- city existence is validated before entity persistence in [`EntitiesServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/EntitiesServiceImpl.java)
 - CNPJ uniqueness is checked in both the service and database schema
 - deleting an entity is idempotent for unknown IDs, but blocked when the project module reports linked projects
 - successful entity deletion cascades into bulk staff/account deletion through `StaffService.deleteAllByEntityId(...)`
@@ -185,7 +185,7 @@ flowchart TD
     accountDelete --> auditDelete[AuditPublisher.fireDelete]
 ```
 
-Important details from [`StaffServiceImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java):
+Important details from [`StaffServiceImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/impl/StaffServiceImpl.java):
 
 - the module stores only the assignment row; the underlying `Account` lifecycle is delegated to `identity`
 - a transfer to another entity checks whether another staff member in the target entity already uses the effective email
@@ -210,11 +210,11 @@ flowchart LR
 
 Concrete query behavior:
 
-- [`EntitiesQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/EntitiesQueriesImpl.java)
+- [`EntitiesQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/EntitiesQueriesImpl.java)
   - orders by entity name ascending
   - joins `CityEntity` only for complex search
   - supports substring filters for `name`, `cnpj`, and `address`, plus `cityIds` and audit timestamp windows
-- [`StaffQueriesImpl`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/StaffQueriesImpl.java)
+- [`StaffQueriesImpl`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/infra/read/impl/StaffQueriesImpl.java)
   - orders by user name ascending
   - joins `AccountEntity`, `UserEntity`, `EntityEntity`, and `CityEntity`
   - supports substring filters for `name`, `cpf`, and `email`, plus `entityIds`, timestamp windows, and `activeOnly`
@@ -222,9 +222,9 @@ Concrete query behavior:
 
 ## Presentation layer details
 
-- [`EntityPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/EntityPresenter.java) returns both raw `cnpj` and formatted `cnpjFormatted` (`##.###.###/####-##`).
-- [`StaffPresenter`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/StaffPresenter.java) composes partner responses with identity presenters, so account localization stays consistent with the identity module.
-- [`StaffResource`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/StaffResource.java) resolves `/me` through `AuthService.getCurrentAccountId()`.
+- [`EntityPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/EntityPresenter.java) returns both raw `cnpj` and formatted `cnpjFormatted` (`##.###.###/####-##`).
+- [`StaffPresenter`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/mappers/StaffPresenter.java) composes partner responses with identity presenters, so account localization stays consistent with the identity module.
+- [`StaffResource`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/StaffResource.java) resolves `/me` through `AuthService.getCurrentAccountId()`.
 - All endpoints return shared `ApiEnvelope` wrappers except `DELETE` and `PATCH /status`, which return HTTP `204` with no body.
 
 ## Important design decisions
@@ -274,10 +274,10 @@ Concrete query behavior:
 
 ### Inbound dependencies
 
-- The `project` module imports [`EntitiesService`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/service/EntitiesService.java) and partner presenter DTOs such as [`EntitySimpleComplexSearchResponse`](../../../pug-service/src/main/java/br/org/catolicasc/pug/partner/presenter/dtos/entities/EntitySimpleComplexSearchResponse.java).
+- The `project` module imports [`EntitiesService`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/service/EntitiesService.java) and partner presenter DTOs such as [`EntitySimpleComplexSearchResponse`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/java/br/org/catolicasc/pug/partner/presenter/dtos/entities/EntitySimpleComplexSearchResponse.java).
 
 ### Persistence and integration boundaries
 
 - Primary persistence is PostgreSQL through JPA/Panache.
 - The module publishes audit events but does not own the audit persistence target; that boundary is handled by `shared`.
-- Seed data for local/test scenarios is present in [`V018__seed_test_data.sql`](../../../pug-service/src/main/resources/db/migration/V018__seed_test_data.sql), including 3 partner entities and 5 staff assignments.
+- Seed data for local/test scenarios is present in [`V018__seed_test_data.sql`](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/src/main/resources/db/migration/V018__seed_test_data.sql), including 3 partner entities and 5 staff assignments.
