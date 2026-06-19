@@ -46,7 +46,7 @@ The mocked domains currently present in `src/` are:
 - **HTTP layer:** Node standard library `http`
 - **Persistence:** in-memory only
 - **Package manager:** npm
-- **External runtime dependencies:** None
+- **External runtime dependencies:** minimal npm dependencies, including `cloudflared` for the free tunnel workflow
 
 Key files:
 
@@ -98,6 +98,50 @@ Typical local base URL:
 
 ```text
 http://localhost:8090
+```
+
+## Free tunnel for mobile testing
+
+If Expo is running through tunnel, the mock API also needs a public URL. `pug-mocks` supports a fully free path through **Cloudflare Tunnel** quick tunnels.
+
+Run the mock server and tunnel together:
+
+```bash
+npm run mock:dev:tunnel
+```
+
+Or, if the mock server is already running on the configured port:
+
+```bash
+npm run tunnel
+```
+
+The tunnel command prints a line like:
+
+```text
+[pug-mocks] set EXPO_PUBLIC_API_URL=https://random-name.trycloudflare.com
+```
+
+It also writes that value automatically to:
+
+```text
+../pug-mobile-student/mock-api-tunnel.env
+```
+
+Optional environment variable:
+
+- `MOCK_API_TUNNEL_LOCAL_HOST=127.0.0.1`
+
+Recommended mobile flow:
+
+```bash
+# pug-mocks
+npm run mock:dev:tunnel
+```
+
+```bash
+# pug-mobile-student
+npm run dev:mock:tunnel
 ```
 
 ## ✅ Verification
@@ -288,3 +332,4 @@ flowchart TD
 - clients should not need mock-specific route aliases
 - CORS is controlled centrally in [src/server.mjs](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/src/server.mjs)
 - all in-memory changes disappear when the process restarts
+
