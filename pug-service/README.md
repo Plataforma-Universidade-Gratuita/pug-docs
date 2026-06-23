@@ -85,12 +85,12 @@ flowchart LR
 
 | Module | Purpose | Docs |
 | --- | --- | --- |
-| `shared` | cross-cutting infrastructure and contracts | [README](./shared/README.md) |
-| `geo` | read-only city catalog | [README](./geo/README.md) |
-| `identity` | auth, accounts, admins, users | [README](./identity/README.md) |
-| `partner` | entities and staff | [README](./partner/README.md) |
-| `academic` | areas of expertise, courses, former students | [README](./academic/README.md) |
-| `project` | projects, enrollments, attendances | [README](./project/README.md) |
+| `shared` | cross-cutting infrastructure and contracts | [README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/shared/README.md) |
+| `geo` | read-only city catalog | [README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/geo/README.md) |
+| `identity` | auth, accounts, admins, users | [README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/identity/README.md) |
+| `partner` | entities and staff | [README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/partner/README.md) |
+| `academic` | areas of expertise, courses, former students | [README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/academic/README.md) |
+| `project` | projects, enrollments, attendances | [README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/project/README.md) |
 
 ## How to run locally
 
@@ -173,16 +173,16 @@ Test behavior that matters:
 
 ## Top-level docs
 
-- [Development guide](./DEVELOPMENT.md)
-- [Testing guide](./TESTS.md)
-- [Architecture overview](./ARCHITECTURE.md)
-- [CI/CD guide](./CICD.md)
+- [Development guide](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/DEVELOPMENT.md)
+- [Testing guide](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/TESTS.md)
+- [Architecture overview](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/ARCHITECTURE.md)
+- [CI/CD guide](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/CICD.md)
 
 ## Module docs
 
-- [Shared README](./shared/README.md)
-- [Geo README](./geo/README.md)
-- [Identity README](./identity/README.md)
-- [Partner README](./partner/README.md)
-- [Academic README](./academic/README.md)
-- [Project README](./project/README.md)
+- [Shared README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/shared/README.md)
+- [Geo README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/geo/README.md)
+- [Identity README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/identity/README.md)
+- [Partner README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/partner/README.md)
+- [Academic README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/academic/README.md)
+- [Project README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/project/README.md)

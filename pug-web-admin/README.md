@@ -155,6 +155,6 @@ npm run trans
 
 ## 📚 Documentation
 
-- [Development Guide](./DEVELOPMENT.md)
-- [Architecture](./ARCHITECTURE.md)
-- [CI/CD](./CICD.md)
+- [Development Guide](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-web-admin/DEVELOPMENT.md)
+- [Architecture](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-web-admin/ARCHITECTURE.md)
+- [CI/CD](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-web-admin/CICD.md)

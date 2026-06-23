@@ -1,6 +1,6 @@
 # Partner Module Architecture
 
-[Back to module README](./README.md)
+[Back to module README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/partner/README.md)
 
 ## Overview
 

@@ -1,6 +1,6 @@
 # PUG Web Admin CI/CD
 
-Back to [README.md](./README.md).
+Back to [README.md](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-web-admin/README.md).
 
 ## 🚦 Pipeline overview
 

@@ -74,21 +74,21 @@ The current repository documentation is strongest around the backend, the admin 
 
 The backend service for the platform. It centralizes authentication, academic data, partner entities, projects, enrollments, attendances, audit logging, and counterpart-hour tracking.
 
-- Documentation: [pug-service docs](./pug-service/README.md)
+- Documentation: [pug-service docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)
 - Repository README: [pug-service](https://github.com/Plataforma-Universidade-Gratuita/pug-service/blob/main/README.md)
 
 ### `pug-web-admin`
 
 The backoffice used by the educational institution. It provides the operational web interface for the same major domains exposed by the backend service.
 
-- Documentation: [pug-web-admin docs](./pug-web-admin/README.md)
+- Documentation: [pug-web-admin docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-web-admin/README.md)
 - Repository README: [pug-web-admin](https://github.com/Plataforma-Universidade-Gratuita/pug-web-admin/blob/main/README.md)
 
 ### `pug-mocks`
 
 An optional mock backend used for local development and integration work. It mirrors the main API contract with in-memory data and simplified auth behavior.
 
-- Documentation: [pug-mocks docs](./pug-mocks/README.md)
+- Documentation: [pug-mocks docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mocks/README.md)
 - Repository README: [pug-mocks](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/README.md)
 
 ### `mobile-student`
@@ -135,9 +135,9 @@ pug-docs/
 
 ## 🔗 Start Here
 
-- [pug-service documentation](./pug-service/README.md)
-- [pug-web-admin documentation](./pug-web-admin/README.md)
-- [pug-mocks documentation](./pug-mocks/README.md)
+- [pug-service documentation](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)
+- [pug-web-admin documentation](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-web-admin/README.md)
+- [pug-mocks documentation](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mocks/README.md)
 
 ## 📝 Note
 

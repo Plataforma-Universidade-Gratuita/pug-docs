@@ -125,5 +125,5 @@ The seeded Flyway data in [`V018__seed_test_data.sql`](https://github.com/Plataf
 
 ## Links
 
-- [Partner architecture](./ARCHITECTURE.md)
-- [Back to pug-service docs](../README.md)
+- [Partner architecture](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/partner/ARCHITECTURE.md)
+- [Back to pug-service docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)

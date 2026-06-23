@@ -105,5 +105,5 @@ flowchart LR
 
 ## Links
 
-- [Geo architecture](./ARCHITECTURE.md)
-- [Back to pug-service docs](../README.md)
+- [Geo architecture](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/geo/ARCHITECTURE.md)
+- [Back to pug-service docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)

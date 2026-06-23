@@ -171,5 +171,5 @@ Important nuance from the code: [`AttendancesResource`](https://github.com/Plata
 
 ## Links
 
-- [Project architecture](./ARCHITECTURE.md)
-- [Back to pug-service docs](../README.md)
+- [Project architecture](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/project/ARCHITECTURE.md)
+- [Back to pug-service docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)

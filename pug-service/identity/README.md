@@ -221,5 +221,5 @@ flowchart LR
 
 ## Links
 
-- [Identity architecture](./ARCHITECTURE.md)
-- [Back to pug-service docs](../README.md)
+- [Identity architecture](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/identity/ARCHITECTURE.md)
+- [Back to pug-service docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)

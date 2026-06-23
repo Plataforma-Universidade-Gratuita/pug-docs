@@ -1,6 +1,6 @@
 # Project Module Architecture
 
-See the [project module README](./README.md) for the endpoint inventory, repository examples, and test entry points.
+See the [project module README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/project/README.md) for the endpoint inventory, repository examples, and test entry points.
 
 ## Overview
 
@@ -295,4 +295,4 @@ Additional boundary notes:
 
 ## Links
 
-- [Back to project module README](./README.md)
+- [Back to project module README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/project/README.md)

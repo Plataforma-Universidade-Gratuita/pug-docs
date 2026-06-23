@@ -174,5 +174,5 @@ Examples from those files include courses such as `Engenharia de Software`, `Des
 
 ## Links
 
-- [Academic architecture](./ARCHITECTURE.md)
-- [Back to pug-service docs](../README.md)
+- [Academic architecture](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/academic/ARCHITECTURE.md)
+- [Back to pug-service docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)

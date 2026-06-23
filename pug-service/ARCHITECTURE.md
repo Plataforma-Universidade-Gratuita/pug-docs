@@ -1,6 +1,6 @@
 # Architecture Overview
 
-See the [main README](./README.md) for the developer-facing overview and entry-point links.
+See the [main README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md) for the developer-facing overview and entry-point links.
 
 ## Overall architecture
 
@@ -243,4 +243,4 @@ Those are the only scheduled/startup behaviors that were found directly in the r
 
 ## Links
 
-- [Back to README](./README.md)
+- [Back to README](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)
