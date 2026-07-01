@@ -12,11 +12,11 @@ This repository currently documents the parts of the platform that already have 
 
 - `pug-service` as the shared backend service
 - `pug-web-admin` as the institutional backoffice
+- `pug-mobile-student` as the former-student mobile application
 - `pug-mocks` as the optional mock backend for local integration work
 
-The mobile applications are already part of the overall platform context, but detailed documentation for them is still pending and will be added later:
+The partner mobile application is already part of the overall platform context, but detailed documentation for it is still pending and will be added later:
 
-- `mobile-student`
 - `mobile-partner`
 
 ## 🏗️ High-Level Architecture
@@ -91,13 +91,12 @@ An optional mock backend used for local development and integration work. It mir
 - Documentation: [pug-mocks docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mocks/README.md)
 - Repository README: [pug-mocks](https://github.com/Plataforma-Universidade-Gratuita/pug-mocks/blob/main/README.md)
 
-### `mobile-student`
+### `pug-mobile-student`
 
-The mobile app for former students. Its role in the platform is to let former students manage their own counterpart hours and subscribe to projects.
+The mobile app for former students. Its role in the platform is to let former students manage their own counterpart hours, discover projects, manage enrollments, create attendances, and access QR validation flows.
 
-- Detailed documentation in `pug-docs`: not available yet
-- Repository: [pug-mobile-student](https://github.com/Plataforma-Universidade-Gratuita/pug-mobile-student)
-- Repository README: not available in the current workspace
+- Documentation: [pug-mobile-student docs](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mobile-student/README.md)
+- Repository README: [pug-mobile-student](https://github.com/Plataforma-Universidade-Gratuita/pug-mobile-student/blob/main/README.md)
 
 ### `mobile-partner`
 
@@ -114,6 +113,11 @@ pug-docs/
 ├── README.md
 ├── pug-mocks/
 │   └── README.md
+├── pug-mobile-student/
+│   ├── README.md
+│   ├── DEVELOPMENT.md
+│   ├── ARCHITECTURE.md
+│   └── CICD.md
 ├── pug-service/
 │   ├── README.md
 │   ├── DEVELOPMENT.md
@@ -137,6 +141,7 @@ pug-docs/
 
 - [pug-service documentation](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-service/README.md)
 - [pug-web-admin documentation](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-web-admin/README.md)
+- [pug-mobile-student documentation](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mobile-student/README.md)
 - [pug-mocks documentation](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mocks/README.md)
 
 ## 📝 Note
